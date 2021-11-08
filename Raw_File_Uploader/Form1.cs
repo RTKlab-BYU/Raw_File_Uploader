@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Reflection;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,9 @@ namespace Raw_File_Uploader
             var context = SynchronizationContext.Current;
 
 
+
+           
+            version_number.Text = GetPublishedVersion();
 
             watcher.Changed += (s, e) =>
             {
@@ -79,18 +83,35 @@ namespace Raw_File_Uploader
         }
 
 
-
+        private string GetPublishedVersion()
+        {
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.
+                    CurrentVersion.ToString();
+            }
+            return "Not network deployed";
+        }
 
         private void uploadfile(string filelocation)
         {
             output.AppendText(Environment.NewLine + DateTime.Now + $" Start Uploading {filelocation}");
+            string newfilelocation = Path.GetDirectoryName(filelocation) + @"\temp\" + Path.GetFileName(filelocation);
 
+            //check if a temp patch exits, create one if not.
+            string temppath = Path.GetDirectoryName(filelocation) + @"\temp\";
+
+            bool exists = System.IO.Directory.Exists(temppath);
+
+            if (!exists)
+                System.IO.Directory.CreateDirectory(temppath);
+            File.Copy(filelocation, newfilelocation);
 
             var client = new RestClient(txtserver.Text);
             client.Timeout = 30 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
 
-            if (!File.Exists(filelocation))
+            if (!File.Exists(newfilelocation))
             {
                 MessageBox.Show("Please check file location");
                 return;
@@ -104,7 +125,7 @@ namespace Raw_File_Uploader
             request.AddHeader("Content-Type", "multipart/form-data");
             if(String.IsNullOrEmpty(txtsamplename.Text))
             {
-                request.AddParameter("run_name", Path.GetFileNameWithoutExtension(filelocation));
+                request.AddParameter("run_name", Path.GetFileNameWithoutExtension(newfilelocation));
             }
             else
             {
@@ -117,11 +138,11 @@ namespace Raw_File_Uploader
             request.AddParameter("spectromine_qc", SpectromineQc.Checked);
             request.AddParameter("maxquant_qc", MaxquantQc.Checked);
             request.AddParameter("temp_data", TempData.Checked);
-            request.AddFile("rawfile", filelocation);
+            request.AddFile("rawfile", newfilelocation);
             var response = client.Execute(request);
             output.AppendText(Environment.NewLine + response.Content);
-            output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} uploaded");
-
+            output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploaded");
+            File.Delete(newfilelocation);
         }
 
 

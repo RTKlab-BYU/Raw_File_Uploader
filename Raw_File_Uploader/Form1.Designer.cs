@@ -62,6 +62,8 @@ namespace Raw_File_Uploader
             this.SpectromineQc = new System.Windows.Forms.CheckBox();
             this.MaxquantQc = new System.Windows.Forms.CheckBox();
             this.TempData = new System.Windows.Forms.CheckBox();
+            this.version_number = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Uploader
@@ -373,11 +375,30 @@ namespace Raw_File_Uploader
             this.TempData.Text = "Temporary Data (delete after 3 month)";
             this.TempData.UseVisualStyleBackColor = true;
             // 
+            // version_number
+            // 
+            this.version_number.AutoSize = true;
+            this.version_number.Location = new System.Drawing.Point(880, 684);
+            this.version_number.Name = "version_number";
+            this.version_number.Size = new System.Drawing.Size(0, 13);
+            this.version_number.TabIndex = 17;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(792, 684);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(82, 13);
+            this.label12.TabIndex = 18;
+            this.label12.Text = "Current Version:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 706);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.version_number);
             this.Controls.Add(this.TempData);
             this.Controls.Add(this.MaxquantQc);
             this.Controls.Add(this.SpectromineQc);
@@ -453,6 +474,8 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.CheckBox SpectromineQc;
         private System.Windows.Forms.CheckBox MaxquantQc;
         private System.Windows.Forms.CheckBox TempData;
+        private System.Windows.Forms.Label version_number;
+        private System.Windows.Forms.Label label12;
     }
 }
 
