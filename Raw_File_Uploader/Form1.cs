@@ -14,11 +14,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Mail;
 
 namespace Raw_File_Uploader
 {
+
     public partial class Form1 : Form
     {
+        public static DateTime lastchangetime = DateTime.Now;
+        public static DateTime lastemailtime = DateTime.Today.AddDays(-1);
 
         FileSystemWatcher watcher = new FileSystemWatcher();
         private bool monitor_on = false;
@@ -33,22 +37,33 @@ namespace Raw_File_Uploader
             txtprojectname.Text = "test2";
             filetype.Text = "*.raw";
             minisize.Text = "100";
+            alert_threshold.Text = "30";
+            frequency_threshold.Text = "1";
+            qctool.SelectedIndex = 1;
+            // 0 is none, 1 is msfragger, 2 is Maxquant, 3 is Protein Discovery, 4 is matchbetween run with maxquant
+            //recipient_email.Text = "xiexf128@gmail.com";
+
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
+            lastchangtimefield.Text = lastchangetime.ToString();
+
             var context = SynchronizationContext.Current;
 
 
 
-           
+
             version_number.Text = GetPublishedVersion();
 
             watcher.Changed += (s, e) =>
             {
                 FileInfo file = new FileInfo(e.FullPath);
                 System.Threading.Thread.Sleep(1000);
-                //if (monitor && IsFileunLocked(file)) {
+                lastchangetime = DateTime.Now;
+                
+                context.Post(val => lastchangtimefield.Text = lastchangetime.ToString(), s);
                 if (monitor_on && !IsLocatedByHomePage(file))
                 {
+                    try { 
 
                     if (new FileInfo(e.FullPath).Length > Int32.Parse(minisize.Text) * 1000000)
                     {
@@ -74,7 +89,12 @@ namespace Raw_File_Uploader
 
 
                 }
+                    catch (Exception e1)
+                    {
+                        context.Post(val => output.AppendText(Environment.NewLine + "error detected" +e1), s);
 
+                    }
+                }
 
             };
 
@@ -96,19 +116,63 @@ namespace Raw_File_Uploader
         private void uploadfile(string filelocation)
         {
             output.AppendText(Environment.NewLine + DateTime.Now + $" Start Uploading {filelocation}");
-            string newfilelocation = Path.GetDirectoryName(filelocation) + @"\temp\" + Path.GetFileName(filelocation);
+            string newfilelocation;
+            if (nocopy.Checked) {
+                newfilelocation = filelocation;
 
-            //check if a temp patch exits, create one if not.
-            string temppath = Path.GetDirectoryName(filelocation) + @"\temp\";
+            }
+            else
+            {
 
-            bool exists = System.IO.Directory.Exists(temppath);
+                newfilelocation = Path.GetDirectoryName(filelocation) + @"\temp\" + Path.GetFileName(filelocation);
 
-            if (!exists)
-                System.IO.Directory.CreateDirectory(temppath);
-            File.Copy(filelocation, newfilelocation);
+                //check if a temp patch exits, create one if not.
+                string temppath = Path.GetDirectoryName(filelocation) + @"\temp\";
+
+                bool exists = System.IO.Directory.Exists(temppath);
+
+                if (!exists)
+                    System.IO.Directory.CreateDirectory(temppath);
+
+                if (File.Exists(newfilelocation))
+                {
+                    File.Delete(newfilelocation);
+                }
+
+                try //for somereason, copy file failed sometimes....
+                {
+                    File.Copy(filelocation, newfilelocation, true);
+
+                }
+
+                catch
+                {
+                    output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploading failed once will try again");
+
+                    System.Threading.Thread.Sleep(30000);
+
+
+                    try //2nd try
+                    {
+                        File.Copy(filelocation, newfilelocation, true);
+
+                    }
+
+                    catch
+                    {
+                        output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploading failed second time");
+
+                        return;
+                    }
+                    // Todo: Additional recovery here,
+                    // like telling the calling code to re-open the file selection dialog
+                }
+
+            }
 
             var client = new RestClient(txtserver.Text);
-            client.Timeout = 30 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
+            client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
+
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
 
             if (!File.Exists(newfilelocation))
@@ -135,14 +199,18 @@ namespace Raw_File_Uploader
 
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("run_desc", txtdescription.Text);
-            request.AddParameter("spectromine_qc", SpectromineQc.Checked);
-            request.AddParameter("maxquant_qc", MaxquantQc.Checked);
+            request.AddParameter("qc_tool", qctool.SelectedIndex);
             request.AddParameter("temp_data", TempData.Checked);
             request.AddFile("rawfile", newfilelocation);
+            request.ReadWriteTimeout = 2147483647;
+            request.Timeout = 2147483647;
             var response = client.Execute(request);
             output.AppendText(Environment.NewLine + response.Content);
             output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploaded");
-            File.Delete(newfilelocation);
+            if (!nocopy.Checked)
+            {
+                File.Delete(newfilelocation);
+            }
         }
 
 
@@ -232,7 +300,10 @@ namespace Raw_File_Uploader
 
             monitor_on = triggle;
             monitor.BackColor = btcolor;
-
+            Thread t = new Thread(myFun);
+            t.Name = "finish_check_thread";
+            t.IsBackground = true;
+            t.Start();
 
             // tell the watcher where to look
             watcher.Path = @foldertxt.Text;
@@ -241,11 +312,11 @@ namespace Raw_File_Uploader
             watcher.EnableRaisingEvents = triggle;
             if (monitor_on is true)
             {
-                output.AppendText(Environment.NewLine + $"start to monitor folder {foldertxt.Text} for {filetype.Text} ");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
             }
             else
             {
-                output.AppendText(Environment.NewLine + $"Stop to monitor folder {foldertxt.Text} ");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
             }
 
         }
@@ -260,10 +331,7 @@ namespace Raw_File_Uploader
             }
             catch (IOException)
             {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
+
                 return false;
             }
 
@@ -275,19 +343,16 @@ namespace Raw_File_Uploader
         private bool IsLocatedByHomePage(FileInfo file)
         {
 
-            //return FileUtil.WhoIsLocking(file.FullName).First().ProcessName == "HomePage";
             var process_list = FileUtil.WhoIsLocking(file.FullName);
 
             foreach (Process lockprocess in process_list)
             {
                 if (lockprocess.ProcessName == "HomePage") { return true; }
-                //if (lockprocess.ProcessName == "WINWORD") { return true; }
 
 
             }
 
 
-            //First().ProcessName == "HomePage";
             return false;
 
         }
@@ -298,6 +363,48 @@ namespace Raw_File_Uploader
 
         }
 
+
+        private void myFun()
+        {
+            while (monitor_on && !String.IsNullOrEmpty(recipient_email.Text)) { 
+            TimeSpan difference = DateTime.Now - lastchangetime ;
+            TimeSpan email_difference = DateTime.Now - lastemailtime;
+
+                if (difference.Minutes > int.Parse(alert_threshold.Text) && email_difference.Hours > int.Parse(frequency_threshold.Text))
+            {
+                lastemailtime = DateTime.Now;
+                send_notification();
+
+            }
+
+                Thread.Sleep(60000);
+            }
+        }
+        private void send_notification()
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress("proteomicsdatamanager@gmail.com");
+                mail.To.Add(recipient_email.Text);
+                mail.Subject = "Acquisition Finished or Stopped";
+                mail.Body = "This is a notification from Raw file uploader to notify you the Acquisition has finished or stopped ";
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("proteomicsdatamanager@gmail.com", "WAm38HzgXu6WE^");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+             output.AppendText(Environment.NewLine + DateTime.Now + ex.Message);
+
+            }
+
+        }
         private void folder_uploader_Click(object sender, EventArgs e)
         {
             string[] files = Directory.GetFiles(foldertxt.Text, "*.raw*");
@@ -310,12 +417,12 @@ namespace Raw_File_Uploader
                 {
                     if (new FileInfo(file).Length > Int32.Parse(minisize.Text) * 1000000)
                     {
-                        output.AppendText(Environment.NewLine + "Uploading" + file);
+                        output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + file);
                         uploadfile(file);
                     }
                     else
                     {
-                        output.AppendText(Environment.NewLine + "file:" + file + $"less than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded ");
+                        output.AppendText(Environment.NewLine + DateTime.Now + " file:" + file + $"less than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded ");
 
                     }
                 }
@@ -323,9 +430,12 @@ namespace Raw_File_Uploader
             }
 
         }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
     }
-
-
 
 
 
