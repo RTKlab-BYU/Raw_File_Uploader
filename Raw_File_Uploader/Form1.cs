@@ -435,6 +435,16 @@ namespace Raw_File_Uploader
         {
 
         }
+
+        private void frequency_threshold_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
