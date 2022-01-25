@@ -334,7 +334,7 @@ namespace Raw_File_Uploader
             this.single_upload.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.single_upload.Location = new System.Drawing.Point(53, 650);
             this.single_upload.Name = "single_upload";
-            this.single_upload.Size = new System.Drawing.Size(161, 23);
+            this.single_upload.Size = new System.Drawing.Size(161, 29);
             this.single_upload.TabIndex = 20;
             this.single_upload.Text = "Manual upload single file";
             this.single_upload.UseVisualStyleBackColor = true;
@@ -345,7 +345,7 @@ namespace Raw_File_Uploader
             this.folder_uploader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.folder_uploader.Location = new System.Drawing.Point(367, 650);
             this.folder_uploader.Name = "folder_uploader";
-            this.folder_uploader.Size = new System.Drawing.Size(161, 23);
+            this.folder_uploader.Size = new System.Drawing.Size(161, 29);
             this.folder_uploader.TabIndex = 21;
             this.folder_uploader.Text = "Upload entire folder";
             this.folder_uploader.UseVisualStyleBackColor = true;
@@ -356,7 +356,7 @@ namespace Raw_File_Uploader
             this.exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exit.Location = new System.Drawing.Point(719, 650);
             this.exit.Name = "exit";
-            this.exit.Size = new System.Drawing.Size(161, 23);
+            this.exit.Size = new System.Drawing.Size(161, 29);
             this.exit.TabIndex = 22;
             this.exit.Text = "Exit";
             this.exit.UseVisualStyleBackColor = true;
