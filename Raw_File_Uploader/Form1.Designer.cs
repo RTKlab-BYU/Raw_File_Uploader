@@ -73,9 +73,10 @@ namespace Raw_File_Uploader
             this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.Explaination = new System.Windows.Forms.ToolTip(this.components);
             this.qctool = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.mbrlist = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Uploader
@@ -494,6 +495,14 @@ namespace Raw_File_Uploader
             this.qctool.TabIndex = 16;
             this.Explaination.SetToolTip(this.qctool, "Tools used to do automatic QC analysis");
             // 
+            // mbrlist
+            // 
+            this.mbrlist.Location = new System.Drawing.Point(845, 310);
+            this.mbrlist.Name = "mbrlist";
+            this.mbrlist.Size = new System.Drawing.Size(100, 20);
+            this.mbrlist.TabIndex = 24;
+            this.Explaination.SetToolTip(this.mbrlist, "list of raw files to be used for MBR, e.g., 908, 909,911");
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -503,14 +512,6 @@ namespace Raw_File_Uploader
             this.label17.Size = new System.Drawing.Size(60, 17);
             this.label17.TabIndex = 8;
             this.label17.Text = "QC Tool";
-            // 
-            // mbrlist
-            // 
-            this.mbrlist.Location = new System.Drawing.Point(845, 310);
-            this.mbrlist.Name = "mbrlist";
-            this.mbrlist.Size = new System.Drawing.Size(100, 20);
-            this.mbrlist.TabIndex = 24;
-            this.Explaination.SetToolTip(this.mbrlist, "list of raw files to be used for MBR, e.g., 908, 909,911");
             // 
             // label16
             // 
@@ -522,11 +523,22 @@ namespace Raw_File_Uploader
             this.label16.TabIndex = 8;
             this.label16.Text = "MBR list";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(899, 199);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 706);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.mbrlist);
             this.Controls.Add(this.qctool);
             this.Controls.Add(this.lastchangtimefield);
@@ -627,6 +639,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox mbrlist;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button1;
     }
 }
 
