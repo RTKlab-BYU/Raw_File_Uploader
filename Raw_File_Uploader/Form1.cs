@@ -30,10 +30,10 @@ namespace Raw_File_Uploader
         {
             InitializeComponent();
             //txtserver.Text = "http://10.37.240.41/files/api/";
-            txtserver.Text = "http://192.168.102.188/files/api/";
+            txtserver.Text = "http://10.37.35.98:8000/files/api/";
 
-            txtusername.Text = "admin";
-            txtpassword.Text = "admin";
+            txtusername.Text = "XiaofengXie";
+            txtpassword.Text = "p11111111";
             txtprojectname.Text = "test2";
             filetype.Text = "*.raw";
             minisize.Text = "100";
