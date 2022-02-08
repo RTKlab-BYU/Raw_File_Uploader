@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
+using System.Xml.Linq;
 
 namespace Raw_File_Uploader
 {
@@ -29,12 +30,12 @@ namespace Raw_File_Uploader
         public Form1()
         {
             InitializeComponent();
-            //txtserver.Text = "http://10.37.240.41/files/api/";
-            txtserver.Text = "http://10.37.35.98:8000/files/api/";
+            txtserver.Text = "http://192.168.102.188/files/api/"; //deployment server Lan
 
-            txtusername.Text = "XiaofengXie";
-            txtpassword.Text = "p11111111";
-            txtprojectname.Text = "test2";
+            //txtserver.Text = "http://10.37.240.41/files/api/"; deployment server wifi
+            // txtserver.Text = "http://10.37.35.98:8000/files/api/"; testing server
+
+
             filetype.Text = "*.raw";
             minisize.Text = "100";
             alert_threshold.Text = "30";
@@ -225,17 +226,12 @@ namespace Raw_File_Uploader
 
         private void exit_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("This will close down the whole application. Confirm?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                System.Windows.Forms.Application.Exit();
-            }
-            else
-            {
-                this.Activate();
-            }
+
         }
 
-        private void folderbutton_Click(object sender, EventArgs e)
+
+        private void folderbutton_Click_1(object sender, EventArgs e)
+
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
             folderDlg.ShowNewFolderButton = true;
@@ -244,11 +240,10 @@ namespace Raw_File_Uploader
             if (result == DialogResult.OK)
             {
                 foldertxt.Text = folderDlg.SelectedPath;
-                Environment.SpecialFolder root = folderDlg.RootFolder;
             }
         }
 
-        private void filebutton_Click(object sender, EventArgs e)
+        private void filebutton_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
@@ -440,11 +435,221 @@ namespace Raw_File_Uploader
         {
 
         }
+
+ 
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will close down the whole application. Confirm?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+                this.Activate();
+            }
+        }
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Uploader Configure File|*.xml";
+            saveFileDialog1.Title = "Save a Configure File";
+            
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                SettingsProvider.setfilename(saveFileDialog1.FileName);
+                
+                
+                TabControl.TabPageCollection pages = tabControl.TabPages;
+
+                foreach (TabPage page in pages) {
+
+                    foreach (Control control in page.Controls)
+                    {
+
+                        if (control is TextBox)
+                        {
+                            if (control.Name != "txtpassword")
+                            SettingsProvider.SetValue(page.Name, control.Name, control.Text);
+
+                        }
+                        else if (control is CheckBox)
+                        {
+                            SettingsProvider.SetValue(page.Name, control.Name, ((CheckBox)control).Checked.ToString());
+                            
+                        }
+
+                        else if (control is ComboBox) {
+                            SettingsProvider.SetValue(page.Name, control.Name, ((ComboBox)control).Text);
+                        }
+
+
+                    }
+
+                }
+            }
+        }
+
+        private void loadSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                Title = "Browse xml Files",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+                DefaultExt = "xml",
+                Filter = "Uploader Configure files (*.xml)|*.xml|All files (*.*)|*.*",
+                RestoreDirectory = true,
+
+            };
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                SettingsProvider.setfilename(openFileDialog1.FileName);
+
+
+                TabControl.TabPageCollection pages = tabControl.TabPages;
+
+                    foreach (TabPage page in pages)
+                    {
+
+                        foreach (Control control in page.Controls)
+                                {
+
+                        if (control is TextBox)
+                        {
+                            control.Text = SettingsProvider.GetValue(page.Name, control.Name,null);
+                           ((TextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+
+                        }
+                        else if (control is CheckBox)
+                        {
+                            ((CheckBox)control).Checked = Convert.ToBoolean(SettingsProvider.GetValue(page.Name, control.Name, null));
+                        }
+                        else if (control is ComboBox)
+                        {
+                            ((ComboBox)control).Text =SettingsProvider.GetValue(page.Name, control.Name, null);
+                        }
+                    }
+
+                }
+                
+
+            }
+        }
     }
 
 
+    //https://stackoverflow.com/questions/36820196/visual-c-sharp-storing-and-reading-custom-options-to-and-from-a-custom-xml-in-ap
 
+    public static class SettingsProvider
+    {
+        private static string settingsFileName;
 
+        private static XDocument settings;
+
+        static SettingsProvider()
+        {
+            try
+            {
+                settings = XDocument.Load(settingsFileName);
+            }
+            catch
+            {
+                settings = XDocument.Parse("<Settings/>");
+            }
+        }
+
+        public static string GetValue(string section, string key, string defaultValue)
+        {
+            XElement settingElement = GetSettingElement(section, key);
+
+            return settingElement == null ? defaultValue : settingElement.Value;
+        }
+
+        
+        public static void SetValue(string section, string key, string value)
+        {
+            XElement settingElement = GetSettingElement(section, key, true);
+
+            settingElement.Value = value;
+            settings.Save(settingsFileName);
+        }
+        public static void setfilename(string value)
+        {
+
+            settingsFileName = value;
+            try
+            {
+                settings = XDocument.Load(settingsFileName);
+            }
+            catch
+            {
+                settings = XDocument.Parse("<Settings/>");
+            }
+        }
+        private static XElement GetSettingElement(string section, string key, bool createIfNotExist = false)
+        {
+            XElement sectionElement =
+                settings
+                    .Root
+                    .Elements(section)
+                    .FirstOrDefault();
+
+            if (sectionElement == null)
+            {
+                if (createIfNotExist)
+                {
+                    sectionElement = new XElement(section);
+                    settings.Root.Add(sectionElement);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            XElement settingElement =
+                sectionElement
+                    .Elements(key)
+                    .FirstOrDefault();
+
+            if (settingElement == null)
+            {
+                if (createIfNotExist)
+                {
+                    settingElement = new XElement(key);
+                    sectionElement.Add(settingElement);
+                }
+            }
+
+            return settingElement;
+        }
+
+        public static void RemoveSetting(string section, string key)
+        {
+            XElement settingElement = GetSettingElement(section, key);
+
+            if (settingElement == null)
+            {
+                return;
+            }
+
+            XElement sectionElement = settingElement.Parent;
+
+            settingElement.Remove();
+
+            if (sectionElement.IsEmpty)
+            {
+                sectionElement.Remove();
+            }
+
+            settings.Save(settingsFileName);
+        }
+    }
 
 
 
