@@ -225,17 +225,12 @@ namespace Raw_File_Uploader
 
         private void exit_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("This will close down the whole application. Confirm?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                System.Windows.Forms.Application.Exit();
-            }
-            else
-            {
-                this.Activate();
-            }
+
         }
 
-        private void folderbutton_Click(object sender, EventArgs e)
+
+        private void folderbutton_Click_1(object sender, EventArgs e)
+
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
             folderDlg.ShowNewFolderButton = true;
@@ -248,7 +243,7 @@ namespace Raw_File_Uploader
             }
         }
 
-        private void filebutton_Click(object sender, EventArgs e)
+        private void filebutton_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
@@ -442,6 +437,23 @@ namespace Raw_File_Uploader
         }
 
         private void saveSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will close down the whole application. Confirm?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+                this.Activate();
+            }
+        }
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
