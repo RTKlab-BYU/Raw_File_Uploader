@@ -78,6 +78,7 @@ namespace Raw_File_Uploader
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox22 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
@@ -99,6 +100,7 @@ namespace Raw_File_Uploader
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.spetxt = new System.Windows.Forms.TextBox();
             this.columntxt = new System.Windows.Forms.TextBox();
             this.Server = new System.Windows.Forms.TabPage();
             this.button4 = new System.Windows.Forms.Button();
@@ -116,14 +118,12 @@ namespace Raw_File_Uploader
             this.minisize = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.spetxt = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -649,6 +649,16 @@ namespace Raw_File_Uploader
             this.label5.TabIndex = 21;
             this.label5.Text = "Fileld Name";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(364, 31);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(58, 17);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "SPE SN";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -839,6 +849,14 @@ namespace Raw_File_Uploader
             this.textBox2.Size = new System.Drawing.Size(150, 23);
             this.textBox2.TabIndex = 22;
             // 
+            // spetxt
+            // 
+            this.spetxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spetxt.Location = new System.Drawing.Point(460, 28);
+            this.spetxt.Name = "spetxt";
+            this.spetxt.Size = new System.Drawing.Size(150, 23);
+            this.spetxt.TabIndex = 22;
+            // 
             // columntxt
             // 
             this.columntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1017,19 +1035,19 @@ namespace Raw_File_Uploader
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveSettingToolStripMenuItem,
+            this.loadSettingToolStripMenuItem,
             this.saveSettingsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // saveSettingToolStripMenuItem
+            // loadSettingToolStripMenuItem
             // 
-            this.saveSettingToolStripMenuItem.Name = "saveSettingToolStripMenuItem";
-            this.saveSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveSettingToolStripMenuItem.Text = "Load Settings";
-            this.saveSettingToolStripMenuItem.Click += new System.EventHandler(this.saveSettingToolStripMenuItem_Click);
+            this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
+            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadSettingToolStripMenuItem.Text = "Load Settings";
+            this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
@@ -1062,26 +1080,8 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(99, 22);
             this.helpToolStripMenuItem1.Text = "Help";
-            // 
-            // spetxt
-            // 
-            this.spetxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.spetxt.Location = new System.Drawing.Point(460, 28);
-            this.spetxt.Name = "spetxt";
-            this.spetxt.Size = new System.Drawing.Size(150, 23);
-            this.spetxt.TabIndex = 22;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(364, 31);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(58, 17);
-            this.label9.TabIndex = 21;
-            this.label9.Text = "SPE SN";
             // 
             // Form1
             // 
@@ -1134,7 +1134,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.TabPage settings;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveSettingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadSettingToolStripMenuItem;
         private System.Windows.Forms.TextBox mbrlist;
         private System.Windows.Forms.ComboBox qctool;
         private System.Windows.Forms.CheckBox TempData;
