@@ -188,7 +188,7 @@ namespace Raw_File_Uploader
             // folder_uploader
             // 
             this.folder_uploader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folder_uploader.Location = new System.Drawing.Point(748, 653);
+            this.folder_uploader.Location = new System.Drawing.Point(753, 654);
             this.folder_uploader.Name = "folder_uploader";
             this.folder_uploader.Size = new System.Drawing.Size(167, 44);
             this.folder_uploader.TabIndex = 21;
@@ -199,7 +199,7 @@ namespace Raw_File_Uploader
             // version_number
             // 
             this.version_number.AutoSize = true;
-            this.version_number.Location = new System.Drawing.Point(880, 684);
+            this.version_number.Location = new System.Drawing.Point(773, 421);
             this.version_number.Name = "version_number";
             this.version_number.Size = new System.Drawing.Size(0, 13);
             this.version_number.TabIndex = 17;
@@ -264,7 +264,7 @@ namespace Raw_File_Uploader
             "None",
             "Msfragger",
             "Maxquant",
-            "Protein Discovery",
+            "Protein Discoverer",
             "MBR_maxquant"});
             this.qctool.Location = new System.Drawing.Point(682, 177);
             this.qctool.Name = "qctool";
@@ -431,7 +431,7 @@ namespace Raw_File_Uploader
             // 
             this.txtdescription.Location = new System.Drawing.Point(110, 161);
             this.txtdescription.Name = "txtdescription";
-            this.txtdescription.Size = new System.Drawing.Size(478, 91);
+            this.txtdescription.Size = new System.Drawing.Size(478, 182);
             this.txtdescription.TabIndex = 23;
             this.txtdescription.Text = "";
             // 
@@ -934,7 +934,7 @@ namespace Raw_File_Uploader
             this.settings.Padding = new System.Windows.Forms.Padding(3);
             this.settings.Size = new System.Drawing.Size(1004, 349);
             this.settings.TabIndex = 2;
-            this.settings.Text = "Settints";
+            this.settings.Text = "Settings";
             // 
             // lastchangtimefield
             // 
@@ -1045,21 +1045,21 @@ namespace Raw_File_Uploader
             // loadSettingToolStripMenuItem
             // 
             this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
-            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.loadSettingToolStripMenuItem.Text = "Load Settings";
             this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSettingsToolStripMenuItem.Text = "Save Settings";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
