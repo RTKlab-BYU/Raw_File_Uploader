@@ -54,6 +54,7 @@ namespace Raw_File_Uploader
             this.alert_threshold = new System.Windows.Forms.TextBox();
             this.recipient_email = new System.Windows.Forms.TextBox();
             this.bypasskword = new System.Windows.Forms.TextBox();
+            this.sample_type = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label25 = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@ namespace Raw_File_Uploader
             this.label22 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.sample_type = new System.Windows.Forms.TextBox();
             this.txtprojectname = new System.Windows.Forms.TextBox();
             this.txtsamplename = new System.Windows.Forms.TextBox();
             this.filebutton = new System.Windows.Forms.Button();
@@ -100,16 +100,16 @@ namespace Raw_File_Uploader
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.spetxt = new System.Windows.Forms.TextBox();
-            this.columntxt = new System.Windows.Forms.TextBox();
+            this.spe_sn = new System.Windows.Forms.TextBox();
+            this.column_sn = new System.Windows.Forms.TextBox();
             this.Server = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
+            this.verify_account = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.settings = new System.Windows.Forms.TabPage();
             this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.max_size = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -124,6 +124,8 @@ namespace Raw_File_Uploader
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.storage_option = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -356,11 +358,24 @@ namespace Raw_File_Uploader
             // bypasskword
             // 
             this.bypasskword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bypasskword.Location = new System.Drawing.Point(171, 126);
+            this.bypasskword.Location = new System.Drawing.Point(790, 80);
             this.bypasskword.Name = "bypasskword";
             this.bypasskword.Size = new System.Drawing.Size(150, 23);
             this.bypasskword.TabIndex = 20;
             this.Explaination.SetToolTip(this.bypasskword, "Keyword in the filename to ignroe");
+            // 
+            // sample_type
+            // 
+            this.sample_type.FormattingEnabled = true;
+            this.sample_type.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.sample_type.Items.AddRange(new object[] {
+            "Human",
+            "Mouse"});
+            this.sample_type.Location = new System.Drawing.Point(732, 141);
+            this.sample_type.Name = "sample_type";
+            this.sample_type.Size = new System.Drawing.Size(121, 21);
+            this.sample_type.TabIndex = 30;
+            this.Explaination.SetToolTip(this.sample_type, "Tools used to do automatic QC analysis");
             // 
             // tabControl
             // 
@@ -378,6 +393,7 @@ namespace Raw_File_Uploader
             // Run_info
             // 
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
+            this.Run_info.Controls.Add(this.sample_type);
             this.Run_info.Controls.Add(this.mbrlist);
             this.Run_info.Controls.Add(this.qctool);
             this.Run_info.Controls.Add(this.TempData);
@@ -390,7 +406,6 @@ namespace Raw_File_Uploader
             this.Run_info.Controls.Add(this.label22);
             this.Run_info.Controls.Add(this.label32);
             this.Run_info.Controls.Add(this.label23);
-            this.Run_info.Controls.Add(this.sample_type);
             this.Run_info.Controls.Add(this.txtprojectname);
             this.Run_info.Controls.Add(this.filetype);
             this.Run_info.Controls.Add(this.txtsamplename);
@@ -431,7 +446,7 @@ namespace Raw_File_Uploader
             // 
             this.txtdescription.Location = new System.Drawing.Point(110, 161);
             this.txtdescription.Name = "txtdescription";
-            this.txtdescription.Size = new System.Drawing.Size(478, 91);
+            this.txtdescription.Size = new System.Drawing.Size(478, 182);
             this.txtdescription.TabIndex = 23;
             this.txtdescription.Text = "";
             // 
@@ -493,14 +508,6 @@ namespace Raw_File_Uploader
             this.label23.Size = new System.Drawing.Size(66, 17);
             this.label23.TabIndex = 17;
             this.label23.Text = "File Type";
-            // 
-            // sample_type
-            // 
-            this.sample_type.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sample_type.Location = new System.Drawing.Point(732, 141);
-            this.sample_type.Name = "sample_type";
-            this.sample_type.Size = new System.Drawing.Size(118, 23);
-            this.sample_type.TabIndex = 18;
             // 
             // txtprojectname
             // 
@@ -590,8 +597,8 @@ namespace Raw_File_Uploader
             this.Other_info.Controls.Add(this.textBox3);
             this.Other_info.Controls.Add(this.textBox12);
             this.Other_info.Controls.Add(this.textBox2);
-            this.Other_info.Controls.Add(this.spetxt);
-            this.Other_info.Controls.Add(this.columntxt);
+            this.Other_info.Controls.Add(this.spe_sn);
+            this.Other_info.Controls.Add(this.column_sn);
             this.Other_info.Location = new System.Drawing.Point(4, 34);
             this.Other_info.Name = "Other_info";
             this.Other_info.Padding = new System.Windows.Forms.Padding(3);
@@ -655,9 +662,9 @@ namespace Raw_File_Uploader
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(364, 31);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(58, 17);
+            this.label9.Size = new System.Drawing.Size(54, 17);
             this.label9.TabIndex = 21;
-            this.label9.Text = "SPE SN";
+            this.label9.Text = "spe_sn";
             // 
             // label2
             // 
@@ -665,9 +672,9 @@ namespace Raw_File_Uploader
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(32, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 17);
+            this.label2.Size = new System.Drawing.Size(76, 17);
             this.label2.TabIndex = 21;
-            this.label2.Text = "Column SN";
+            this.label2.Text = "column_sn";
             // 
             // textBox22
             // 
@@ -849,26 +856,28 @@ namespace Raw_File_Uploader
             this.textBox2.Size = new System.Drawing.Size(150, 23);
             this.textBox2.TabIndex = 22;
             // 
-            // spetxt
+            // spe_sn
             // 
-            this.spetxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.spetxt.Location = new System.Drawing.Point(460, 28);
-            this.spetxt.Name = "spetxt";
-            this.spetxt.Size = new System.Drawing.Size(150, 23);
-            this.spetxt.TabIndex = 22;
+            this.spe_sn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spe_sn.Location = new System.Drawing.Point(460, 28);
+            this.spe_sn.Name = "spe_sn";
+            this.spe_sn.Size = new System.Drawing.Size(150, 23);
+            this.spe_sn.TabIndex = 22;
             // 
-            // columntxt
+            // column_sn
             // 
-            this.columntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.columntxt.Location = new System.Drawing.Point(128, 28);
-            this.columntxt.Name = "columntxt";
-            this.columntxt.Size = new System.Drawing.Size(150, 23);
-            this.columntxt.TabIndex = 22;
+            this.column_sn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.column_sn.Location = new System.Drawing.Point(128, 28);
+            this.column_sn.Name = "column_sn";
+            this.column_sn.Size = new System.Drawing.Size(150, 23);
+            this.column_sn.TabIndex = 22;
             // 
             // Server
             // 
             this.Server.BackColor = System.Drawing.SystemColors.Control;
-            this.Server.Controls.Add(this.button4);
+            this.Server.Controls.Add(this.storage_option);
+            this.Server.Controls.Add(this.label10);
+            this.Server.Controls.Add(this.verify_account);
             this.Server.Controls.Add(this.label27);
             this.Server.Controls.Add(this.label28);
             this.Server.Controls.Add(this.txtpassword);
@@ -882,15 +891,16 @@ namespace Raw_File_Uploader
             this.Server.TabIndex = 1;
             this.Server.Text = "Server";
             // 
-            // button4
+            // verify_account
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(23, 121);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(354, 37);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "Test Connection";
-            this.button4.UseVisualStyleBackColor = true;
+            this.verify_account.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.verify_account.Location = new System.Drawing.Point(23, 121);
+            this.verify_account.Name = "verify_account";
+            this.verify_account.Size = new System.Drawing.Size(354, 37);
+            this.verify_account.TabIndex = 14;
+            this.verify_account.Text = "Verify Account";
+            this.verify_account.UseVisualStyleBackColor = true;
+            this.verify_account.Click += new System.EventHandler(this.verify_account_Click);
             // 
             // label27
             // 
@@ -917,7 +927,7 @@ namespace Raw_File_Uploader
             this.settings.BackColor = System.Drawing.SystemColors.Control;
             this.settings.Controls.Add(this.lastchangtimefield);
             this.settings.Controls.Add(this.label34);
-            this.settings.Controls.Add(this.textBox15);
+            this.settings.Controls.Add(this.max_size);
             this.settings.Controls.Add(this.nocopy);
             this.settings.Controls.Add(this.label29);
             this.settings.Controls.Add(this.label30);
@@ -939,7 +949,7 @@ namespace Raw_File_Uploader
             // lastchangtimefield
             // 
             this.lastchangtimefield.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lastchangtimefield.Location = new System.Drawing.Point(314, 70);
+            this.lastchangtimefield.Location = new System.Drawing.Point(314, 59);
             this.lastchangtimefield.Name = "lastchangtimefield";
             this.lastchangtimefield.Size = new System.Drawing.Size(152, 23);
             this.lastchangtimefield.TabIndex = 26;
@@ -948,19 +958,19 @@ namespace Raw_File_Uploader
             // 
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(8, 169);
+            this.label34.Location = new System.Drawing.Point(4, 194);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(109, 17);
+            this.label34.Size = new System.Drawing.Size(139, 17);
             this.label34.TabIndex = 24;
-            this.label34.Text = "Max upload size";
+            this.label34.Text = "Max upload size(MB)";
             // 
-            // textBox15
+            // max_size
             // 
-            this.textBox15.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox15.Location = new System.Drawing.Point(171, 166);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(150, 23);
-            this.textBox15.TabIndex = 25;
+            this.max_size.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.max_size.Location = new System.Drawing.Point(185, 194);
+            this.max_size.Name = "max_size";
+            this.max_size.Size = new System.Drawing.Size(150, 23);
+            this.max_size.TabIndex = 25;
             // 
             // label29
             // 
@@ -986,7 +996,7 @@ namespace Raw_File_Uploader
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(8, 129);
+            this.label33.Location = new System.Drawing.Point(611, 83);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(157, 17);
             this.label33.TabIndex = 19;
@@ -1006,7 +1016,7 @@ namespace Raw_File_Uploader
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(541, 95);
+            this.label1.Location = new System.Drawing.Point(8, 145);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 17);
             this.label1.TabIndex = 8;
@@ -1015,9 +1025,9 @@ namespace Raw_File_Uploader
             // minisize
             // 
             this.minisize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.minisize.Location = new System.Drawing.Point(679, 92);
+            this.minisize.Location = new System.Drawing.Point(182, 145);
             this.minisize.Name = "minisize";
-            this.minisize.Size = new System.Drawing.Size(118, 23);
+            this.minisize.Size = new System.Drawing.Size(153, 23);
             this.minisize.TabIndex = 11;
             // 
             // menuStrip1
@@ -1046,14 +1056,14 @@ namespace Raw_File_Uploader
             // 
             this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
             this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loadSettingToolStripMenuItem.Text = "Load Settings";
+            this.loadSettingToolStripMenuItem.Text = "Load Settings From";
             this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
             this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveSettingsToolStripMenuItem.Text = "Save Settings";
+            this.saveSettingsToolStripMenuItem.Text = "Save Settings As";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
@@ -1082,6 +1092,29 @@ namespace Raw_File_Uploader
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
             this.helpToolStripMenuItem1.Size = new System.Drawing.Size(99, 22);
             this.helpToolStripMenuItem1.Text = "Help";
+            // 
+            // storage_option
+            // 
+            this.storage_option.FormattingEnabled = true;
+            this.storage_option.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.storage_option.Items.AddRange(new object[] {
+            "Default",
+            "others"});
+            this.storage_option.Location = new System.Drawing.Point(127, 187);
+            this.storage_option.Name = "storage_option";
+            this.storage_option.Size = new System.Drawing.Size(121, 21);
+            this.storage_option.TabIndex = 29;
+            this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(17, 188);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(104, 17);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "Storage Option";
             // 
             // Form1
             // 
@@ -1147,7 +1180,6 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox sample_type;
         private System.Windows.Forms.TextBox txtprojectname;
         private System.Windows.Forms.TextBox filetype;
         private System.Windows.Forms.TextBox txtsamplename;
@@ -1157,7 +1189,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.TextBox filepath;
         private System.Windows.Forms.TextBox foldertxt;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button verify_account;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox txtpassword;
@@ -1177,7 +1209,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
         private System.Windows.Forms.TextBox lastchangtimefield;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.TextBox max_size;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox bypasskword;
         private System.Windows.Forms.Label label1;
@@ -1209,9 +1241,12 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox columntxt;
+        private System.Windows.Forms.TextBox column_sn;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox spetxt;
+        private System.Windows.Forms.TextBox spe_sn;
+        private System.Windows.Forms.ComboBox sample_type;
+        private System.Windows.Forms.ComboBox storage_option;
+        private System.Windows.Forms.Label label10;
     }
 }
 
