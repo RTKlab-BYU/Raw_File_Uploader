@@ -40,9 +40,15 @@ namespace Raw_File_Uploader
             minisize.Text = "100";
             alert_threshold.Text = "30";
             frequency_threshold.Text = "1";
+            bypasskword.Text = "ignore";
+            max_size.Text = "2200";
             qctool.SelectedIndex = 1;
             // 0 is none, 1 is msfragger, 2 is Maxquant, 3 is Protein Discovery, 4 is matchbetween run with maxquant
             //recipient_email.Text = "xiexf128@gmail.com";
+            storage_option.SelectedIndex = 0;
+            // 0 is human, 1 is mouse
+            sample_type.SelectedIndex = 0;
+            // 0 is human, 1 is mouse
 
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
@@ -64,37 +70,49 @@ namespace Raw_File_Uploader
                 context.Post(val => lastchangtimefield.Text = lastchangetime.ToString(), s);
                 if (monitor_on && !IsLocatedByHomePage(file))
                 {
-                    try { 
+                    FileInfo file_info = new FileInfo(e.FullPath);
 
-                    if (new FileInfo(e.FullPath).Length > Int32.Parse(minisize.Text) * 1000000)
+
+                        try
                     {
-                        if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                        if (!file_info.Name.Contains(bypasskword.Text))
                         {
-                            context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
 
-                            context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB, bigger than setting {Int32.Parse(minisize.Text)}, will be uploaded"), s);
-                            context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
-                            context.Post(val => filepath.Text = e.FullPath, s);
-                            context.Post(val => uploadfile(filepath.Text), s);
-                            lastupload = e.FullPath;
-                            lastuploadtime = DateTime.Now;
+                            if (new FileInfo(e.FullPath).Length > Int32.Parse(minisize.Text) * 1000000 && new FileInfo(e.FullPath).Length < long.Parse(max_size.Text) * 1000000)   
+                            {
+                                if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                                {
+                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
+
+                                    context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
+                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
+                                    context.Post(val => filepath.Text = e.FullPath, s);
+                                    context.Post(val => uploadfile(filepath.Text), s);
+                                    lastupload = e.FullPath;
+                                    lastuploadtime = DateTime.Now;
+                                }
+
+                            }
+                            else
+                            {
+                                context.Post(val => output.AppendText(Environment.NewLine + $"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded"), s);
+
+
+                            }
+                        }
+                        else
+                        {
+                            context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
                         }
 
                     }
-                    else
-                    {
-                        context.Post(val => output.AppendText(Environment.NewLine + $"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded"), s);
+                        catch (Exception e1)
+                        {
+                            context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
 
+                        }
+                   
 
-                    }
-
-
-                }
-                    catch (Exception e1)
-                    {
-                        context.Post(val => output.AppendText(Environment.NewLine + "error detected" +e1), s);
-
-                    }
                 }
 
             };
@@ -200,6 +218,10 @@ namespace Raw_File_Uploader
 
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("run_desc", txtdescription.Text);
+            request.AddParameter("column_sn", column_sn.Text);
+            request.AddParameter("spe_sn", spe_sn.Text);
+            request.AddParameter("sample_obj", sample_type.SelectedIndex);
+            request.AddParameter("storage_option", storage_option.SelectedIndex);
             request.AddParameter("qc_tool", qctool.SelectedIndex);
             request.AddParameter("temp_data", TempData.Checked);
             request.AddFile("rawfile", newfilelocation);
@@ -354,6 +376,14 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
+
+            if (!File.Exists(filepath.Text))
+            {
+                MessageBox.Show("invalid file");
+
+                return;
+            }
+
             uploadfile(filepath.Text);
 
         }
@@ -401,7 +431,13 @@ namespace Raw_File_Uploader
 
         }
         private void folder_uploader_Click(object sender, EventArgs e)
-        {
+                                {
+            if (!isDirectoryValid(foldertxt.Text))
+            {
+                MessageBox.Show("invalid folder");
+
+                return;
+            }
             string[] files = Directory.GetFiles(foldertxt.Text, "*.raw*");
             string[] subDirs = Directory.GetDirectories(foldertxt.Text);
 
@@ -537,6 +573,39 @@ namespace Raw_File_Uploader
 
                 }
                 
+
+            }
+        }
+
+        private void verify_account_Click(object sender, EventArgs e)
+        {
+            //The method used here is a workaround, not really validate password, only check if not timeout or wrong username/password, assume it's good.
+            var request = new RestRequest();
+            var client = new RestClient(txtserver.Text+ "auth/");
+
+            client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
+            request.Method = Method.POST;
+            client.Timeout = 2 * 1000;// 1000 ms = 1s
+
+            var response = client.Execute(request);
+
+            //MessageBox.Show(response.Content);
+            if (response.Content is "")
+            {
+                MessageBox.Show("Can't connect to server");
+            }
+            else if (response.Content is "{\"detail\":\"Invalid username/password.\"}") { 
+
+            MessageBox.Show("Wrong user or password");
+                }
+            else if (response.Content.Contains("AssertionError at /files/api/auth/"))
+            {
+                
+                MessageBox.Show("Success");
+            }
+            else
+            {
+                MessageBox.Show("Something else is wrong");
 
             }
         }
