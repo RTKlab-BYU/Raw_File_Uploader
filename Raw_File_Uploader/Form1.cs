@@ -241,16 +241,6 @@ namespace Raw_File_Uploader
 
 
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void exit_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void folderbutton_Click_1(object sender, EventArgs e)
 
@@ -317,7 +307,7 @@ namespace Raw_File_Uploader
 
             monitor_on = triggle;
             monitor.BackColor = btcolor;
-            Thread t = new Thread(myFun);
+            Thread t = new Thread(AlertCheck);
             t.Name = "finish_check_thread";
             t.IsBackground = true;
             t.Start();
@@ -378,6 +368,7 @@ namespace Raw_File_Uploader
         {
 
             if (!File.Exists(filepath.Text))
+                if (!File.Exists(filepath.Text))
             {
                 MessageBox.Show("invalid file");
 
@@ -389,7 +380,7 @@ namespace Raw_File_Uploader
         }
 
 
-        private void myFun()
+        private void AlertCheck()
         {
             while (monitor_on && !String.IsNullOrEmpty(recipient_email.Text)) { 
             TimeSpan difference = DateTime.Now - lastchangetime ;
@@ -409,19 +400,37 @@ namespace Raw_File_Uploader
         {
             try
             {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                if (Properties.Settings.Default.custom_emailserver)
+                {
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient(Properties.Settings.Default.SMTP_server);
+                    mail.From = new MailAddress(Properties.Settings.Default.sender);
+                    mail.To.Add(recipient_email.Text);
+                    mail.Subject = Properties.Settings.Default.notification_sub;
+                    mail.Body = Properties.Settings.Default.notification_body;
+                    SmtpServer.Port = Int32.Parse(Properties.Settings.Default.server_port);
+                    SmtpServer.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.sender, Properties.Settings.Default.password);
+                    SmtpServer.EnableSsl = Properties.Settings.Default.enable_ssl;
+                    SmtpServer.Send(mail);
 
-                mail.From = new MailAddress("proteomicsdatamanager@gmail.com");
-                mail.To.Add(recipient_email.Text);
-                mail.Subject = "Acquisition Finished or Stopped";
-                mail.Body = "This is a notification from Raw file uploader to notify you the Acquisition has finished or stopped ";
+                }
+                else {
 
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("proteomicsdatamanager@gmail.com", "WAm38HzgXu6WE^");
-                SmtpServer.EnableSsl = true;
 
-                SmtpServer.Send(mail);
+
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                    mail.From = new MailAddress("proteindatanotifcation@gmail.com");
+                    mail.To.Add(recipient_email.Text);
+                    mail.Subject = "Acquisition Finished or Stopped";
+                    mail.Body = "This is a notification from Raw file uploader to notify you the Acquisition has finished or stopped ";
+
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("proteindatanotifcation@gmail.com", "YTi78Yi@uaCf^M6zGCyg#9VZCp2txomXKBsev");
+                    SmtpServer.EnableSsl = true;
+                    SmtpServer.Send(mail);
+                }
             }
             catch (Exception ex)
             {
@@ -462,15 +471,6 @@ namespace Raw_File_Uploader
 
         }
 
-        private void toolTip1_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
 
  
 
@@ -608,6 +608,12 @@ namespace Raw_File_Uploader
                 MessageBox.Show("Something else is wrong");
 
             }
+        }
+
+        private void emailServerSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            emailsetting settingsForm = new emailsetting();
+            settingsForm.Show();
         }
     }
 

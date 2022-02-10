@@ -55,6 +55,7 @@ namespace Raw_File_Uploader
             this.recipient_email = new System.Windows.Forms.TextBox();
             this.bypasskword = new System.Windows.Forms.TextBox();
             this.sample_type = new System.Windows.Forms.ComboBox();
+            this.storage_option = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label25 = new System.Windows.Forms.Label();
@@ -103,6 +104,7 @@ namespace Raw_File_Uploader
             this.spe_sn = new System.Windows.Forms.TextBox();
             this.column_sn = new System.Windows.Forms.TextBox();
             this.Server = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
             this.verify_account = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -124,8 +126,7 @@ namespace Raw_File_Uploader
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.storage_option = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -147,9 +148,9 @@ namespace Raw_File_Uploader
             // monitor
             // 
             this.monitor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.monitor.Location = new System.Drawing.Point(47, 653);
+            this.monitor.Location = new System.Drawing.Point(43, 621);
             this.monitor.Name = "monitor";
-            this.monitor.Size = new System.Drawing.Size(191, 47);
+            this.monitor.Size = new System.Drawing.Size(191, 36);
             this.monitor.TabIndex = 19;
             this.monitor.Text = "Monitor";
             this.Explaination.SetToolTip(this.monitor, "start/stop the monitor");
@@ -159,7 +160,7 @@ namespace Raw_File_Uploader
             // output
             // 
             this.output.BackColor = System.Drawing.SystemColors.Info;
-            this.output.Location = new System.Drawing.Point(12, 416);
+            this.output.Location = new System.Drawing.Point(12, 390);
             this.output.Name = "output";
             this.output.ReadOnly = true;
             this.output.Size = new System.Drawing.Size(933, 228);
@@ -170,7 +171,7 @@ namespace Raw_File_Uploader
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(12, 417);
+            this.label11.Location = new System.Drawing.Point(9, 370);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(51, 17);
             this.label11.TabIndex = 8;
@@ -179,9 +180,9 @@ namespace Raw_File_Uploader
             // single_upload
             // 
             this.single_upload.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.single_upload.Location = new System.Drawing.Point(389, 654);
+            this.single_upload.Location = new System.Drawing.Point(398, 619);
             this.single_upload.Name = "single_upload";
-            this.single_upload.Size = new System.Drawing.Size(214, 44);
+            this.single_upload.Size = new System.Drawing.Size(214, 38);
             this.single_upload.TabIndex = 20;
             this.single_upload.Text = "Manual upload single file";
             this.single_upload.UseVisualStyleBackColor = true;
@@ -190,9 +191,9 @@ namespace Raw_File_Uploader
             // folder_uploader
             // 
             this.folder_uploader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folder_uploader.Location = new System.Drawing.Point(753, 654);
+            this.folder_uploader.Location = new System.Drawing.Point(750, 619);
             this.folder_uploader.Name = "folder_uploader";
-            this.folder_uploader.Size = new System.Drawing.Size(167, 44);
+            this.folder_uploader.Size = new System.Drawing.Size(167, 37);
             this.folder_uploader.TabIndex = 21;
             this.folder_uploader.Text = "Upload entire folder";
             this.folder_uploader.UseVisualStyleBackColor = true;
@@ -201,7 +202,7 @@ namespace Raw_File_Uploader
             // version_number
             // 
             this.version_number.AutoSize = true;
-            this.version_number.Location = new System.Drawing.Point(773, 421);
+            this.version_number.Location = new System.Drawing.Point(770, 374);
             this.version_number.Name = "version_number";
             this.version_number.Size = new System.Drawing.Size(0, 13);
             this.version_number.TabIndex = 17;
@@ -209,7 +210,7 @@ namespace Raw_File_Uploader
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(676, 421);
+            this.label12.Location = new System.Drawing.Point(673, 374);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(82, 13);
             this.label12.TabIndex = 18;
@@ -221,7 +222,6 @@ namespace Raw_File_Uploader
             this.Explaination.InitialDelay = 500;
             this.Explaination.ReshowDelay = 100;
             this.Explaination.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.Explaination.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
             // filepath
             // 
@@ -377,6 +377,19 @@ namespace Raw_File_Uploader
             this.sample_type.TabIndex = 30;
             this.Explaination.SetToolTip(this.sample_type, "Tools used to do automatic QC analysis");
             // 
+            // storage_option
+            // 
+            this.storage_option.FormattingEnabled = true;
+            this.storage_option.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.storage_option.Items.AddRange(new object[] {
+            "Default",
+            "others"});
+            this.storage_option.Location = new System.Drawing.Point(127, 187);
+            this.storage_option.Name = "storage_option";
+            this.storage_option.Size = new System.Drawing.Size(121, 21);
+            this.storage_option.TabIndex = 29;
+            this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
+            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.Run_info);
@@ -387,7 +400,7 @@ namespace Raw_File_Uploader
             this.tabControl.Location = new System.Drawing.Point(1, 27);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1012, 387);
+            this.tabControl.Size = new System.Drawing.Size(1012, 345);
             this.tabControl.TabIndex = 26;
             // 
             // Run_info
@@ -418,7 +431,7 @@ namespace Raw_File_Uploader
             this.Run_info.Location = new System.Drawing.Point(4, 34);
             this.Run_info.Name = "Run_info";
             this.Run_info.Padding = new System.Windows.Forms.Padding(3);
-            this.Run_info.Size = new System.Drawing.Size(1004, 349);
+            this.Run_info.Size = new System.Drawing.Size(1004, 307);
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
             // 
@@ -446,7 +459,7 @@ namespace Raw_File_Uploader
             // 
             this.txtdescription.Location = new System.Drawing.Point(110, 161);
             this.txtdescription.Name = "txtdescription";
-            this.txtdescription.Size = new System.Drawing.Size(478, 182);
+            this.txtdescription.Size = new System.Drawing.Size(478, 137);
             this.txtdescription.TabIndex = 23;
             this.txtdescription.Text = "";
             // 
@@ -602,7 +615,7 @@ namespace Raw_File_Uploader
             this.Other_info.Location = new System.Drawing.Point(4, 34);
             this.Other_info.Name = "Other_info";
             this.Other_info.Padding = new System.Windows.Forms.Padding(3);
-            this.Other_info.Size = new System.Drawing.Size(1004, 349);
+            this.Other_info.Size = new System.Drawing.Size(1004, 307);
             this.Other_info.TabIndex = 3;
             this.Other_info.Text = "Other_info";
             // 
@@ -887,9 +900,19 @@ namespace Raw_File_Uploader
             this.Server.Location = new System.Drawing.Point(4, 34);
             this.Server.Name = "Server";
             this.Server.Padding = new System.Windows.Forms.Padding(3);
-            this.Server.Size = new System.Drawing.Size(1004, 349);
+            this.Server.Size = new System.Drawing.Size(1004, 307);
             this.Server.TabIndex = 1;
             this.Server.Text = "Server";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(17, 188);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(104, 17);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "Storage Option";
             // 
             // verify_account
             // 
@@ -942,7 +965,7 @@ namespace Raw_File_Uploader
             this.settings.Location = new System.Drawing.Point(4, 34);
             this.settings.Name = "settings";
             this.settings.Padding = new System.Windows.Forms.Padding(3);
-            this.settings.Size = new System.Drawing.Size(1004, 349);
+            this.settings.Size = new System.Drawing.Size(1004, 307);
             this.settings.TabIndex = 2;
             this.settings.Text = "Settings";
             // 
@@ -1055,23 +1078,21 @@ namespace Raw_File_Uploader
             // loadSettingToolStripMenuItem
             // 
             this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
-
-            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.loadSettingToolStripMenuItem.Text = "Load Settings From";
             this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
-
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveSettingsToolStripMenuItem.Text = "Save Settings As";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -1084,7 +1105,8 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem1});
+            this.helpToolStripMenuItem1,
+            this.emailServerSettingToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -1092,37 +1114,21 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(99, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(176, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             // 
-            // storage_option
+            // emailServerSettingToolStripMenuItem
             // 
-            this.storage_option.FormattingEnabled = true;
-            this.storage_option.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.storage_option.Items.AddRange(new object[] {
-            "Default",
-            "others"});
-            this.storage_option.Location = new System.Drawing.Point(127, 187);
-            this.storage_option.Name = "storage_option";
-            this.storage_option.Size = new System.Drawing.Size(121, 21);
-            this.storage_option.TabIndex = 29;
-            this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(17, 188);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(104, 17);
-            this.label10.TabIndex = 28;
-            this.label10.Text = "Storage Option";
+            this.emailServerSettingToolStripMenuItem.Name = "emailServerSettingToolStripMenuItem";
+            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.emailServerSettingToolStripMenuItem.Text = "Email server setting";
+            this.emailServerSettingToolStripMenuItem.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 706);
+            this.ClientSize = new System.Drawing.Size(1013, 661);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.version_number);
@@ -1136,7 +1142,6 @@ namespace Raw_File_Uploader
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Raw File Uploader";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl.ResumeLayout(false);
             this.Run_info.ResumeLayout(false);
             this.Run_info.PerformLayout();
@@ -1249,6 +1254,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ComboBox sample_type;
         private System.Windows.Forms.ComboBox storage_option;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ToolStripMenuItem emailServerSettingToolStripMenuItem;
     }
 }
 
