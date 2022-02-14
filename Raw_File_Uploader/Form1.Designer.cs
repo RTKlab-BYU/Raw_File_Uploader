@@ -56,9 +56,11 @@ namespace Raw_File_Uploader
             this.bypasskword = new System.Windows.Forms.TextBox();
             this.sample_type = new System.Windows.Forms.ComboBox();
             this.storage_option = new System.Windows.Forms.ComboBox();
+            this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label25 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.txtdescription = new System.Windows.Forms.RichTextBox();
             this.label24 = new System.Windows.Forms.Label();
@@ -278,7 +280,7 @@ namespace Raw_File_Uploader
             // 
             this.TempData.AutoSize = true;
             this.TempData.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TempData.Location = new System.Drawing.Point(619, 204);
+            this.TempData.Location = new System.Drawing.Point(619, 239);
             this.TempData.Name = "TempData";
             this.TempData.Size = new System.Drawing.Size(134, 21);
             this.TempData.TabIndex = 28;
@@ -390,6 +392,14 @@ namespace Raw_File_Uploader
             this.storage_option.TabIndex = 29;
             this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
             // 
+            // qc_enablekeyword
+            // 
+            this.qc_enablekeyword.Location = new System.Drawing.Point(755, 210);
+            this.qc_enablekeyword.Name = "qc_enablekeyword";
+            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
+            this.qc_enablekeyword.TabIndex = 31;
+            this.Explaination.SetToolTip(this.qc_enablekeyword, "jfa;fjslfjdkls;ajfslfjdklsajfslfdjklsa;fjsljfkdls;ajflsjfdklsa;jfslfjdksla");
+            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.Run_info);
@@ -406,11 +416,13 @@ namespace Raw_File_Uploader
             // Run_info
             // 
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
+            this.Run_info.Controls.Add(this.qc_enablekeyword);
             this.Run_info.Controls.Add(this.sample_type);
             this.Run_info.Controls.Add(this.mbrlist);
             this.Run_info.Controls.Add(this.qctool);
             this.Run_info.Controls.Add(this.TempData);
             this.Run_info.Controls.Add(this.label25);
+            this.Run_info.Controls.Add(this.label13);
             this.Run_info.Controls.Add(this.label26);
             this.Run_info.Controls.Add(this.txtdescription);
             this.Run_info.Controls.Add(this.label24);
@@ -444,6 +456,16 @@ namespace Raw_File_Uploader
             this.label25.Size = new System.Drawing.Size(59, 17);
             this.label25.TabIndex = 25;
             this.label25.Text = "MBR list";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(617, 210);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(129, 17);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "Select QC Keyword";
             // 
             // label26
             // 
@@ -1255,6 +1277,8 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ComboBox storage_option;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolStripMenuItem emailServerSettingToolStripMenuItem;
+        private System.Windows.Forms.TextBox qc_enablekeyword;
+        private System.Windows.Forms.Label label13;
     }
 }
 

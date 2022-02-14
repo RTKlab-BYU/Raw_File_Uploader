@@ -206,23 +206,42 @@ namespace Raw_File_Uploader
             request.AddHeader("Accept", "application/json");
             request.Parameters.Clear();
             request.AddHeader("Content-Type", "multipart/form-data");
-            if(String.IsNullOrEmpty(txtsamplename.Text))
-            {
-                request.AddParameter("run_name", Path.GetFileNameWithoutExtension(newfilelocation));
+
+            string uploadfilename;
+            if (String.IsNullOrEmpty(txtsamplename.Text))
+                {
+                uploadfilename = Path.GetFileNameWithoutExtension(newfilelocation);
             }
             else
             {
-                request.AddParameter("run_name", txtsamplename.Text);
+                uploadfilename = txtsamplename.Text;
 
             }
 
+
+            if (!String.IsNullOrEmpty(qc_enablekeyword.Text) && !uploadfilename.Contains(qc_enablekeyword.Text))
+            {
+
+                request.AddParameter("qc_tool", 0);
+
+            }
+            else
+            {
+
+                request.AddParameter("qc_tool", qctool.SelectedIndex);
+
+
+            }
+
+
+            request.AddParameter("run_name", uploadfilename);
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("run_desc", txtdescription.Text);
             request.AddParameter("column_sn", column_sn.Text);
             request.AddParameter("spe_sn", spe_sn.Text);
             request.AddParameter("sample_obj", sample_type.SelectedIndex);
             request.AddParameter("storage_option", storage_option.SelectedIndex);
-            request.AddParameter("qc_tool", qctool.SelectedIndex);
+
             request.AddParameter("temp_data", TempData.Checked);
             request.AddFile("rawfile", newfilelocation);
             request.ReadWriteTimeout = 2147483647;
