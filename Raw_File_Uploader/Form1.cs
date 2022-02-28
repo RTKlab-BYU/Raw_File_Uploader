@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
 using System.Xml.Linq;
+using System.Net;
 
 namespace Raw_File_Uploader
 {
@@ -30,31 +31,24 @@ namespace Raw_File_Uploader
         public Form1()
         {
             InitializeComponent();
-            txtserver.Text = "http://192.168.102.188/files/api/"; //deployment server Lan
-
-            //txtserver.Text = "http://10.37.240.41/files/api/"; deployment server wifi
-            // txtserver.Text = "http://10.37.35.98:8000/files/api/"; testing server
-
-
+            txtserver.Text = "http://192.168.102.188/files/api/"; 
             filetype.Text = "*.raw";
             minisize.Text = "100";
             alert_threshold.Text = "30";
-            frequency_threshold.Text = "1";
+            frequency_threshold.Text = "8";
             bypasskword.Text = "ignore";
             max_size.Text = "2200";
             qctool.SelectedIndex = 1;
-            // 0 is none, 1 is msfragger, 2 is Maxquant, 3 is Protein Discovery, 4 is matchbetween run with maxquant
-            //recipient_email.Text = "xiexf128@gmail.com";
+            // 0 is none, 1 is msfragger, 2 is Maxquant, 3 is Protein Discovery OTOT, 4 is matchbetween run with maxquant,5 is Protein Discovery OTIT
             storage_option.SelectedIndex = 0;
-            // 0 is human, 1 is mouse
             sample_type.SelectedIndex = 0;
-            // 0 is human, 1 is mouse
+            // 0 is human, 1 is BSA
 
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             lastchangtimefield.Text = lastchangetime.ToString();
 
-            var context = SynchronizationContext.Current;
+            var context = SynchronizationContext.Current; // for cross thread update to UI
 
 
 
@@ -132,7 +126,7 @@ namespace Raw_File_Uploader
             return "Not network deployed";
         }
 
-        private void uploadfile(string filelocation)
+        private Boolean uploadfile(string filelocation)
         {
             output.AppendText(Environment.NewLine + DateTime.Now + $" Start Uploading {filelocation}");
             string newfilelocation;
@@ -181,7 +175,7 @@ namespace Raw_File_Uploader
                     {
                         output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploading failed second time");
 
-                        return;
+                        return false;
                     }
                     // Todo: Additional recovery here,
                     // like telling the calling code to re-open the file selection dialog
@@ -197,7 +191,7 @@ namespace Raw_File_Uploader
             if (!File.Exists(newfilelocation))
             {
                 MessageBox.Show("Please check file location");
-                return;
+                return false;
             }
 
             var request = new RestRequest();
@@ -247,12 +241,30 @@ namespace Raw_File_Uploader
             request.ReadWriteTimeout = 2147483647;
             request.Timeout = 2147483647;
             var response = client.Execute(request);
-            output.AppendText(Environment.NewLine + response.Content);
-            output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploaded");
+
+
+
+
             if (!nocopy.Checked)
             {
                 File.Delete(newfilelocation);
             }
+            if (response.StatusCode == HttpStatusCode.Created)
+                    {
+                output.AppendText(Environment.NewLine + response.Content);
+                output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} sucessfully uploaded");
+                return true;
+            }
+            else
+            {
+                output.AppendText(Environment.NewLine + response.Content);
+                output.AppendText( $" {newfilelocation} upload failed please check");
+
+                return false;
+            }
+
+
+
         }
 
 
@@ -278,12 +290,12 @@ namespace Raw_File_Uploader
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
-                Title = "Browse Raw Files",
+                Title = "Browse Mass Files",
 
                 CheckFileExists = true,
                 CheckPathExists = true,
-                DefaultExt = "raw",
-                Filter = "raw files (*.raw)|*.raw|All files (*.*)|*.*",
+
+                Filter = "Mass files (" + filetype.Text+ ")| "+filetype.Text+"|All files (*.*)|*.*",
                 RestoreDirectory = true,
 
             };
@@ -302,10 +314,14 @@ namespace Raw_File_Uploader
 
                 return;
             }
+
+
             if (monitor_on is true)
             { watchtriggle(false, Color.Red); }
             else
-            { watchtriggle(true, Color.Green); }
+            {
+                if (check_connection(true))
+                watchtriggle(true, Color.Green); }
 
         }
 
@@ -341,8 +357,10 @@ namespace Raw_File_Uploader
                 output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
             }
             else
-            {
-                output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
+            {                
+                t.Abort();
+
+                                output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
             }
 
         }
@@ -393,14 +411,18 @@ namespace Raw_File_Uploader
 
                 return;
             }
-
+            if (check_connection(true))
             uploadfile(filepath.Text);
 
         }
 
 
         private void AlertCheck()
-        {
+        {        
+              DateTime lastchangetime = DateTime.Now;
+              DateTime lastemailtime = DateTime.Today.AddDays(-1);
+
+
             while (monitor_on && !String.IsNullOrEmpty(recipient_email.Text)) { 
             TimeSpan difference = DateTime.Now - lastchangetime ;
             TimeSpan email_difference = DateTime.Now - lastemailtime;
@@ -470,7 +492,8 @@ namespace Raw_File_Uploader
             string[] subDirs = Directory.GetDirectories(foldertxt.Text);
 
             DialogResult dialogResult = MessageBox.Show($"There are about {files.Count()} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (dialogResult == DialogResult.Yes && (check_connection(true))
+)
             {
                 foreach (string file in files)
                 {
@@ -526,7 +549,7 @@ namespace Raw_File_Uploader
 
                         if (control is TextBox)
                         {
-                            if (control.Name != "txtpassword")
+                            if (control.Name != "txtpassword" && control.Name != "lastchangtimefield")
                             SettingsProvider.SetValue(page.Name, control.Name, control.Text);
 
                         }
@@ -534,6 +557,11 @@ namespace Raw_File_Uploader
                         {
                             SettingsProvider.SetValue(page.Name, control.Name, ((CheckBox)control).Checked.ToString());
                             
+                        }
+                        else if (control is RichTextBox)
+                        {
+                            SettingsProvider.SetValue(page.Name, control.Name, control.Text);
+
                         }
 
                         else if (control is ComboBox) {
@@ -576,8 +604,17 @@ namespace Raw_File_Uploader
 
                         if (control is TextBox)
                         {
-                            control.Text = SettingsProvider.GetValue(page.Name, control.Name,null);
-                           ((TextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                            if (control.Name != "txtpassword" && control.Name != "lastchangtimefield")
+                            {
+
+                                control.Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                                ((TextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                            }
+                        }
+
+                        else if (control is RichTextBox)
+                        {
+                            ((RichTextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
 
                         }
                         else if (control is CheckBox)
@@ -598,9 +635,15 @@ namespace Raw_File_Uploader
 
         private void verify_account_Click(object sender, EventArgs e)
         {
+            check_connection(false);
+        }
+
+        private Boolean check_connection(Boolean backgroundtask)
+        {
+
             //The method used here is a workaround, not really validate password, only check if not timeout or wrong username/password, assume it's good.
             var request = new RestRequest();
-            var client = new RestClient(txtserver.Text+ "auth/");
+            var client = new RestClient(txtserver.Text + "auth/");
 
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
             request.Method = Method.POST;
@@ -612,19 +655,28 @@ namespace Raw_File_Uploader
             if (response.Content is "")
             {
                 MessageBox.Show("Can't connect to server");
-            }
-            else if (response.Content is "{\"detail\":\"Invalid username/password.\"}") { 
+                return false;
 
-            MessageBox.Show("Wrong user or password");
-                }
+            }
+            else if (response.Content is "{\"detail\":\"Invalid username/password.\"}")
+            {
+
+                MessageBox.Show("Wrong user or password");
+                return false;
+            }
             else if (response.Content.Contains("AssertionError at /files/api/auth/"))
             {
-                
-                MessageBox.Show("Success");
+
+                if (backgroundtask is false)
+                    MessageBox.Show("Success");
+                return true;
+
             }
             else
             {
                 MessageBox.Show("Something else is wrong");
+                return false;
+
 
             }
         }

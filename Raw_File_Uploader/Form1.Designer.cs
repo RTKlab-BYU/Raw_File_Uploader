@@ -57,6 +57,7 @@ namespace Raw_File_Uploader
             this.sample_type = new System.Windows.Forms.ComboBox();
             this.storage_option = new System.Windows.Forms.ComboBox();
             this.qc_enablekeyword = new System.Windows.Forms.TextBox();
+            this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label25 = new System.Windows.Forms.Label();
@@ -111,7 +112,6 @@ namespace Raw_File_Uploader
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.settings = new System.Windows.Forms.TabPage();
-            this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.max_size = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
@@ -268,8 +268,9 @@ namespace Raw_File_Uploader
             "None",
             "Msfragger",
             "Maxquant",
-            "Protein Discoverer",
-            "MBR_maxquant"});
+            "Protein Discoverer(OTOT)",
+            "MBR_maxquant",
+            "Protein Discoverer(OTIT)"});
             this.qctool.Location = new System.Drawing.Point(682, 177);
             this.qctool.Name = "qctool";
             this.qctool.Size = new System.Drawing.Size(121, 21);
@@ -372,7 +373,7 @@ namespace Raw_File_Uploader
             this.sample_type.ImeMode = System.Windows.Forms.ImeMode.On;
             this.sample_type.Items.AddRange(new object[] {
             "Human",
-            "Mouse"});
+            "BSA"});
             this.sample_type.Location = new System.Drawing.Point(732, 141);
             this.sample_type.Name = "sample_type";
             this.sample_type.Size = new System.Drawing.Size(121, 21);
@@ -398,7 +399,16 @@ namespace Raw_File_Uploader
             this.qc_enablekeyword.Name = "qc_enablekeyword";
             this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
             this.qc_enablekeyword.TabIndex = 31;
-            this.Explaination.SetToolTip(this.qc_enablekeyword, "jfa;fjslfjdkls;ajfslfjdklsajfslfdjklsa;fjsljfkdls;ajflsjfdklsa;jfslfjdksla");
+            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
+            // 
+            // lastchangtimefield
+            // 
+            this.lastchangtimefield.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastchangtimefield.Location = new System.Drawing.Point(314, 59);
+            this.lastchangtimefield.Name = "lastchangtimefield";
+            this.lastchangtimefield.Size = new System.Drawing.Size(152, 23);
+            this.lastchangtimefield.TabIndex = 26;
+            this.Explaination.SetToolTip(this.lastchangtimefield, "Last time a file change is recorded or started");
             // 
             // tabControl
             // 
@@ -990,14 +1000,6 @@ namespace Raw_File_Uploader
             this.settings.Size = new System.Drawing.Size(1004, 307);
             this.settings.TabIndex = 2;
             this.settings.Text = "Settings";
-            // 
-            // lastchangtimefield
-            // 
-            this.lastchangtimefield.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lastchangtimefield.Location = new System.Drawing.Point(314, 59);
-            this.lastchangtimefield.Name = "lastchangtimefield";
-            this.lastchangtimefield.Size = new System.Drawing.Size(152, 23);
-            this.lastchangtimefield.TabIndex = 26;
             // 
             // label34
             // 
