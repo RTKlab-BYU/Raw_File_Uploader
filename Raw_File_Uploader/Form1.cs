@@ -686,6 +686,11 @@ namespace Raw_File_Uploader
             emailsetting settingsForm = new emailsetting();
             settingsForm.Show();
         }
+
+        private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/xiaofengxie128/Raw_File_Uploader");
+        }
     }
 
 

@@ -1138,13 +1138,14 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(176, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem1.Text = "Help";
+            this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // emailServerSettingToolStripMenuItem
             // 
             this.emailServerSettingToolStripMenuItem.Name = "emailServerSettingToolStripMenuItem";
-            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.emailServerSettingToolStripMenuItem.Text = "Email server setting";
             this.emailServerSettingToolStripMenuItem.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
             // 
