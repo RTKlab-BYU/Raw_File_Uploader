@@ -691,6 +691,11 @@ namespace Raw_File_Uploader
         {
             System.Diagnostics.Process.Start("https://github.com/xiaofengxie128/Raw_File_Uploader");
         }
+
+        private void qctool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 

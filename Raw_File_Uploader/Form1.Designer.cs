@@ -43,7 +43,6 @@ namespace Raw_File_Uploader
             this.filepath = new System.Windows.Forms.TextBox();
             this.foldertxt = new System.Windows.Forms.TextBox();
             this.filetype = new System.Windows.Forms.TextBox();
-            this.mbrlist = new System.Windows.Forms.TextBox();
             this.qctool = new System.Windows.Forms.ComboBox();
             this.TempData = new System.Windows.Forms.CheckBox();
             this.txtpassword = new System.Windows.Forms.TextBox();
@@ -60,7 +59,6 @@ namespace Raw_File_Uploader
             this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
-            this.label25 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.txtdescription = new System.Windows.Forms.RichTextBox();
@@ -246,19 +244,11 @@ namespace Raw_File_Uploader
             // filetype
             // 
             this.filetype.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.filetype.Location = new System.Drawing.Point(711, 107);
+            this.filetype.Location = new System.Drawing.Point(688, 107);
             this.filetype.Name = "filetype";
             this.filetype.Size = new System.Drawing.Size(118, 23);
             this.filetype.TabIndex = 18;
             this.Explaination.SetToolTip(this.filetype, "File type to monitor");
-            // 
-            // mbrlist
-            // 
-            this.mbrlist.Location = new System.Drawing.Point(869, 177);
-            this.mbrlist.Name = "mbrlist";
-            this.mbrlist.Size = new System.Drawing.Size(100, 20);
-            this.mbrlist.TabIndex = 29;
-            this.Explaination.SetToolTip(this.mbrlist, "list of raw files to be used for MBR, e.g., 908, 909,911");
             // 
             // qctool
             // 
@@ -269,13 +259,14 @@ namespace Raw_File_Uploader
             "Msfragger",
             "Maxquant",
             "Protein Discoverer(OTOT)",
-            "MBR_maxquant",
+            "TBD",
             "Protein Discoverer(OTIT)"});
             this.qctool.Location = new System.Drawing.Point(682, 177);
             this.qctool.Name = "qctool";
             this.qctool.Size = new System.Drawing.Size(121, 21);
             this.qctool.TabIndex = 27;
             this.Explaination.SetToolTip(this.qctool, "Tools used to do automatic QC analysis");
+            this.qctool.SelectedIndexChanged += new System.EventHandler(this.qctool_SelectedIndexChanged);
             // 
             // TempData
             // 
@@ -335,7 +326,7 @@ namespace Raw_File_Uploader
             this.frequency_threshold.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.frequency_threshold.Location = new System.Drawing.Point(740, 30);
             this.frequency_threshold.Name = "frequency_threshold";
-            this.frequency_threshold.Size = new System.Drawing.Size(150, 23);
+            this.frequency_threshold.Size = new System.Drawing.Size(166, 23);
             this.frequency_threshold.TabIndex = 22;
             this.Explaination.SetToolTip(this.frequency_threshold, "How often/minimal interal for sending alert");
             // 
@@ -361,7 +352,7 @@ namespace Raw_File_Uploader
             // bypasskword
             // 
             this.bypasskword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bypasskword.Location = new System.Drawing.Point(790, 80);
+            this.bypasskword.Location = new System.Drawing.Point(756, 80);
             this.bypasskword.Name = "bypasskword";
             this.bypasskword.Size = new System.Drawing.Size(150, 23);
             this.bypasskword.TabIndex = 20;
@@ -374,7 +365,7 @@ namespace Raw_File_Uploader
             this.sample_type.Items.AddRange(new object[] {
             "Human",
             "BSA"});
-            this.sample_type.Location = new System.Drawing.Point(732, 141);
+            this.sample_type.Location = new System.Drawing.Point(713, 142);
             this.sample_type.Name = "sample_type";
             this.sample_type.Size = new System.Drawing.Size(121, 21);
             this.sample_type.TabIndex = 30;
@@ -395,7 +386,7 @@ namespace Raw_File_Uploader
             // 
             // qc_enablekeyword
             // 
-            this.qc_enablekeyword.Location = new System.Drawing.Point(755, 210);
+            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
             this.qc_enablekeyword.Name = "qc_enablekeyword";
             this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
             this.qc_enablekeyword.TabIndex = 31;
@@ -428,10 +419,8 @@ namespace Raw_File_Uploader
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
             this.Run_info.Controls.Add(this.qc_enablekeyword);
             this.Run_info.Controls.Add(this.sample_type);
-            this.Run_info.Controls.Add(this.mbrlist);
             this.Run_info.Controls.Add(this.qctool);
             this.Run_info.Controls.Add(this.TempData);
-            this.Run_info.Controls.Add(this.label25);
             this.Run_info.Controls.Add(this.label13);
             this.Run_info.Controls.Add(this.label26);
             this.Run_info.Controls.Add(this.txtdescription);
@@ -457,31 +446,21 @@ namespace Raw_File_Uploader
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
             // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(806, 177);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(59, 17);
-            this.label25.TabIndex = 25;
-            this.label25.Text = "MBR list";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(617, 210);
+            this.label13.Location = new System.Drawing.Point(616, 210);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(129, 17);
+            this.label13.Size = new System.Drawing.Size(140, 17);
             this.label13.TabIndex = 26;
-            this.label13.Text = "Select QC Keyword";
+            this.label13.Text = "Perfrom QC Keyword";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(616, 177);
+            this.label26.Location = new System.Drawing.Point(616, 178);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(60, 17);
             this.label26.TabIndex = 26;
@@ -538,7 +517,7 @@ namespace Raw_File_Uploader
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(635, 141);
+            this.label32.Location = new System.Drawing.Point(616, 142);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(91, 17);
             this.label32.TabIndex = 17;
@@ -548,7 +527,7 @@ namespace Raw_File_Uploader
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(635, 107);
+            this.label23.Location = new System.Drawing.Point(616, 107);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(66, 17);
             this.label23.TabIndex = 17;
@@ -1045,9 +1024,9 @@ namespace Raw_File_Uploader
             this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label33.Location = new System.Drawing.Point(611, 83);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(157, 17);
+            this.label33.Size = new System.Drawing.Size(139, 17);
             this.label33.TabIndex = 19;
-            this.label33.Text = "Bypass upload keyword";
+            this.label33.Text = "Skip-upload keyword";
             // 
             // label31
             // 
@@ -1138,14 +1117,14 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(176, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // emailServerSettingToolStripMenuItem
             // 
             this.emailServerSettingToolStripMenuItem.Name = "emailServerSettingToolStripMenuItem";
-            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.emailServerSettingToolStripMenuItem.Text = "Email server setting";
             this.emailServerSettingToolStripMenuItem.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
             // 
@@ -1200,10 +1179,8 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadSettingToolStripMenuItem;
-        private System.Windows.Forms.TextBox mbrlist;
         private System.Windows.Forms.ComboBox qctool;
         private System.Windows.Forms.CheckBox TempData;
-        private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.RichTextBox txtdescription;
         private System.Windows.Forms.Label label24;
