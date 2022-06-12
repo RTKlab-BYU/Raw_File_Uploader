@@ -25,7 +25,7 @@ namespace Raw_File_Uploader
     {
         public static DateTime lastchangetime = DateTime.Now;
         public static DateTime lastemailtime = DateTime.Today.AddDays(-1);
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         FileSystemWatcher watcher = new FileSystemWatcher();
         private bool monitor_on = false;
         public Form1()
@@ -43,11 +43,11 @@ namespace Raw_File_Uploader
             storage_option.SelectedIndex = 0;
             sample_type.SelectedIndex = 0;
             // 0 is human, 1 is BSA
-
+            log_selector.SelectedIndex = 0; // 0 is all, 1 is warnning
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             lastchangtimefield.Text = lastchangetime.ToString();
-
+            log.Debug("Uploader started");
             var context = SynchronizationContext.Current; // for cross thread update to UI
 
 
@@ -60,6 +60,7 @@ namespace Raw_File_Uploader
                 FileInfo file = new FileInfo(e.FullPath);
                 System.Threading.Thread.Sleep(10000);
                 lastchangetime = DateTime.Now;
+                MessageBox.Show("file changed");
                 
                 context.Post(val => lastchangtimefield.Text = lastchangetime.ToString(), s);
                 if (monitor_on && !IsLocatedByHomePage(file))
@@ -139,11 +140,16 @@ namespace Raw_File_Uploader
                 System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
                 if (!uploadfile(filelocation))
                 {
-                    output.Select(output.TextLength, 0);
-                    output.SelectionColor = Color.Red;
-                    output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
-                    output.SelectionColor = Color.Black;
 
+                    System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
+                    if (!uploadfile(filelocation))
+                    {
+                        output.Select(output.TextLength, 0);
+                        output.SelectionColor = Color.Red;
+                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed three times, need to be uploaded manually");
+                        output.SelectionColor = Color.Black;
+                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed three times, need to be uploaded manually");
+                    }
                 }
 
             }
@@ -279,13 +285,12 @@ namespace Raw_File_Uploader
             }
             if (response.StatusCode == HttpStatusCode.Created)
                     {
-
-                output.AppendText(Environment.NewLine + response.Content);
-
-                output.AppendText(Environment.NewLine + response.Content);
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Green;
-                output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} was sucessfully uploaded");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} was sucessfully uploaded");
+                log.Debug(response.Content);
+                log.Info($" {filelocation} was sucessfully uploaded");
+
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
@@ -297,10 +302,11 @@ namespace Raw_File_Uploader
                 output.AppendText(Environment.NewLine + response.Content);
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Orange;
-                output.AppendText($" {newfilelocation} upload failed, will try again in 3 min if failed first time");
+                output.AppendText($" {filelocation} upload failed, will try again in 3 min if failed first two times");
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
+                log.Warn($" {filelocation} upload failed, will try again in 3 min if failed first two times");
 
                 return false;
             }
@@ -736,6 +742,17 @@ namespace Raw_File_Uploader
 
         private void qctool_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", "RawfileUploader.log");
+        }
+
+        private void log_view_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", "RawfileUploader.log");
 
         }
     }

@@ -57,6 +57,7 @@ namespace Raw_File_Uploader
             this.storage_option = new System.Windows.Forms.ComboBox();
             this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.lastchangtimefield = new System.Windows.Forms.TextBox();
+            this.log_selector = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label13 = new System.Windows.Forms.Label();
@@ -127,6 +128,8 @@ namespace Raw_File_Uploader
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.log_view = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -173,9 +176,9 @@ namespace Raw_File_Uploader
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(9, 370);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(51, 17);
+            this.label11.Size = new System.Drawing.Size(86, 17);
             this.label11.TabIndex = 8;
-            this.label11.Text = "Output";
+            this.label11.Text = "Log Display:";
             // 
             // single_upload
             // 
@@ -400,6 +403,24 @@ namespace Raw_File_Uploader
             this.lastchangtimefield.Size = new System.Drawing.Size(152, 23);
             this.lastchangtimefield.TabIndex = 26;
             this.Explaination.SetToolTip(this.lastchangtimefield, "Last time a file change is recorded or started");
+            // 
+            // log_selector
+            // 
+            this.log_selector.AutoCompleteCustomSource.AddRange(new string[] {
+            "All",
+            "Info",
+            "Error",
+            "Critical"});
+            this.log_selector.FormattingEnabled = true;
+            this.log_selector.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.log_selector.Items.AddRange(new object[] {
+            "All",
+            "warnning and above"});
+            this.log_selector.Location = new System.Drawing.Point(100, 370);
+            this.log_selector.Name = "log_selector";
+            this.log_selector.Size = new System.Drawing.Size(121, 21);
+            this.log_selector.TabIndex = 31;
+            this.Explaination.SetToolTip(this.log_selector, "Display log level");
             // 
             // tabControl
             // 
@@ -1102,14 +1123,15 @@ namespace Raw_File_Uploader
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.helpToolStripMenuItem1,
-            this.emailServerSettingToolStripMenuItem});
+            this.emailServerSettingToolStripMenuItem,
+            this.openLogFileToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -1128,11 +1150,31 @@ namespace Raw_File_Uploader
             this.emailServerSettingToolStripMenuItem.Text = "Email server setting";
             this.emailServerSettingToolStripMenuItem.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
             // 
+            // openLogFileToolStripMenuItem
+            // 
+            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.openLogFileToolStripMenuItem.Text = "Open Log file";
+            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
+            // 
+            // log_view
+            // 
+            this.log_view.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.log_view.Location = new System.Drawing.Point(227, 369);
+            this.log_view.Name = "log_view";
+            this.log_view.Size = new System.Drawing.Size(117, 19);
+            this.log_view.TabIndex = 32;
+            this.log_view.Text = "Open full log";
+            this.log_view.UseVisualStyleBackColor = true;
+            this.log_view.Click += new System.EventHandler(this.log_view_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 661);
+            this.Controls.Add(this.log_view);
+            this.Controls.Add(this.log_selector);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.version_number);
@@ -1259,6 +1301,9 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ToolStripMenuItem emailServerSettingToolStripMenuItem;
         private System.Windows.Forms.TextBox qc_enablekeyword;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
+        private System.Windows.Forms.ComboBox log_selector;
+        private System.Windows.Forms.Button log_view;
     }
 }
 
