@@ -58,7 +58,7 @@ namespace Raw_File_Uploader
             watcher.Changed += (s, e) =>
             {
                 FileInfo file = new FileInfo(e.FullPath);
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(10000);
                 lastchangetime = DateTime.Now;
                 
                 context.Post(val => lastchangtimefield.Text = lastchangetime.ToString(), s);
@@ -81,7 +81,10 @@ namespace Raw_File_Uploader
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
                                     context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
                                     context.Post(val => filepath.Text = e.FullPath, s);
-                                    context.Post(val => uploadfile(filepath.Text), s);
+
+
+                                    context.Post(val => multipleuploadfile(filepath.Text), s);
+
                                     lastupload = e.FullPath;
                                     lastuploadtime = DateTime.Now;
                                 }
@@ -125,6 +128,31 @@ namespace Raw_File_Uploader
             }
             return "Not network deployed";
         }
+
+        private Boolean multipleuploadfile(string filelocation) //enable multiple uploading in case one  failed
+
+        {
+
+            if  (!uploadfile(filelocation))
+
+            {
+                System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
+                if (!uploadfile(filelocation))
+                {
+                    output.Select(output.TextLength, 0);
+                    output.SelectionColor = Color.Red;
+                    output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
+                    output.SelectionColor = Color.Black;
+
+                }
+
+            }
+
+            return true;
+
+
+        }
+
 
         private Boolean uploadfile(string filelocation)
         {
@@ -251,14 +279,28 @@ namespace Raw_File_Uploader
             }
             if (response.StatusCode == HttpStatusCode.Created)
                     {
+
                 output.AppendText(Environment.NewLine + response.Content);
-                output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} sucessfully uploaded");
+
+                output.AppendText(Environment.NewLine + response.Content);
+                output.Select(output.TextLength, 0);
+                output.SelectionColor = Color.Green;
+                output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} was sucessfully uploaded");
+                output.Select(output.TextLength, 0);
+                output.SelectionColor = Color.Black;
+                output.AppendText(Environment.NewLine);
+
                 return true;
             }
             else
             {
                 output.AppendText(Environment.NewLine + response.Content);
-                output.AppendText( $" {newfilelocation} upload failed please check");
+                output.Select(output.TextLength, 0);
+                output.SelectionColor = Color.Orange;
+                output.AppendText($" {newfilelocation} upload failed, will try again in 3 min if failed first time");
+                output.Select(output.TextLength, 0);
+                output.SelectionColor = Color.Black;
+                output.AppendText(Environment.NewLine);
 
                 return false;
             }
@@ -412,7 +454,7 @@ namespace Raw_File_Uploader
                 return;
             }
             if (check_connection(true))
-            uploadfile(filepath.Text);
+                multipleuploadfile(filepath.Text);
 
         }
 
@@ -500,7 +542,7 @@ namespace Raw_File_Uploader
                     if (new FileInfo(file).Length > Int32.Parse(minisize.Text) * 1000000)
                     {
                         output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + file);
-                        uploadfile(file);
+                        multipleuploadfile(file);
                     }
                     else
                     {
@@ -945,7 +987,8 @@ namespace Raw_File_Uploader
                         }
                     }
                     else
-                        throw new Exception("Could not list processes locking resource.");
+                        throw new Exception("Could not list processes locking resource."); 
+                        //cause program to exit silent, disabled to see what happens
                 }
                 else if (res != 0)
                     throw new Exception("Could not list processes locking resource. Failed to get size of result.");
