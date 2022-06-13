@@ -56,7 +56,6 @@ namespace Raw_File_Uploader
             this.sample_type = new System.Windows.Forms.ComboBox();
             this.storage_option = new System.Windows.Forms.ComboBox();
             this.qc_enablekeyword = new System.Windows.Forms.TextBox();
-            this.log_selector = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label13 = new System.Windows.Forms.Label();
@@ -393,24 +392,6 @@ namespace Raw_File_Uploader
             this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
             this.qc_enablekeyword.TabIndex = 31;
             this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
-            // 
-            // log_selector
-            // 
-            this.log_selector.AutoCompleteCustomSource.AddRange(new string[] {
-            "All",
-            "Info",
-            "Error",
-            "Critical"});
-            this.log_selector.FormattingEnabled = true;
-            this.log_selector.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.log_selector.Items.AddRange(new object[] {
-            "All",
-            "warnning and above"});
-            this.log_selector.Location = new System.Drawing.Point(100, 370);
-            this.log_selector.Name = "log_selector";
-            this.log_selector.Size = new System.Drawing.Size(121, 21);
-            this.log_selector.TabIndex = 31;
-            this.Explaination.SetToolTip(this.log_selector, "Display log level");
             // 
             // tabControl
             // 
@@ -1149,9 +1130,9 @@ namespace Raw_File_Uploader
             // log_view
             // 
             this.log_view.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.log_view.Location = new System.Drawing.Point(227, 369);
+            this.log_view.Location = new System.Drawing.Point(101, 369);
             this.log_view.Name = "log_view";
-            this.log_view.Size = new System.Drawing.Size(117, 19);
+            this.log_view.Size = new System.Drawing.Size(117, 20);
             this.log_view.TabIndex = 32;
             this.log_view.Text = "Open full log";
             this.log_view.UseVisualStyleBackColor = true;
@@ -1163,7 +1144,6 @@ namespace Raw_File_Uploader
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 661);
             this.Controls.Add(this.log_view);
-            this.Controls.Add(this.log_selector);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.version_number);
@@ -1290,7 +1270,6 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.TextBox qc_enablekeyword;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
-        private System.Windows.Forms.ComboBox log_selector;
         private System.Windows.Forms.Button log_view;
     }
 }

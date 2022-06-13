@@ -43,7 +43,6 @@ namespace Raw_File_Uploader
             storage_option.SelectedIndex = 0;
             sample_type.SelectedIndex = 0;
             // 0 is human, 1 is BSA
-            log_selector.SelectedIndex = 0; // 0 is all, 1 is warnning
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             log.Debug("Uploader started");
@@ -74,10 +73,10 @@ namespace Raw_File_Uploader
                             {
                                 if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
                                 {
-                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
+/*                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
 
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
-                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
+                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);*/
                                     context.Post(val => filepath.Text = e.FullPath, s);
                                     log.Debug($"File /{ e.Name}/ with final size { new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded");
 
@@ -141,16 +140,12 @@ namespace Raw_File_Uploader
                 System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
                 if (!uploadfile(filelocation))
                 {
-
-                    System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
-                    if (!uploadfile(filelocation))
-                    {
                         output.Select(output.TextLength, 0);
                         output.SelectionColor = Color.Red;
-                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed three times, need to be uploaded manually");
+                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
                         output.SelectionColor = Color.Black;
-                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed three times, need to be uploaded manually");
-                    }
+                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
+                    
                 }
 
             }
@@ -303,11 +298,11 @@ namespace Raw_File_Uploader
                 output.AppendText(Environment.NewLine + response.Content);
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Orange;
-                output.AppendText($" {filelocation} upload failed, will try again in 3 min if failed first two times");
+                output.AppendText($" {filelocation} upload failed, will try again in 3 min if failed first time");
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
-                log.Warn($" {filelocation} upload failed, will try again in 3 min if failed first two times");
+                log.Warn($" {filelocation} upload failed, will try again in 3 min if failed first time");
 
                 return false;
             }
