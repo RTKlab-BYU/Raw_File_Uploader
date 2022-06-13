@@ -46,7 +46,6 @@ namespace Raw_File_Uploader
             log_selector.SelectedIndex = 0; // 0 is all, 1 is warnning
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
-            lastchangtimefield.Text = lastchangetime.ToString();
             log.Debug("Uploader started");
             var context = SynchronizationContext.Current; // for cross thread update to UI
 
@@ -60,9 +59,7 @@ namespace Raw_File_Uploader
                 FileInfo file = new FileInfo(e.FullPath);
                 System.Threading.Thread.Sleep(10000);
                 lastchangetime = DateTime.Now;
-                MessageBox.Show("file changed");
-                
-                context.Post(val => lastchangtimefield.Text = lastchangetime.ToString(), s);
+
                 if (monitor_on && !IsLocatedByHomePage(file))
                 {
                     FileInfo file_info = new FileInfo(e.FullPath);
@@ -82,6 +79,7 @@ namespace Raw_File_Uploader
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
                                     context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
                                     context.Post(val => filepath.Text = e.FullPath, s);
+                                    log.Debug($"File /{ e.Name}/ with final size { new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded");
 
 
                                     context.Post(val => multipleuploadfile(filepath.Text), s);
@@ -94,6 +92,7 @@ namespace Raw_File_Uploader
                             else
                             {
                                 context.Post(val => output.AppendText(Environment.NewLine + $"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded"), s);
+                                log.Debug($"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded");
 
 
                             }
@@ -101,12 +100,14 @@ namespace Raw_File_Uploader
                         else
                         {
                             context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
+                            log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
                         }
 
                     }
                         catch (Exception e1)
                         {
                             context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
+                            log.Error(e1);
 
                         }
                    
@@ -394,7 +395,6 @@ namespace Raw_File_Uploader
             t.Name = "finish_check_thread";
             t.IsBackground = true;
             t.Start();
-
             // tell the watcher where to look
             watcher.Path = @foldertxt.Text;
             watcher.Filter = filetype.Text;
@@ -403,12 +403,15 @@ namespace Raw_File_Uploader
             if (monitor_on is true)
             {
                 output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
+                log.Debug($" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
             }
             else
             {                
                 t.Abort();
 
-                                output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
+                log.Debug($" Stop to monitor folder {foldertxt.Text} ");
+
             }
 
         }
@@ -502,6 +505,7 @@ namespace Raw_File_Uploader
                     SmtpServer.EnableSsl = Properties.Settings.Default.enable_ssl;
                     SmtpServer.Send(mail);
 
+
                 }
                 else {
 
@@ -516,14 +520,17 @@ namespace Raw_File_Uploader
                     mail.Body = "This is a notification from Raw file uploader to notify you the Acquisition has finished or stopped ";
 
                     SmtpServer.Port = 587;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential("proteindatanotifcation@gmail.com", "YTi78Yi@uaCf^M6zGCyg#9VZCp2txomXKBsev");
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("proteindatanotifcation@gmail.com", "rnijfyaiumacgfqi");
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
+
                 }
+                log.Debug("Email notification sent");
+
             }
             catch (Exception ex)
             {
-             output.AppendText(Environment.NewLine + DateTime.Now + ex.Message);
+            log.Warn($"Notification failed due to {ex.Message}");
 
             }
 

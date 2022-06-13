@@ -56,7 +56,6 @@ namespace Raw_File_Uploader
             this.sample_type = new System.Windows.Forms.ComboBox();
             this.storage_option = new System.Windows.Forms.ComboBox();
             this.qc_enablekeyword = new System.Windows.Forms.TextBox();
-            this.lastchangtimefield = new System.Windows.Forms.TextBox();
             this.log_selector = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
@@ -327,7 +326,7 @@ namespace Raw_File_Uploader
             // frequency_threshold
             // 
             this.frequency_threshold.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.frequency_threshold.Location = new System.Drawing.Point(740, 30);
+            this.frequency_threshold.Location = new System.Drawing.Point(774, 30);
             this.frequency_threshold.Name = "frequency_threshold";
             this.frequency_threshold.Size = new System.Drawing.Size(166, 23);
             this.frequency_threshold.TabIndex = 22;
@@ -340,8 +339,8 @@ namespace Raw_File_Uploader
             this.alert_threshold.Name = "alert_threshold";
             this.alert_threshold.Size = new System.Drawing.Size(150, 23);
             this.alert_threshold.TabIndex = 21;
-            this.Explaination.SetToolTip(this.alert_threshold, "If no data file have been created since last run finished, will not check while i" +
-        "t\'s running. 60 min analysis should set 60x2");
+            this.Explaination.SetToolTip(this.alert_threshold, "If no data file have been created since last run finished, 60 min analysis should" +
+        " set 70(60 + ~10");
             // 
             // recipient_email
             // 
@@ -394,15 +393,6 @@ namespace Raw_File_Uploader
             this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
             this.qc_enablekeyword.TabIndex = 31;
             this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
-            // 
-            // lastchangtimefield
-            // 
-            this.lastchangtimefield.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lastchangtimefield.Location = new System.Drawing.Point(314, 59);
-            this.lastchangtimefield.Name = "lastchangtimefield";
-            this.lastchangtimefield.Size = new System.Drawing.Size(152, 23);
-            this.lastchangtimefield.TabIndex = 26;
-            this.Explaination.SetToolTip(this.lastchangtimefield, "Last time a file change is recorded or started");
             // 
             // log_selector
             // 
@@ -980,7 +970,6 @@ namespace Raw_File_Uploader
             // settings
             // 
             this.settings.BackColor = System.Drawing.SystemColors.Control;
-            this.settings.Controls.Add(this.lastchangtimefield);
             this.settings.Controls.Add(this.label34);
             this.settings.Controls.Add(this.max_size);
             this.settings.Controls.Add(this.nocopy);
@@ -1025,9 +1014,9 @@ namespace Raw_File_Uploader
             this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.Location = new System.Drawing.Point(609, 33);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(125, 17);
+            this.label29.Size = new System.Drawing.Size(165, 17);
             this.label29.TabIndex = 17;
-            this.label29.Text = "Frequency (hours)";
+            this.label29.Text = "Notify Frequency (hours)";
             // 
             // label30
             // 
@@ -1258,7 +1247,6 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
-        private System.Windows.Forms.TextBox lastchangtimefield;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox max_size;
         private System.Windows.Forms.Label label33;
