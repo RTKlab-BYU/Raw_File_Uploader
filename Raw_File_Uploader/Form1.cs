@@ -2,17 +2,12 @@
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Reflection;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
 using System.Xml.Linq;
@@ -73,10 +68,8 @@ namespace Raw_File_Uploader
                             {
                                 if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
                                 {
-/*                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);
 
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
-                                    context.Post(val => output.AppendText(Environment.NewLine + "***********************************************"), s);*/
                                     context.Post(val => filepath.Text = e.FullPath, s);
                                     log.Debug($"File /{ e.Name}/ with final size { new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded");
 
@@ -129,6 +122,33 @@ namespace Raw_File_Uploader
             }
             return "Not network deployed";
         }
+
+
+        private Boolean uploadmultiplefiles(string filelocations) //upload multiple files
+        {
+            List<string> filelist = filelocations.Split(',').ToList();
+            foreach (String file in filelist)
+                if (file != "") { 
+                    if (!File.Exists(file))
+                    {
+                        MessageBox.Show("invalid file");
+
+                    }
+                else
+                {
+                    multipleuploadfile(file);
+
+                }
+                }
+            return true;
+
+        }
+
+
+
+
+
+
 
         private Boolean multipleuploadfile(string filelocation) //enable multiple uploading in case one  failed
 
@@ -330,6 +350,9 @@ namespace Raw_File_Uploader
             }
         }
 
+
+
+
         private void filebutton_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
@@ -341,12 +364,15 @@ namespace Raw_File_Uploader
 
                 Filter = "Mass files (" + filetype.Text+ ")| "+filetype.Text+"|All files (*.*)|*.*",
                 RestoreDirectory = true,
-
+                Multiselect = true,
             };
-
+            filepath.Text = "";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                filepath.Text = openFileDialog1.FileName;
+                foreach (String file in openFileDialog1.FileNames) 
+                    filepath.AppendText(file+",");
+                    
+
             }
         }
 
@@ -450,15 +476,12 @@ namespace Raw_File_Uploader
         private void single_upload_Click(object sender, EventArgs e)
         {
 
-            if (!File.Exists(filepath.Text))
-                if (!File.Exists(filepath.Text))
-            {
-                MessageBox.Show("invalid file");
 
-                return;
-            }
             if (check_connection(true))
-                multipleuploadfile(filepath.Text);
+                /*                multipleuploadfile(filepath.Text);
+                 *                
+                */
+                uploadmultiplefiles(filepath.Text);
 
         }
 

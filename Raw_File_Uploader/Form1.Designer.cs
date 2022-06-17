@@ -185,7 +185,7 @@ namespace Raw_File_Uploader
             this.single_upload.Name = "single_upload";
             this.single_upload.Size = new System.Drawing.Size(214, 38);
             this.single_upload.TabIndex = 20;
-            this.single_upload.Text = "Manual upload single file";
+            this.single_upload.Text = "Manual upload files";
             this.single_upload.UseVisualStyleBackColor = true;
             this.single_upload.Click += new System.EventHandler(this.single_upload_Click);
             // 
@@ -1093,7 +1093,7 @@ namespace Raw_File_Uploader
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // helpToolStripMenuItem
