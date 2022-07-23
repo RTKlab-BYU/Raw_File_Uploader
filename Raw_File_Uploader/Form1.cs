@@ -233,10 +233,25 @@ namespace Raw_File_Uploader
 
             }
 
-            var client = new RestClient(txtserver.Text);
-            client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
 
-            client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
+            var options = new RestClientOptions(txtserver.Text)
+            {
+                ThrowOnAnyError = false,
+
+                MaxTimeout = 10 * 60 * 1000,  // 1000 ms = 1s, 30 min = 30*60*1000
+            };
+
+            var client = new RestClient(options)
+            {
+                Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text),
+
+            };
+
+
+
+
+
+
 
             if (!File.Exists(newfilelocation))
             {
@@ -244,11 +259,11 @@ namespace Raw_File_Uploader
                 return false;
             }
 
+
+
             var request = new RestRequest();
 
-            request.Method = Method.POST;
             request.AddHeader("Accept", "application/json");
-            request.Parameters.Clear();
             request.AddHeader("Content-Type", "multipart/form-data");
 
             string uploadfilename;
@@ -288,9 +303,12 @@ namespace Raw_File_Uploader
 
             request.AddParameter("temp_data", TempData.Checked);
             request.AddFile("rawfile", newfilelocation);
-            request.ReadWriteTimeout = 2147483647;
+        //    request.ReadWriteTimeout = 2147483647;
             request.Timeout = 2147483647;
-            var response = client.Execute(request);
+            //  var response = client.Execute(request);
+
+
+            var response = client.ExecutePost(request);
 
 
 
@@ -475,6 +493,7 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
+            uploadmultiplefiles(filepath.Text);
 
 
             if (check_connection(true))
@@ -715,14 +734,20 @@ namespace Raw_File_Uploader
         {
 
             //The method used here is a workaround, not really validate password, only check if not timeout or wrong username/password, assume it's good.
+            var options = new RestClientOptions(txtserver.Text + "auth/")
+            {
+                ThrowOnAnyError = false,
+                MaxTimeout = 2 * 1000,  // 1000 ms = 1s
+            };
+            var client = new RestClient(options)
+            { Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text),
+             };
+
             var request = new RestRequest();
-            var client = new RestClient(txtserver.Text + "auth/");
 
-            client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
-            request.Method = Method.POST;
-            client.Timeout = 2 * 1000;// 1000 ms = 1s
 
-            var response = client.Execute(request);
+            var response = client.ExecutePost(request);
+
 
             //MessageBox.Show(response.Content);
             if (response.Content is "")
