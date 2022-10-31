@@ -66,7 +66,7 @@ namespace Raw_File_Uploader
 
                             if (new FileInfo(e.FullPath).Length > Int32.Parse(minisize.Text) * 1000000 && new FileInfo(e.FullPath).Length < long.Parse(max_size.Text) * 1000000)   
                             {
-                                if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                                if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 30, 0))) // if same file name is triggerred in less than 30 min, to prevent double uploading
                                 {
 
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
@@ -154,20 +154,34 @@ namespace Raw_File_Uploader
 
         {
 
-            if  (!uploadfile(filelocation))
+            if  (!uploadfile(filelocation) )
+
 
             {
-                System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
-                if (!uploadfile(filelocation))
+
+                if (Retry.Checked)
                 {
+
+                    System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
+                    if (!uploadfile(filelocation))
+                    {
                         output.Select(output.TextLength, 0);
                         output.SelectionColor = Color.Red;
-                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
+                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, may need to be uploaded manually");
                         output.SelectionColor = Color.Black;
-                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
-                    
-                }
+                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, may need to be uploaded manually");
 
+                    }
+                }
+                else
+                {
+                    output.SelectionColor = Color.Red;
+                    output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading may failed, check if need to be uploaded manually");
+                    output.SelectionColor = Color.Black;
+                    log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading may failed, check if need to be uploaded manually");
+
+                }
+            
             }
 
             return true;
@@ -772,12 +786,12 @@ namespace Raw_File_Uploader
 
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("notepad.exe", "RawfileUploader.log");
+            Process.Start("notepad.exe", @"C:\ProgramData\RawfileUploader\RawfileUploader.log");
         }
 
         private void log_view_Click(object sender, EventArgs e)
         {
-            Process.Start("notepad.exe", "RawfileUploader.log");
+            Process.Start("notepad.exe", @"C:\ProgramData\RawfileUploader\RawfileUploader.log");
 
         }
     }

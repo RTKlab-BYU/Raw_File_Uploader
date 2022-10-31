@@ -43,7 +43,6 @@ namespace Raw_File_Uploader
             this.filepath = new System.Windows.Forms.TextBox();
             this.foldertxt = new System.Windows.Forms.TextBox();
             this.filetype = new System.Windows.Forms.TextBox();
-            this.qctool = new System.Windows.Forms.ComboBox();
             this.TempData = new System.Windows.Forms.CheckBox();
             this.txtpassword = new System.Windows.Forms.TextBox();
             this.txtusername = new System.Windows.Forms.TextBox();
@@ -55,7 +54,6 @@ namespace Raw_File_Uploader
             this.bypasskword = new System.Windows.Forms.TextBox();
             this.sample_type = new System.Windows.Forms.ComboBox();
             this.storage_option = new System.Windows.Forms.ComboBox();
-            this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
             this.label13 = new System.Windows.Forms.Label();
@@ -111,6 +109,7 @@ namespace Raw_File_Uploader
             this.settings = new System.Windows.Forms.TabPage();
             this.label34 = new System.Windows.Forms.Label();
             this.max_size = new System.Windows.Forms.TextBox();
+            this.Retry = new System.Windows.Forms.CheckBox();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -128,6 +127,7 @@ namespace Raw_File_Uploader
             this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.log_view = new System.Windows.Forms.Button();
+            this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -251,24 +251,6 @@ namespace Raw_File_Uploader
             this.filetype.TabIndex = 18;
             this.Explaination.SetToolTip(this.filetype, "File type to monitor");
             // 
-            // qctool
-            // 
-            this.qctool.FormattingEnabled = true;
-            this.qctool.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.qctool.Items.AddRange(new object[] {
-            "None",
-            "Msfragger",
-            "Maxquant",
-            "Protein Discoverer(OTOT)",
-            "TBD",
-            "Protein Discoverer(OTIT)"});
-            this.qctool.Location = new System.Drawing.Point(682, 177);
-            this.qctool.Name = "qctool";
-            this.qctool.Size = new System.Drawing.Size(121, 21);
-            this.qctool.TabIndex = 27;
-            this.Explaination.SetToolTip(this.qctool, "Tools used to do automatic QC analysis");
-            this.qctool.SelectedIndexChanged += new System.EventHandler(this.qctool_SelectedIndexChanged);
-            // 
             // TempData
             // 
             this.TempData.AutoSize = true;
@@ -385,14 +367,6 @@ namespace Raw_File_Uploader
             this.storage_option.TabIndex = 29;
             this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
             // 
-            // qc_enablekeyword
-            // 
-            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
-            this.qc_enablekeyword.Name = "qc_enablekeyword";
-            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
-            this.qc_enablekeyword.TabIndex = 31;
-            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
-            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.Run_info);
@@ -411,7 +385,6 @@ namespace Raw_File_Uploader
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
             this.Run_info.Controls.Add(this.qc_enablekeyword);
             this.Run_info.Controls.Add(this.sample_type);
-            this.Run_info.Controls.Add(this.qctool);
             this.Run_info.Controls.Add(this.TempData);
             this.Run_info.Controls.Add(this.label13);
             this.Run_info.Controls.Add(this.label26);
@@ -446,7 +419,7 @@ namespace Raw_File_Uploader
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(140, 17);
             this.label13.TabIndex = 26;
-            this.label13.Text = "Perfrom QC Keyword";
+            this.label13.Text = "Perform QC Keyword";
             // 
             // label26
             // 
@@ -953,6 +926,7 @@ namespace Raw_File_Uploader
             this.settings.BackColor = System.Drawing.SystemColors.Control;
             this.settings.Controls.Add(this.label34);
             this.settings.Controls.Add(this.max_size);
+            this.settings.Controls.Add(this.Retry);
             this.settings.Controls.Add(this.nocopy);
             this.settings.Controls.Add(this.label29);
             this.settings.Controls.Add(this.label30);
@@ -988,6 +962,17 @@ namespace Raw_File_Uploader
             this.max_size.Name = "max_size";
             this.max_size.Size = new System.Drawing.Size(150, 23);
             this.max_size.TabIndex = 25;
+            // 
+            // Retry
+            // 
+            this.Retry.AutoSize = true;
+            this.Retry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Retry.Location = new System.Drawing.Point(168, 83);
+            this.Retry.Name = "Retry";
+            this.Retry.Size = new System.Drawing.Size(198, 21);
+            this.Retry.TabIndex = 23;
+            this.Retry.Text = "Retry after failed uploading";
+            this.Retry.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -1138,6 +1123,14 @@ namespace Raw_File_Uploader
             this.log_view.UseVisualStyleBackColor = true;
             this.log_view.Click += new System.EventHandler(this.log_view_Click);
             // 
+            // qc_enablekeyword
+            // 
+            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
+            this.qc_enablekeyword.Name = "qc_enablekeyword";
+            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
+            this.qc_enablekeyword.TabIndex = 31;
+            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1190,7 +1183,6 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadSettingToolStripMenuItem;
-        private System.Windows.Forms.ComboBox qctool;
         private System.Windows.Forms.CheckBox TempData;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.RichTextBox txtdescription;
@@ -1267,10 +1259,11 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ComboBox storage_option;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolStripMenuItem emailServerSettingToolStripMenuItem;
-        private System.Windows.Forms.TextBox qc_enablekeyword;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
         private System.Windows.Forms.Button log_view;
+        private System.Windows.Forms.CheckBox Retry;
+        private System.Windows.Forms.TextBox qc_enablekeyword;
     }
 }
 
