@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Net.Mail;
 using System.Xml.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Raw_File_Uploader
 {
@@ -257,15 +258,10 @@ namespace Raw_File_Uploader
 
             }
 
-
-
-
-
             request.AddParameter("record_name", uploadfilename);
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("record_description", txtdescription.Text);
-            request.AddParameter("column_sn", column_sn.Text);
-            request.AddParameter("spe_sn", spe_sn.Text);
+            add_info(request, uploadfilename);
 
             request.AddParameter("is_temp", TempData.Checked);
             request.AddFile("temp_rawfile", newfilelocation);
@@ -314,7 +310,43 @@ namespace Raw_File_Uploader
 
 
 
+        private RestRequest add_info(RestRequest request,String file_name)
+        {
+            TextBox[] fieldArray = {column_sn,spe_sn, sample_type, factor_1_name,
+                  factor_1_value, factor_2_name, factor_2_value,
+                  factor_3_name, factor_3_value, factor_4_name,
+                  factor_4_value, factor_5_name, factor_5_value,
+                  factor_6_name, factor_6_value, factor_7_name,
+                  factor_7_value, factor_8_name, factor_8_value };
 
+            foreach (TextBox s in fieldArray)
+            {
+                if ((is_extract.Checked) & (s.Text.StartsWith("[")) & (s.Text.EndsWith("]")))
+                {
+                    List<string> listStrLineElements = file_name.Split(delimiter.Text.ToCharArray()[0]).ToList();
+                    String resultString = Regex.Match(s.Text, @"-?\d+").Value;
+                    try
+                    {
+                        
+                    request.AddParameter(s.Name, listStrLineElements[Int32.Parse(resultString)]);
+
+                    }
+                    catch(Exception ex) {
+                        log.Error(ex.Message);
+                       }
+
+
+                }
+                else
+                    request.AddParameter(s.Name, s.Text);
+
+
+            }
+
+
+            return request;
+
+        }
 
 
 
@@ -456,12 +488,11 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
-            multipleuploadfile(filepath.Text);
 
 
- /*           if (check_connection(true))
-                             multipleuploadfile(filepath.Text);
-*/
+            if (check_connection(true))
+                uploadmultiplefiles(filepath.Text);
+
 
         }
 
@@ -759,6 +790,8 @@ namespace Raw_File_Uploader
             Process.Start("notepad.exe", "RawfileUploader.log");
 
         }
+
+
     }
 
 
@@ -878,7 +911,7 @@ namespace Raw_File_Uploader
 
 
 
-    static public class FileUtil
+    public static  class FileUtil
     {
         [StructLayout(LayoutKind.Sequential)]
         struct RM_UNIQUE_PROCESS
