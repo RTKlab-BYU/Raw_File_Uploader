@@ -43,7 +43,6 @@ namespace Raw_File_Uploader
             this.filepath = new System.Windows.Forms.TextBox();
             this.foldertxt = new System.Windows.Forms.TextBox();
             this.filetype = new System.Windows.Forms.TextBox();
-            this.qctool = new System.Windows.Forms.ComboBox();
             this.TempData = new System.Windows.Forms.CheckBox();
             this.txtpassword = new System.Windows.Forms.TextBox();
             this.txtusername = new System.Windows.Forms.TextBox();
@@ -53,19 +52,13 @@ namespace Raw_File_Uploader
             this.alert_threshold = new System.Windows.Forms.TextBox();
             this.recipient_email = new System.Windows.Forms.TextBox();
             this.bypasskword = new System.Windows.Forms.TextBox();
-            this.sample_type = new System.Windows.Forms.ComboBox();
-            this.storage_option = new System.Windows.Forms.ComboBox();
-            this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
             this.txtdescription = new System.Windows.Forms.RichTextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.txtprojectname = new System.Windows.Forms.TextBox();
             this.txtsamplename = new System.Windows.Forms.TextBox();
@@ -104,7 +97,6 @@ namespace Raw_File_Uploader
             this.spe_sn = new System.Windows.Forms.TextBox();
             this.column_sn = new System.Windows.Forms.TextBox();
             this.Server = new System.Windows.Forms.TabPage();
-            this.label10 = new System.Windows.Forms.Label();
             this.verify_account = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -251,29 +243,11 @@ namespace Raw_File_Uploader
             this.filetype.TabIndex = 18;
             this.Explaination.SetToolTip(this.filetype, "File type to monitor");
             // 
-            // qctool
-            // 
-            this.qctool.FormattingEnabled = true;
-            this.qctool.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.qctool.Items.AddRange(new object[] {
-            "None",
-            "Msfragger",
-            "Maxquant",
-            "Protein Discoverer(OTOT)",
-            "TBD",
-            "Protein Discoverer(OTIT)"});
-            this.qctool.Location = new System.Drawing.Point(682, 177);
-            this.qctool.Name = "qctool";
-            this.qctool.Size = new System.Drawing.Size(121, 21);
-            this.qctool.TabIndex = 27;
-            this.Explaination.SetToolTip(this.qctool, "Tools used to do automatic QC analysis");
-            this.qctool.SelectedIndexChanged += new System.EventHandler(this.qctool_SelectedIndexChanged);
-            // 
             // TempData
             // 
             this.TempData.AutoSize = true;
             this.TempData.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TempData.Location = new System.Drawing.Point(619, 239);
+            this.TempData.Location = new System.Drawing.Point(605, 161);
             this.TempData.Name = "TempData";
             this.TempData.Size = new System.Drawing.Size(134, 21);
             this.TempData.TabIndex = 28;
@@ -359,40 +333,6 @@ namespace Raw_File_Uploader
             this.bypasskword.TabIndex = 20;
             this.Explaination.SetToolTip(this.bypasskword, "Keyword in the filename to ignroe");
             // 
-            // sample_type
-            // 
-            this.sample_type.FormattingEnabled = true;
-            this.sample_type.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.sample_type.Items.AddRange(new object[] {
-            "Human",
-            "BSA"});
-            this.sample_type.Location = new System.Drawing.Point(713, 142);
-            this.sample_type.Name = "sample_type";
-            this.sample_type.Size = new System.Drawing.Size(121, 21);
-            this.sample_type.TabIndex = 30;
-            this.Explaination.SetToolTip(this.sample_type, "Tools used to do automatic QC analysis");
-            // 
-            // storage_option
-            // 
-            this.storage_option.FormattingEnabled = true;
-            this.storage_option.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.storage_option.Items.AddRange(new object[] {
-            "Default",
-            "others"});
-            this.storage_option.Location = new System.Drawing.Point(127, 187);
-            this.storage_option.Name = "storage_option";
-            this.storage_option.Size = new System.Drawing.Size(121, 21);
-            this.storage_option.TabIndex = 29;
-            this.Explaination.SetToolTip(this.storage_option, "Tools used to do automatic QC analysis");
-            // 
-            // qc_enablekeyword
-            // 
-            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
-            this.qc_enablekeyword.Name = "qc_enablekeyword";
-            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
-            this.qc_enablekeyword.TabIndex = 31;
-            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
-            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.Run_info);
@@ -409,18 +349,12 @@ namespace Raw_File_Uploader
             // Run_info
             // 
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
-            this.Run_info.Controls.Add(this.qc_enablekeyword);
-            this.Run_info.Controls.Add(this.sample_type);
-            this.Run_info.Controls.Add(this.qctool);
             this.Run_info.Controls.Add(this.TempData);
-            this.Run_info.Controls.Add(this.label13);
-            this.Run_info.Controls.Add(this.label26);
             this.Run_info.Controls.Add(this.txtdescription);
             this.Run_info.Controls.Add(this.label24);
             this.Run_info.Controls.Add(this.label20);
             this.Run_info.Controls.Add(this.label21);
             this.Run_info.Controls.Add(this.label22);
-            this.Run_info.Controls.Add(this.label32);
             this.Run_info.Controls.Add(this.label23);
             this.Run_info.Controls.Add(this.txtprojectname);
             this.Run_info.Controls.Add(this.filetype);
@@ -437,26 +371,6 @@ namespace Raw_File_Uploader
             this.Run_info.Size = new System.Drawing.Size(1004, 307);
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(616, 210);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(140, 17);
-            this.label13.TabIndex = 26;
-            this.label13.Text = "Perfrom QC Keyword";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(616, 178);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(60, 17);
-            this.label26.TabIndex = 26;
-            this.label26.Text = "QC Tool";
             // 
             // txtdescription
             // 
@@ -504,16 +418,6 @@ namespace Raw_File_Uploader
             this.label22.Size = new System.Drawing.Size(96, 17);
             this.label22.TabIndex = 16;
             this.label22.Text = "Sample Name";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(616, 142);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(91, 17);
-            this.label32.TabIndex = 17;
-            this.label32.Text = "Sample Type";
             // 
             // label23
             // 
@@ -891,8 +795,6 @@ namespace Raw_File_Uploader
             // Server
             // 
             this.Server.BackColor = System.Drawing.SystemColors.Control;
-            this.Server.Controls.Add(this.storage_option);
-            this.Server.Controls.Add(this.label10);
             this.Server.Controls.Add(this.verify_account);
             this.Server.Controls.Add(this.label27);
             this.Server.Controls.Add(this.label28);
@@ -906,16 +808,6 @@ namespace Raw_File_Uploader
             this.Server.Size = new System.Drawing.Size(1004, 307);
             this.Server.TabIndex = 1;
             this.Server.Text = "Server";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(17, 188);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(104, 17);
-            this.label10.TabIndex = 28;
-            this.label10.Text = "Storage Option";
             // 
             // verify_account
             // 
@@ -1190,15 +1082,12 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadSettingToolStripMenuItem;
-        private System.Windows.Forms.ComboBox qctool;
         private System.Windows.Forms.CheckBox TempData;
-        private System.Windows.Forms.Label label26;
         private System.Windows.Forms.RichTextBox txtdescription;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtprojectname;
         private System.Windows.Forms.TextBox filetype;
@@ -1263,12 +1152,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.TextBox column_sn;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox spe_sn;
-        private System.Windows.Forms.ComboBox sample_type;
-        private System.Windows.Forms.ComboBox storage_option;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolStripMenuItem emailServerSettingToolStripMenuItem;
-        private System.Windows.Forms.TextBox qc_enablekeyword;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
         private System.Windows.Forms.Button log_view;
     }

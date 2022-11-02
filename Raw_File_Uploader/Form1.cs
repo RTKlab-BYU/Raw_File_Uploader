@@ -26,18 +26,13 @@ namespace Raw_File_Uploader
         public Form1()
         {
             InitializeComponent();
-            txtserver.Text = "http://192.168.102.188/files/api/"; 
+            txtserver.Text = "http://127.0.0.1:8000//files/api/"; 
             filetype.Text = "*.raw";
             minisize.Text = "100";
             alert_threshold.Text = "30";
             frequency_threshold.Text = "8";
             bypasskword.Text = "ignore";
             max_size.Text = "2200";
-            qctool.SelectedIndex = 1;
-            // 0 is none, 1 is msfragger, 2 is Maxquant, 3 is Protein Discovery OTOT, 4 is matchbetween run with maxquant,5 is Protein Discovery OTIT
-            storage_option.SelectedIndex = 0;
-            sample_type.SelectedIndex = 0;
-            // 0 is human, 1 is BSA
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             log.Debug("Uploader started");
@@ -233,7 +228,7 @@ namespace Raw_File_Uploader
 
             }
 
-            var client = new RestClient(txtserver.Text);
+            var client = new RestClient(txtserver.Text + "SampleRecord/");
             client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
 
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
@@ -263,31 +258,17 @@ namespace Raw_File_Uploader
             }
 
 
-            if (!String.IsNullOrEmpty(qc_enablekeyword.Text) && !uploadfilename.Contains(qc_enablekeyword.Text))
-            {
-
-                request.AddParameter("qc_tool", 0);
-
-            }
-            else
-            {
-
-                request.AddParameter("qc_tool", qctool.SelectedIndex);
 
 
-            }
 
-
-            request.AddParameter("run_name", uploadfilename);
+            request.AddParameter("record_name", uploadfilename);
             request.AddParameter("project_name", txtprojectname.Text);
-            request.AddParameter("run_desc", txtdescription.Text);
+            request.AddParameter("record_description", txtdescription.Text);
             request.AddParameter("column_sn", column_sn.Text);
             request.AddParameter("spe_sn", spe_sn.Text);
-            request.AddParameter("sample_obj", sample_type.SelectedIndex);
-            request.AddParameter("storage_option", storage_option.SelectedIndex);
 
-            request.AddParameter("temp_data", TempData.Checked);
-            request.AddFile("rawfile", newfilelocation);
+            request.AddParameter("is_temp", TempData.Checked);
+            request.AddFile("temp_rawfile", newfilelocation);
             request.ReadWriteTimeout = 2147483647;
             request.Timeout = 2147483647;
             var response = client.Execute(request);
@@ -475,13 +456,12 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
+            multipleuploadfile(filepath.Text);
 
 
-            if (check_connection(true))
-                /*                multipleuploadfile(filepath.Text);
-                 *                
-                */
-                uploadmultiplefiles(filepath.Text);
+ /*           if (check_connection(true))
+                             multipleuploadfile(filepath.Text);
+*/
 
         }
 
@@ -724,7 +704,6 @@ namespace Raw_File_Uploader
 
             var response = client.Execute(request);
 
-            //MessageBox.Show(response.Content);
             if (response.Content is "")
             {
                 MessageBox.Show("Can't connect to server");
