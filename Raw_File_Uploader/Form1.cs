@@ -13,6 +13,7 @@ using System.Net.Mail;
 using System.Xml.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.IO.Compression;
 
 namespace Raw_File_Uploader
 {
@@ -28,12 +29,12 @@ namespace Raw_File_Uploader
         {
             InitializeComponent();
             txtserver.Text = "http://127.0.0.1:8000//files/api/"; 
-            filetype.Text = "*.raw";
             minisize.Text = "100";
             alert_threshold.Text = "30";
             frequency_threshold.Text = "8";
             bypasskword.Text = "ignore";
             max_size.Text = "2200";
+            filetype_combo.SelectedIndex = 0;
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             log.Debug("Uploader started");
@@ -50,7 +51,7 @@ namespace Raw_File_Uploader
                 System.Threading.Thread.Sleep(10000);
                 lastchangetime = DateTime.Now;
 
-                if (monitor_on && !IsLocatedByHomePage(file))
+                if (monitor_on && !IsLocatedbyAcqprogam(file))
                 {
                     FileInfo file_info = new FileInfo(e.FullPath);
 
@@ -119,6 +120,29 @@ namespace Raw_File_Uploader
             return "Not network deployed";
         }
 
+        private Boolean uploadfolder(string folderlocation) //upload invidual folder (for folder based data)
+        {
+            string zipPath = folderlocation;
+            //check if a temp patch exits, create one if not.
+            string temppath = System.IO.Directory.GetParent(folderlocation).FullName + @"\temp\";
+
+            bool exists = System.IO.Directory.Exists(temppath);
+
+            if (!exists)
+                System.IO.Directory.CreateDirectory(temppath);
+            var zip_filename =  new DirectoryInfo(folderlocation).Name;
+            zipPath = temppath + zip_filename+ ".zip";
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
+            }
+
+            ZipFile.CreateFromDirectory(folderlocation, zipPath);
+
+            multipleuploadfile(zipPath);
+            return true;
+
+        }
 
         private Boolean uploadmultiplefiles(string filelocations) //upload multiple files
         {
@@ -261,6 +285,8 @@ namespace Raw_File_Uploader
             request.AddParameter("record_name", uploadfilename);
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("record_description", txtdescription.Text);
+            request.AddParameter("file_vendor", filetype_combo.Text);
+
             add_info(request, uploadfilename);
 
             request.AddParameter("is_temp", TempData.Checked);
@@ -375,7 +401,7 @@ namespace Raw_File_Uploader
                 CheckFileExists = true,
                 CheckPathExists = true,
 
-                Filter = "Mass files (" + filetype.Text+ ")| "+filetype.Text+"|All files (*.*)|*.*",
+                Filter = "Mass files (" + file_extension.Text+ ")| "+ file_extension.Text+"|All files (*.*)|*.*",
                 RestoreDirectory = true,
                 Multiselect = true,
             };
@@ -431,13 +457,14 @@ namespace Raw_File_Uploader
             t.Start();
             // tell the watcher where to look
             watcher.Path = @foldertxt.Text;
-            watcher.Filter = filetype.Text;
+            watcher.IncludeSubdirectories = true;
+            watcher.Filter = file_extension.Text;
             // You must add this line - this allows events to fire.
             watcher.EnableRaisingEvents = triggle;
             if (monitor_on is true)
             {
-                output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
-                log.Debug($" start to monitor folder {foldertxt.Text} for {filetype.Text} ");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {file_extension.Text} ");
+                log.Debug($" start to monitor folder {foldertxt.Text} for {file_extension.Text} ");
             }
             else
             {                
@@ -469,14 +496,14 @@ namespace Raw_File_Uploader
         }
 
 
-        private bool IsLocatedByHomePage(FileInfo file)
+        private bool IsLocatedbyAcqprogam(FileInfo file)
         {
 
             var process_list = FileUtil.WhoIsLocking(file.FullName);
 
             foreach (Process lockprocess in process_list)
             {
-                if (lockprocess.ProcessName == "HomePage") { return true; }
+                if (lockprocess.ProcessName == acq_prog.Text) { return true; }
 
 
             }
@@ -488,13 +515,113 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
-
-
             if (check_connection(true))
-                uploadmultiplefiles(filepath.Text);
+            {
+                if (folder_uploading.Checked)
+                {
+                    if (foldertxt.Text.Split('.').ToList().LastOrDefault() == file_extension.Text.Split('.').ToList().LastOrDefault())
+                    {
+
+                        uploadfolder(foldertxt.Text);
+
+
+
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("selected folder doesn't match the uploading setting: " + file_extension.Text + " Folder.");
+
+                    }
+
+                }
+                else
+                {
+
+                    uploadmultiplefiles(filepath.Text);
+                }
+            }
+
+  
 
 
         }
+
+
+        private void OnMyComboBoxChanged(object sender, EventArgs e)
+        {
+            if (filetype_combo.SelectedIndex == 0) //Thermo raw file
+            {
+                file_extension.Text = "*.raw";
+                file_extension.Enabled = false;
+                acq_prog.Text = "HomePage";
+                acq_prog.Enabled = false;
+                folder_uploading.Checked = false;
+                folder_uploading.Enabled = false;
+                final_file.Text ="";
+                final_file.Enabled = false;
+            }
+            else if (filetype_combo.SelectedIndex == 1) //Agilent MIDAC (IMS)
+            {
+                file_extension.Text = "*.d";
+                acq_prog.Text = "Don't know yet";
+                folder_uploading.Checked = true;
+                final_file.Text = "AcqData\\Contents.xml";
+
+
+                file_extension.Enabled = false;
+                folder_uploading.Enabled = false;
+
+
+
+            }
+            else if (filetype_combo.SelectedIndex == 2) //Bruker TDF
+            {
+                acq_prog.Text = "Don't know yet";
+
+                file_extension.Text = "*.d";
+                folder_uploading.Checked = true;
+
+                file_extension.Enabled = false;
+                folder_uploading.Enabled = false;
+
+            }
+            else if (filetype_combo.SelectedIndex == 3) //Others
+            {
+
+                file_extension.Enabled = true;
+                acq_prog.Enabled = true;
+                folder_uploading.Enabled = true;
+                final_file.Enabled = true;
+
+            }
+
+
+        }
+
+        private void folderupload_checkboxchanged(object sender, EventArgs e)
+        {
+            if (folder_uploading.Checked)
+            {
+                final_file.Enabled = true;
+
+
+            }
+            else
+            {
+                final_file.Enabled = false;
+                final_file.Text = "";
+
+
+
+            }
+
+
+
+        }
+
+
+        //filetype_combo
 
 
         private void AlertCheck()
@@ -565,40 +692,64 @@ namespace Raw_File_Uploader
 
         }
         private void folder_uploader_Click(object sender, EventArgs e)
-                                {
+        {
             if (!isDirectoryValid(foldertxt.Text))
             {
                 MessageBox.Show("invalid folder");
 
                 return;
             }
-            string[] files = Directory.GetFiles(foldertxt.Text, "*.raw*");
-            string[] subDirs = Directory.GetDirectories(foldertxt.Text);
 
-            DialogResult dialogResult = MessageBox.Show($"There are about {files.Count()} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes && (check_connection(true))
-)
+    //upload multiple files
+            string[] files = Directory.GetFiles(foldertxt.Text, file_extension.Text);
+            if (folder_uploading.Checked)
             {
-                foreach (string file in files)
+                    //upload multiple folders
+                    string[] sub_directories = Directory.GetDirectories(foldertxt.Text, file_extension.Text);
+                    DialogResult dialogResult2 = MessageBox.Show($"There are {sub_directories.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
+                if (dialogResult2 == DialogResult.Yes)
                 {
-                    if (new FileInfo(file).Length > Int32.Parse(minisize.Text) * 1000000)
+                    foreach (string upload_folder in sub_directories)
                     {
-                        output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + file);
-                        multipleuploadfile(file);
-                    }
-                    else
-                    {
-                        output.AppendText(Environment.NewLine + DateTime.Now + " file:" + file + $"less than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded ");
+
+                     output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + upload_folder);
+                     uploadfolder(upload_folder); 
+                     
 
                     }
+
                 }
 
+
+
+
             }
+            else 
+            {
+                DialogResult dialogResult = MessageBox.Show($"There are {files.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                    {
+                        foreach (string file in files)
+                        {
+                            if (new FileInfo(file).Length > Int32.Parse(minisize.Text) * 1000000)
+                            {
+                                output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + file);
+                                multipleuploadfile(file);
+                            }
+                            else
+                            {
+                                output.AppendText(Environment.NewLine + DateTime.Now + " file:" + file + $"less than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded ");
+
+                            }
+                        }
+
+                    }
+             }
 
         }
 
 
- 
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {

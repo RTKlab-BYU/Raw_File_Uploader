@@ -42,7 +42,6 @@ namespace Raw_File_Uploader
             this.Explaination = new System.Windows.Forms.ToolTip(this.components);
             this.filepath = new System.Windows.Forms.TextBox();
             this.foldertxt = new System.Windows.Forms.TextBox();
-            this.filetype = new System.Windows.Forms.TextBox();
             this.TempData = new System.Windows.Forms.CheckBox();
             this.txtpassword = new System.Windows.Forms.TextBox();
             this.txtusername = new System.Windows.Forms.TextBox();
@@ -55,12 +54,20 @@ namespace Raw_File_Uploader
             this.is_extract = new System.Windows.Forms.CheckBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
+            this.final_file = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.folder_uploading = new System.Windows.Forms.CheckBox();
+            this.filetype_combo = new System.Windows.Forms.ComboBox();
+            this.file_extension = new System.Windows.Forms.TextBox();
+            this.acq_prog = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             this.txtdescription = new System.Windows.Forms.RichTextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
             this.txtprojectname = new System.Windows.Forms.TextBox();
             this.txtsamplename = new System.Windows.Forms.TextBox();
             this.filebutton = new System.Windows.Forms.Button();
@@ -118,12 +125,14 @@ namespace Raw_File_Uploader
             this.label31 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.minisize = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.whoislockmeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -186,7 +195,7 @@ namespace Raw_File_Uploader
             this.single_upload.Name = "single_upload";
             this.single_upload.Size = new System.Drawing.Size(214, 38);
             this.single_upload.TabIndex = 20;
-            this.single_upload.Text = "Manual upload files";
+            this.single_upload.Text = "Manual upload files/folder";
             this.single_upload.UseVisualStyleBackColor = true;
             this.single_upload.Click += new System.EventHandler(this.single_upload_Click);
             // 
@@ -195,9 +204,9 @@ namespace Raw_File_Uploader
             this.folder_uploader.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.folder_uploader.Location = new System.Drawing.Point(750, 619);
             this.folder_uploader.Name = "folder_uploader";
-            this.folder_uploader.Size = new System.Drawing.Size(167, 37);
+            this.folder_uploader.Size = new System.Drawing.Size(217, 37);
             this.folder_uploader.TabIndex = 21;
-            this.folder_uploader.Text = "Upload entire folder";
+            this.folder_uploader.Text = "Upload all records in folder";
             this.folder_uploader.UseVisualStyleBackColor = true;
             this.folder_uploader.Click += new System.EventHandler(this.folder_uploader_Click);
             // 
@@ -228,7 +237,7 @@ namespace Raw_File_Uploader
             // filepath
             // 
             this.filepath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.filepath.Location = new System.Drawing.Point(137, 67);
+            this.filepath.Location = new System.Drawing.Point(188, 64);
             this.filepath.Name = "filepath";
             this.filepath.Size = new System.Drawing.Size(526, 23);
             this.filepath.TabIndex = 12;
@@ -237,26 +246,17 @@ namespace Raw_File_Uploader
             // foldertxt
             // 
             this.foldertxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.foldertxt.Location = new System.Drawing.Point(137, 22);
+            this.foldertxt.Location = new System.Drawing.Point(188, 19);
             this.foldertxt.Name = "foldertxt";
             this.foldertxt.Size = new System.Drawing.Size(526, 23);
             this.foldertxt.TabIndex = 10;
             this.Explaination.SetToolTip(this.foldertxt, "The instrument data acquisition folder");
             // 
-            // filetype
-            // 
-            this.filetype.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.filetype.Location = new System.Drawing.Point(688, 107);
-            this.filetype.Name = "filetype";
-            this.filetype.Size = new System.Drawing.Size(118, 23);
-            this.filetype.TabIndex = 18;
-            this.Explaination.SetToolTip(this.filetype, "File type to monitor");
-            // 
             // TempData
             // 
             this.TempData.AutoSize = true;
             this.TempData.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TempData.Location = new System.Drawing.Point(605, 161);
+            this.TempData.Location = new System.Drawing.Point(661, 109);
             this.TempData.Name = "TempData";
             this.TempData.Size = new System.Drawing.Size(134, 21);
             this.TempData.TabIndex = 28;
@@ -371,15 +371,22 @@ namespace Raw_File_Uploader
             // Run_info
             // 
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
+            this.Run_info.Controls.Add(this.final_file);
+            this.Run_info.Controls.Add(this.label38);
+            this.Run_info.Controls.Add(this.folder_uploading);
+            this.Run_info.Controls.Add(this.filetype_combo);
+            this.Run_info.Controls.Add(this.file_extension);
+            this.Run_info.Controls.Add(this.acq_prog);
+            this.Run_info.Controls.Add(this.label37);
+            this.Run_info.Controls.Add(this.label36);
+            this.Run_info.Controls.Add(this.label23);
             this.Run_info.Controls.Add(this.TempData);
             this.Run_info.Controls.Add(this.txtdescription);
             this.Run_info.Controls.Add(this.label24);
             this.Run_info.Controls.Add(this.label20);
             this.Run_info.Controls.Add(this.label21);
             this.Run_info.Controls.Add(this.label22);
-            this.Run_info.Controls.Add(this.label23);
             this.Run_info.Controls.Add(this.txtprojectname);
-            this.Run_info.Controls.Add(this.filetype);
             this.Run_info.Controls.Add(this.txtsamplename);
             this.Run_info.Controls.Add(this.filebutton);
             this.Run_info.Controls.Add(this.folderbutton);
@@ -393,6 +400,97 @@ namespace Raw_File_Uploader
             this.Run_info.Size = new System.Drawing.Size(1004, 307);
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
+            // 
+            // final_file
+            // 
+            this.final_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.final_file.Location = new System.Drawing.Point(794, 275);
+            this.final_file.Name = "final_file";
+            this.final_file.Size = new System.Drawing.Size(179, 23);
+            this.final_file.TabIndex = 31;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(659, 275);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(60, 17);
+            this.label38.TabIndex = 30;
+            this.label38.Text = "Final file";
+            // 
+            // folder_uploading
+            // 
+            this.folder_uploading.AutoSize = true;
+            this.folder_uploading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.folder_uploading.Location = new System.Drawing.Point(657, 246);
+            this.folder_uploading.Name = "folder_uploading";
+            this.folder_uploading.Size = new System.Drawing.Size(133, 21);
+            this.folder_uploading.TabIndex = 28;
+            this.folder_uploading.Text = "folder_uploading";
+            this.folder_uploading.UseVisualStyleBackColor = true;
+            this.folder_uploading.CheckStateChanged += new System.EventHandler(this.folderupload_checkboxchanged);
+            // 
+            // filetype_combo
+            // 
+            this.filetype_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.filetype_combo.FormattingEnabled = true;
+            this.filetype_combo.Items.AddRange(new object[] {
+            "Thermo_Raw file(.raw)",
+            "Agilent MIDAC (IMS) (.D)",
+            "Bruker TDF (.D)",
+            "Others"});
+            this.filetype_combo.Location = new System.Drawing.Point(745, 157);
+            this.filetype_combo.Name = "filetype_combo";
+            this.filetype_combo.Size = new System.Drawing.Size(228, 21);
+            this.filetype_combo.TabIndex = 29;
+            this.filetype_combo.SelectedIndexChanged += new System.EventHandler(this.OnMyComboBoxChanged);
+            // 
+            // file_extension
+            // 
+            this.file_extension.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.file_extension.Location = new System.Drawing.Point(794, 185);
+            this.file_extension.Name = "file_extension";
+            this.file_extension.Size = new System.Drawing.Size(179, 23);
+            this.file_extension.TabIndex = 18;
+            // 
+            // acq_prog
+            // 
+            this.acq_prog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.acq_prog.Location = new System.Drawing.Point(794, 214);
+            this.acq_prog.Name = "acq_prog";
+            this.acq_prog.Size = new System.Drawing.Size(179, 23);
+            this.acq_prog.TabIndex = 18;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.Location = new System.Drawing.Point(658, 220);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(123, 17);
+            this.label37.TabIndex = 17;
+            this.label37.Text = "Acq progam name";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(659, 185);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(94, 17);
+            this.label36.TabIndex = 17;
+            this.label36.Text = "File extension";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(617, 158);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(131, 17);
+            this.label23.TabIndex = 17;
+            this.label23.Text = "File Type Configure";
             // 
             // txtdescription
             // 
@@ -425,7 +523,7 @@ namespace Raw_File_Uploader
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(296, 104);
+            this.label21.Location = new System.Drawing.Point(295, 107);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(93, 17);
             this.label21.TabIndex = 15;
@@ -435,26 +533,16 @@ namespace Raw_File_Uploader
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(16, 104);
+            this.label22.Location = new System.Drawing.Point(14, 104);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(96, 17);
+            this.label22.Size = new System.Drawing.Size(95, 17);
             this.label22.TabIndex = 16;
-            this.label22.Text = "Sample Name";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(616, 107);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(66, 17);
-            this.label23.TabIndex = 17;
-            this.label23.Text = "File Type";
+            this.label22.Text = "Record Name";
             // 
             // txtprojectname
             // 
             this.txtprojectname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtprojectname.Location = new System.Drawing.Point(394, 101);
+            this.txtprojectname.Location = new System.Drawing.Point(394, 107);
             this.txtprojectname.Name = "txtprojectname";
             this.txtprojectname.Size = new System.Drawing.Size(213, 23);
             this.txtprojectname.TabIndex = 21;
@@ -470,7 +558,7 @@ namespace Raw_File_Uploader
             // filebutton
             // 
             this.filebutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.filebutton.Location = new System.Drawing.Point(687, 60);
+            this.filebutton.Location = new System.Drawing.Point(738, 57);
             this.filebutton.Name = "filebutton";
             this.filebutton.Size = new System.Drawing.Size(108, 37);
             this.filebutton.TabIndex = 13;
@@ -481,7 +569,7 @@ namespace Raw_File_Uploader
             // folderbutton
             // 
             this.folderbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folderbutton.Location = new System.Drawing.Point(682, 12);
+            this.folderbutton.Location = new System.Drawing.Point(733, 9);
             this.folderbutton.Name = "folderbutton";
             this.folderbutton.Size = new System.Drawing.Size(108, 33);
             this.folderbutton.TabIndex = 11;
@@ -493,7 +581,7 @@ namespace Raw_File_Uploader
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(16, 70);
+            this.label18.Location = new System.Drawing.Point(7, 67);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(93, 17);
             this.label18.TabIndex = 14;
@@ -503,11 +591,11 @@ namespace Raw_File_Uploader
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(16, 25);
+            this.label19.Location = new System.Drawing.Point(3, 25);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(115, 17);
+            this.label19.Size = new System.Drawing.Size(181, 17);
             this.label19.TabIndex = 9;
-            this.label19.Text = "Folder to Monitor";
+            this.label19.Text = "Folder to Monitor or Upload";
             // 
             // Other_info
             // 
@@ -1035,6 +1123,15 @@ namespace Raw_File_Uploader
             this.minisize.Size = new System.Drawing.Size(153, 23);
             this.minisize.TabIndex = 11;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(338, 466);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(406, 165);
+            this.groupBox1.TabIndex = 31;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "MS Vendor setting";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1080,9 +1177,17 @@ namespace Raw_File_Uploader
             // 
             // toolsToolStripMenuItem
             // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whoislockmeToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // whoislockmeToolStripMenuItem
+            // 
+            this.whoislockmeToolStripMenuItem.Name = "whoislockmeToolStripMenuItem";
+            this.whoislockmeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.whoislockmeToolStripMenuItem.Text = "Whoislockme";
             // 
             // helpToolStripMenuItem
             // 
@@ -1141,6 +1246,7 @@ namespace Raw_File_Uploader
             this.Controls.Add(this.label11);
             this.Controls.Add(this.output);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -1184,9 +1290,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtprojectname;
-        private System.Windows.Forms.TextBox filetype;
         private System.Windows.Forms.TextBox txtsamplename;
         private System.Windows.Forms.Button filebutton;
         private System.Windows.Forms.Button folderbutton;
@@ -1260,6 +1364,17 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox delimiter;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox filetype_combo;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.CheckBox folder_uploading;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox acq_prog;
+        private System.Windows.Forms.TextBox file_extension;
+        private System.Windows.Forms.ToolStripMenuItem whoislockmeToolStripMenuItem;
+        private System.Windows.Forms.TextBox final_file;
+        private System.Windows.Forms.Label label38;
     }
 }
 
