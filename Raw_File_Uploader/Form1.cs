@@ -30,6 +30,7 @@ namespace Raw_File_Uploader
             InitializeComponent();
             txtserver.Text = "http://127.0.0.1:8000//files/api/"; 
             minisize.Text = "100";
+            upload_delay.Text = "10";
             alert_threshold.Text = "30";
             frequency_threshold.Text = "8";
             bypasskword.Text = "ignore";
@@ -47,61 +48,107 @@ namespace Raw_File_Uploader
 
             watcher.Changed += (s, e) =>
             {
-                FileInfo file = new FileInfo(e.FullPath);
+                FileInfo file_obj = new FileInfo(e.FullPath);
                 System.Threading.Thread.Sleep(10000);
                 lastchangetime = DateTime.Now;
 
-                if (monitor_on && !IsLocatedbyAcqprogam(file))
+
+                if (folder_uploading.Checked)
+
+
                 {
-                    FileInfo file_info = new FileInfo(e.FullPath);
-
-
-                        try
+                    String folder_name =e.Name.Split('\\').ToList()[0];
+                    if (monitor_on && !IsLocatedbyAcqprogam(file_obj))
                     {
-                        if (!file_info.Name.Contains(bypasskword.Text))
+                        try
                         {
 
-                            if (new FileInfo(e.FullPath).Length > Int32.Parse(minisize.Text) * 1000000 && new FileInfo(e.FullPath).Length < long.Parse(max_size.Text) * 1000000)   
+                            if (!file_obj.Name.Contains(bypasskword.Text))  //for file based
                             {
-                                if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
-                                {
 
-                                    context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded"), s);
-                                    context.Post(val => filepath.Text = e.FullPath, s);
-                                    log.Debug($"File /{ e.Name}/ with final size { new FileInfo(e.FullPath).Length / 1000000} MB will be uploaded");
+                                    if (lastupload != folder_name | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                                    {
 
-
-                                    context.Post(val => multipleuploadfile(filepath.Text), s);
-
-                                    lastupload = e.FullPath;
-                                    lastuploadtime = DateTime.Now;
-                                }
+                                        context.Post(val => output.AppendText(Environment.NewLine + $"File /{folder_name}/  will be uploaded"), s);
+                                        log.Debug(Environment.NewLine + $"File /{folder_name}/  will be uploaded");
+                                        if (upload_delay.Text != null)
+                                            Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
+                                        context.Post(val => uploadfolder(foldertxt.Text+ '\\' + folder_name), s);
+                                        lastupload = folder_name;
+                                        lastuploadtime = DateTime.Now;
+                                    }
 
                             }
                             else
                             {
-                                context.Post(val => output.AppendText(Environment.NewLine + $"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded"), s);
-                                log.Debug($"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded");
-
-
+                                context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
+                                log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
                             }
-                        }
-                        else
-                        {
-                            context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
-                            log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
-                        }
 
-                    }
+                        }
                         catch (Exception e1)
                         {
                             context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
                             log.Error(e1);
-
                         }
-                   
+
+                    }
+
+
+
+
+
 
                 }
+
+
+                else //file based
+                {
+                    if (monitor_on && !IsLocatedbyAcqprogam(file_obj))
+                    {
+                        try
+                        {
+
+                            if (!file_obj.Name.Contains(bypasskword.Text))  //for file based
+                            {
+
+                                if (file_obj.Length > Int32.Parse(minisize.Text) * 1000000 && file_obj.Length < long.Parse(max_size.Text) * 1000000)
+                                {
+                                    if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                                    {
+
+                                        context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {file_obj.Length / 1000000} MB will be uploaded"), s);
+                                        context.Post(val => filepath.Text = e.FullPath, s);
+                                        log.Debug($"File /{e.Name}/ with final size {file_obj.Length / 1000000} MB will be uploaded");
+                                        if (upload_delay.Text != null)
+                                            Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
+                                        context.Post(val => multipleuploadfile(filepath.Text), s);
+                                        lastupload = e.FullPath;
+                                        lastuploadtime = DateTime.Now;
+                                    }
+                                }
+                                else
+                                {
+                                    context.Post(val => output.AppendText(Environment.NewLine + $"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded"), s);
+                                    log.Debug($"{e.Name} final size is {new FileInfo(e.FullPath).Length}, smaller than setting {Int32.Parse(minisize.Text) * 1000000} or bigger than setting {Int32.Parse(max_size.Text) * 1000000} , will NOT be uploaded");
+                                }
+                            }
+                            else
+                            {
+                                context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
+                                log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
+                            }
+
+                        }
+                        catch (Exception e1)
+                        {
+                            context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
+                            log.Error(e1);
+                        }
+
+                    }
+                }
+            
 
             };
 
@@ -174,7 +221,14 @@ namespace Raw_File_Uploader
 
         {
 
-            if  (!uploadfile(filelocation))
+            if (!check_connection(true))
+            {
+                output.AppendText($"Connection to server failed");
+
+                return false;
+
+            }
+                if (!uploadfile(filelocation))
 
             {
                 System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
@@ -299,9 +353,11 @@ namespace Raw_File_Uploader
 
 
             if (!nocopy.Checked)
-            {
                 File.Delete(newfilelocation);
-            }
+            
+            if (folder_uploading.Checked) //delete the zipfile if upload folder
+                File.Delete(filelocation);
+
             if (response.StatusCode == HttpStatusCode.Created)
                     {
                 output.Select(output.TextLength, 0);
@@ -457,8 +513,19 @@ namespace Raw_File_Uploader
             t.Start();
             // tell the watcher where to look
             watcher.Path = @foldertxt.Text;
-            watcher.IncludeSubdirectories = true;
-            watcher.Filter = file_extension.Text;
+            if (folder_uploading.Checked)
+            {
+                watcher.IncludeSubdirectories = true;
+                watcher.Filter = final_file.Text;
+
+            }
+
+            else
+            {
+                watcher.Filter = file_extension.Text;
+
+
+            }
             // You must add this line - this allows events to fire.
             watcher.EnableRaisingEvents = triggle;
             if (monitor_on is true)
@@ -515,8 +582,6 @@ namespace Raw_File_Uploader
 
         private void single_upload_Click(object sender, EventArgs e)
         {
-            if (check_connection(true))
-            {
                 if (folder_uploading.Checked)
                 {
                     if (foldertxt.Text.Split('.').ToList().LastOrDefault() == file_extension.Text.Split('.').ToList().LastOrDefault())
@@ -540,7 +605,7 @@ namespace Raw_File_Uploader
 
                     uploadmultiplefiles(filepath.Text);
                 }
-            }
+            
 
   
 
@@ -566,9 +631,9 @@ namespace Raw_File_Uploader
                 file_extension.Text = "*.d";
                 acq_prog.Text = "Don't know yet";
                 folder_uploading.Checked = true;
-                final_file.Text = "AcqData\\Contents.xml";
+                final_file.Text = "Contents.xml";
 
-
+                acq_prog.Enabled = true;
                 file_extension.Enabled = false;
                 folder_uploading.Enabled = false;
 
@@ -942,6 +1007,11 @@ namespace Raw_File_Uploader
 
         }
 
+        private void whoislockmeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            file_lock Filelockform = new file_lock();
+            Filelockform.Show();
+        }
 
     }
 

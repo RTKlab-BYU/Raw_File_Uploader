@@ -54,11 +54,13 @@ namespace Raw_File_Uploader
             this.is_extract = new System.Windows.Forms.CheckBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
+            this.label39 = new System.Windows.Forms.Label();
             this.final_file = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.folder_uploading = new System.Windows.Forms.CheckBox();
             this.filetype_combo = new System.Windows.Forms.ComboBox();
             this.file_extension = new System.Windows.Forms.TextBox();
+            this.upload_delay = new System.Windows.Forms.TextBox();
             this.acq_prog = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
@@ -371,11 +373,13 @@ namespace Raw_File_Uploader
             // Run_info
             // 
             this.Run_info.BackColor = System.Drawing.SystemColors.Control;
+            this.Run_info.Controls.Add(this.label39);
             this.Run_info.Controls.Add(this.final_file);
             this.Run_info.Controls.Add(this.label38);
             this.Run_info.Controls.Add(this.folder_uploading);
             this.Run_info.Controls.Add(this.filetype_combo);
             this.Run_info.Controls.Add(this.file_extension);
+            this.Run_info.Controls.Add(this.upload_delay);
             this.Run_info.Controls.Add(this.acq_prog);
             this.Run_info.Controls.Add(this.label37);
             this.Run_info.Controls.Add(this.label36);
@@ -401,12 +405,23 @@ namespace Raw_File_Uploader
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
             // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.Location = new System.Drawing.Point(787, 249);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(125, 17);
+            this.label39.TabIndex = 32;
+            this.label39.Text = "Upload Delay(sec)";
+            this.Explaination.SetToolTip(this.label39, "delay between trigger happended and file uploading (secs)");
+            // 
             // final_file
             // 
             this.final_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.final_file.Location = new System.Drawing.Point(794, 275);
             this.final_file.Name = "final_file";
-            this.final_file.Size = new System.Drawing.Size(179, 23);
+            this.final_file.Size = new System.Drawing.Size(190, 23);
             this.final_file.TabIndex = 31;
             // 
             // label38
@@ -423,7 +438,7 @@ namespace Raw_File_Uploader
             // 
             this.folder_uploading.AutoSize = true;
             this.folder_uploading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folder_uploading.Location = new System.Drawing.Point(657, 246);
+            this.folder_uploading.Location = new System.Drawing.Point(648, 248);
             this.folder_uploading.Name = "folder_uploading";
             this.folder_uploading.Size = new System.Drawing.Size(133, 21);
             this.folder_uploading.TabIndex = 28;
@@ -442,7 +457,7 @@ namespace Raw_File_Uploader
             "Others"});
             this.filetype_combo.Location = new System.Drawing.Point(745, 157);
             this.filetype_combo.Name = "filetype_combo";
-            this.filetype_combo.Size = new System.Drawing.Size(228, 21);
+            this.filetype_combo.Size = new System.Drawing.Size(239, 21);
             this.filetype_combo.TabIndex = 29;
             this.filetype_combo.SelectedIndexChanged += new System.EventHandler(this.OnMyComboBoxChanged);
             // 
@@ -451,15 +466,23 @@ namespace Raw_File_Uploader
             this.file_extension.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.file_extension.Location = new System.Drawing.Point(794, 185);
             this.file_extension.Name = "file_extension";
-            this.file_extension.Size = new System.Drawing.Size(179, 23);
+            this.file_extension.Size = new System.Drawing.Size(190, 23);
             this.file_extension.TabIndex = 18;
+            // 
+            // upload_delay
+            // 
+            this.upload_delay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.upload_delay.Location = new System.Drawing.Point(918, 246);
+            this.upload_delay.Name = "upload_delay";
+            this.upload_delay.Size = new System.Drawing.Size(66, 23);
+            this.upload_delay.TabIndex = 18;
             // 
             // acq_prog
             // 
             this.acq_prog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.acq_prog.Location = new System.Drawing.Point(794, 214);
             this.acq_prog.Name = "acq_prog";
-            this.acq_prog.Size = new System.Drawing.Size(179, 23);
+            this.acq_prog.Size = new System.Drawing.Size(190, 23);
             this.acq_prog.TabIndex = 18;
             // 
             // label37
@@ -1188,6 +1211,7 @@ namespace Raw_File_Uploader
             this.whoislockmeToolStripMenuItem.Name = "whoislockmeToolStripMenuItem";
             this.whoislockmeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.whoislockmeToolStripMenuItem.Text = "Whoislockme";
+            this.whoislockmeToolStripMenuItem.Click += new System.EventHandler(this.whoislockmeToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1375,6 +1399,8 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ToolStripMenuItem whoislockmeToolStripMenuItem;
         private System.Windows.Forms.TextBox final_file;
         private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox upload_delay;
     }
 }
 
