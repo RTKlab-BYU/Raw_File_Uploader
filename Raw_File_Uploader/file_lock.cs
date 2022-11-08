@@ -52,7 +52,7 @@ namespace Raw_File_Uploader
                         using (StreamWriter sw = File.AppendText(path))
                         {
 
-                            sw.WriteLine((Environment.NewLine + DateTime.Now + $" file {filepath.Text} is loced by the following processes:" + FileUtil.WhoIsLocking(filepath.Text).FirstOrDefault().ProcessName));
+                            sw.WriteLine((Environment.NewLine + DateTime.Now + $" file {filepath.Text} is locked by the following processes:" + FileUtil.WhoIsLocking(filepath.Text).FirstOrDefault().ProcessName));
                         }
                     int delay;
                     if (check_freq.Text != "")

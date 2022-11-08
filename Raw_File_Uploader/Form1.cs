@@ -489,10 +489,12 @@ namespace Raw_File_Uploader
             if (folder_uploading.Checked)
             {
                 final_file.Enabled = true;
+                filepath.Enabled = false;
             }
             else
             {
                 final_file.Enabled = false;
+                filepath.Enabled = true;
                 final_file.Text = "";
             }
         }
@@ -740,6 +742,7 @@ namespace Raw_File_Uploader
             Filelockform.Show();
 
         }
+
 
     }
 
