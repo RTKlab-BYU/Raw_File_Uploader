@@ -34,95 +34,71 @@ namespace Raw_File_Uploader
             alert_threshold.Text = "30";
             frequency_threshold.Text = "8";
             bypasskword.Text = "ignore";
-            max_size.Text = "2200";
+            max_size.Text = "5000";
             filetype_combo.SelectedIndex = 0;
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
             log.Debug("Uploader started");
             var context = SynchronizationContext.Current; // for cross thread update to UI
-
-
-
-
             version_number.Text = GetPublishedVersion();
 
             watcher.Changed += (s, e) =>
             {
                 FileInfo file_obj = new FileInfo(e.FullPath);
-                System.Threading.Thread.Sleep(10000);
+                if (upload_delay.Text != null)
+                    Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
                 lastchangetime = DateTime.Now;
 
-
-                if (folder_uploading.Checked)
-
-
+                if (folder_uploading.Checked) //for folder based system
                 {
-                    String folder_name =e.Name.Split('\\').ToList()[0];
+                    String folder_name = e.Name.Split('\\').ToList()[0];
                     if (monitor_on && !IsLocatedbyAcqprogam(file_obj))
                     {
                         try
                         {
-
-                            if (!file_obj.Name.Contains(bypasskword.Text))  //for file based
+                            if (!file_obj.Name.Contains(bypasskword.Text))
                             {
-
-                                    if (lastupload != folder_name | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
-                                    {
-
-                                        context.Post(val => output.AppendText(Environment.NewLine + $"File /{folder_name}/  will be uploaded"), s);
-                                        log.Debug(Environment.NewLine + $"File /{folder_name}/  will be uploaded");
-                                        if (upload_delay.Text != null)
-                                            Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
-                                        context.Post(val => uploadfolder(foldertxt.Text+ '\\' + folder_name), s);
-                                        lastupload = folder_name;
-                                        lastuploadtime = DateTime.Now;
-                                    }
-
+                                if (lastupload != folder_name | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+                                {
+                                    context.Post(val => output.AppendText(Environment.NewLine + $"File /{folder_name}/  will be uploaded"), s);
+                                    log.Debug(Environment.NewLine + $"File /{folder_name}/  will be uploaded");
+                                    System.Threading.Thread.Sleep(5000);
+                                    context.Post(val => uploadfolder(foldertxt.Text + '\\' + folder_name), s);
+                                    lastupload = folder_name;
+                                    lastuploadtime = DateTime.Now;
+                                }
                             }
                             else
                             {
                                 context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
                                 log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
                             }
-
                         }
                         catch (Exception e1)
                         {
                             context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
                             log.Error(e1);
                         }
-
                     }
-
-
-
-
-
-
                 }
-
-
-                else //file based
+                else //file based system
                 {
                     if (monitor_on && !IsLocatedbyAcqprogam(file_obj))
                     {
                         try
                         {
-
-                            if (!file_obj.Name.Contains(bypasskword.Text))  //for file based
+                            if (!file_obj.Name.Contains(bypasskword.Text))
                             {
-
                                 if (file_obj.Length > Int32.Parse(minisize.Text) * 1000000 && file_obj.Length < long.Parse(max_size.Text) * 1000000)
                                 {
                                     if (lastupload != e.FullPath | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
                                     {
-
                                         context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ with final size {file_obj.Length / 1000000} MB will be uploaded"), s);
                                         context.Post(val => filepath.Text = e.FullPath, s);
                                         log.Debug($"File /{e.Name}/ with final size {file_obj.Length / 1000000} MB will be uploaded");
                                         if (upload_delay.Text != null)
                                             Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
-                                        context.Post(val => multipleuploadfile(filepath.Text), s);
+                                        context.Post(val => uploadfile(filepath.Text), s);
                                         lastupload = e.FullPath;
                                         lastuploadtime = DateTime.Now;
                                     }
@@ -138,22 +114,15 @@ namespace Raw_File_Uploader
                                 context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
                                 log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
                             }
-
                         }
                         catch (Exception e1)
                         {
                             context.Post(val => output.AppendText(Environment.NewLine + "error detected" + e1), s);
                             log.Error(e1);
                         }
-
                     }
                 }
-            
-
             };
-
-
-
         }
 
 
@@ -161,51 +130,43 @@ namespace Raw_File_Uploader
         {
             if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             {
-                return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.
-                    CurrentVersion.ToString();
+                return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
             return "Not network deployed";
         }
 
         private Boolean uploadfolder(string folderlocation) //upload invidual folder (for folder based data)
         {
-            string zipPath = folderlocation;
-            //check if a temp patch exits, create one if not.
-            string temppath = System.IO.Directory.GetParent(folderlocation).FullName + @"\temp\";
-
-            bool exists = System.IO.Directory.Exists(temppath);
-
+            //zip file will be placed inside temp/, check if a temp patch exits, create one if not.
+            string temppath = Directory.GetParent(folderlocation).FullName + @"\temp\";
+            bool exists = Directory.Exists(temppath);
             if (!exists)
-                System.IO.Directory.CreateDirectory(temppath);
+                Directory.CreateDirectory(temppath);
             var zip_filename =  new DirectoryInfo(folderlocation).Name;
-            zipPath = temppath + zip_filename+ ".zip";
+            string zipPath = temppath + zip_filename+ ".zip";
             if (File.Exists(zipPath))
             {
                 File.Delete(zipPath);
             }
-
             ZipFile.CreateFromDirectory(folderlocation, zipPath);
-
-            multipleuploadfile(zipPath);
+            uploadfile(zipPath);
             return true;
-
         }
 
         private Boolean uploadmultiplefiles(string filelocations) //upload multiple files
         {
             List<string> filelist = filelocations.Split(',').ToList();
             foreach (String file in filelist)
-                if (file != "") { 
+                if (file != "") 
+                { 
                     if (!File.Exists(file))
                     {
                         MessageBox.Show("invalid file");
-
                     }
-                else
-                {
-                    multipleuploadfile(file);
-
-                }
+                    else
+                    {
+                        uploadfile(file);
+                    }
                 }
             return true;
 
@@ -217,114 +178,72 @@ namespace Raw_File_Uploader
 
 
 
-        private Boolean multipleuploadfile(string filelocation) //enable multiple uploading in case one  failed
 
-        {
-
-            if (!check_connection(true))
-            {
-                output.AppendText($"Connection to server failed");
-
-                return false;
-
-            }
-                if (!uploadfile(filelocation))
-
-            {
-                System.Threading.Thread.Sleep(180000); //wait 3 min before upload again
-                if (!uploadfile(filelocation))
-                {
-                        output.Select(output.TextLength, 0);
-                        output.SelectionColor = Color.Red;
-                        output.AppendText($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
-                        output.SelectionColor = Color.Black;
-                        log.Error($" {Path.GetFileNameWithoutExtension(filelocation)} uploading failed twice, need to be uploaded manually");
-                    
-                }
-
-            }
-
-            return true;
-
-
-        }
 
 
         private Boolean uploadfile(string filelocation)
         {
+            if (!check_connection(true))
+            {
+                output.AppendText($"Connection to server failed");
+                return false;
+            }
             output.AppendText(Environment.NewLine + DateTime.Now + $" Start Uploading {filelocation}");
             string newfilelocation;
             if (nocopy.Checked) {
                 newfilelocation = filelocation;
-
             }
             else
             {
-
                 newfilelocation = Path.GetDirectoryName(filelocation) + @"\temp\" + Path.GetFileName(filelocation);
-
                 //check if a temp patch exits, create one if not.
                 string temppath = Path.GetDirectoryName(filelocation) + @"\temp\";
-
-                bool exists = System.IO.Directory.Exists(temppath);
-
+                bool exists = Directory.Exists(temppath);
                 if (!exists)
-                    System.IO.Directory.CreateDirectory(temppath);
-
+                    Directory.CreateDirectory(temppath);
                 if (File.Exists(newfilelocation))
                 {
                     File.Delete(newfilelocation);
                 }
-
                 try //for somereason, copy file failed sometimes....
                 {
                     File.Copy(filelocation, newfilelocation, true);
-
                 }
-
                 catch
                 {
                     output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploading failed once will try again");
-
-                    System.Threading.Thread.Sleep(30000);
-
-
+                    Thread.Sleep(30000);
                     try //2nd try
                     {
                         File.Copy(filelocation, newfilelocation, true);
-
                     }
-
                     catch
                     {
                         output.AppendText(Environment.NewLine + DateTime.Now + $" {newfilelocation} uploading failed second time");
 
                         return false;
                     }
-                    // Todo: Additional recovery here,
-                    // like telling the calling code to re-open the file selection dialog
                 }
 
             }
 
-            var client = new RestClient(txtserver.Text + "SampleRecord/");
-            //client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
-
+            var options = new RestClientOptions(txtserver.Text + "SampleRecord/")
+            {
+                ThrowOnAnyError = true,
+                MaxTimeout = 1000*60*20  //20 min
+            };
+            var client = new RestClient(options);
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
-
             if (!File.Exists(newfilelocation))
             {
                 MessageBox.Show("Please check file location");
                 return false;
             }
-
             var request = new RestRequest();
-
             request.Method = Method.Post;
             request.AddHeader("Accept", "application/json");
             //request.Parameters.clear();
             request.AddHeader("Content-Type", "multipart/form-data");
-
             string uploadfilename;
             if (String.IsNullOrEmpty(txtsamplename.Text))
             {
@@ -333,31 +252,20 @@ namespace Raw_File_Uploader
             else
             {
                 uploadfilename = txtsamplename.Text;
-
             }
-
             request.AddParameter("record_name", uploadfilename);
             request.AddParameter("project_name", txtprojectname.Text);
             request.AddParameter("record_description", txtdescription.Text);
             request.AddParameter("file_vendor", filetype_combo.Text);
-
             add_info(request, uploadfilename);
-
             request.AddParameter("is_temp", TempData.Checked);
             request.AddFile("temp_rawfile", newfilelocation);
-            //request.ReadWriteTimeout = 2147483647;
             request.Timeout = 2147483647;
             var response = client.Execute(request);
-
-
-
-
             if (!nocopy.Checked)
                 File.Delete(newfilelocation);
-
             if (folder_uploading.Checked) //delete the zipfile if upload folder
                 File.Delete(filelocation);
-
             if (response.StatusCode == HttpStatusCode.Created)
             {
                 output.Select(output.TextLength, 0);
@@ -369,7 +277,6 @@ namespace Raw_File_Uploader
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
-
                 return true;
             }
             else
@@ -377,19 +284,14 @@ namespace Raw_File_Uploader
                 output.AppendText(Environment.NewLine + response.Content);
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Orange;
-                output.AppendText($" {filelocation} upload failed, will try again in 3 min if failed first time");
+                output.AppendText($" {filelocation} upload failed,please try again manual late");
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
-                log.Warn($" {filelocation} upload failed, will try again in 3 min if failed first time");
-
+                log.Warn($" {filelocation}  upload failed,please try again manual late");
                 return false;
             }
-
-
         }
-
-
 
         private RestRequest add_info(RestRequest request,String file_name)
         {
@@ -399,7 +301,6 @@ namespace Raw_File_Uploader
                   factor_4_value, factor_5_name, factor_5_value,
                   factor_6_name, factor_6_value, factor_7_name,
                   factor_7_value, factor_8_name, factor_8_value };
-
             foreach (TextBox s in fieldArray)
             {
                 if ((is_extract.Checked) & (s.Text.StartsWith("[")) & (s.Text.EndsWith("]")))
@@ -407,36 +308,24 @@ namespace Raw_File_Uploader
                     List<string> listStrLineElements = file_name.Split(delimiter.Text.ToCharArray()[0]).ToList();
                     String resultString = Regex.Match(s.Text, @"-?\d+").Value;
                     try
-                    {
-                        
-                    request.AddParameter(s.Name, listStrLineElements[Int32.Parse(resultString)]);
-
+                    {                        
+                        request.AddParameter(s.Name, listStrLineElements[Int32.Parse(resultString)]);
                     }
-                    catch(Exception ex) {
+                    catch(Exception ex) 
+                    {
                         log.Error(ex.Message);
-                       }
-
-
+                    }
                 }
                 else
                     request.AddParameter(s.Name, s.Text);
-
-
             }
-
-
             return request;
-
         }
 
-
-
         private void folderbutton_Click_1(object sender, EventArgs e)
-
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
             folderDlg.ShowNewFolderButton = true;
-            // Show the FolderBrowserDialog.  
             DialogResult result = folderDlg.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -444,18 +333,13 @@ namespace Raw_File_Uploader
             }
         }
 
-
-
-
         private void filebutton_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
                 Title = "Browse Mass Files",
-
                 CheckFileExists = true,
                 CheckPathExists = true,
-
                 Filter = "Mass files (" + file_extension.Text+ ")| "+ file_extension.Text+"|All files (*.*)|*.*",
                 RestoreDirectory = true,
                 Multiselect = true,
@@ -465,8 +349,6 @@ namespace Raw_File_Uploader
             {
                 foreach (String file in openFileDialog1.FileNames) 
                     filepath.AppendText(file+",");
-                    
-
             }
         }
 
@@ -475,18 +357,15 @@ namespace Raw_File_Uploader
             if (!isDirectoryValid(foldertxt.Text))
             {
                 MessageBox.Show("invalid folder");
-
                 return;
             }
-
-
             if (monitor_on is true)
-            { watchtriggle(false, Color.Red); }
+                watchtriggle(false, Color.Red);
             else
             {
                 if (check_connection(true))
-                watchtriggle(true, Color.Green); }
-
+                    watchtriggle(true, Color.Green); 
+            }
         }
 
         private bool isDirectoryValid(string path)
@@ -500,10 +379,9 @@ namespace Raw_File_Uploader
                 return false;
             }
         }
+
         void watchtriggle(Boolean triggle, Color btcolor)
         {
-
-
             monitor_on = triggle;
             monitor.BackColor = btcolor;
             Thread t = new Thread(AlertCheck);
@@ -516,17 +394,12 @@ namespace Raw_File_Uploader
             {
                 watcher.IncludeSubdirectories = true;
                 watcher.Filter = final_file.Text;
-
             }
-
             else
             {
                 watcher.Filter = file_extension.Text;
-
-
             }
-            // You must add this line - this allows events to fire.
-            watcher.EnableRaisingEvents = triggle;
+                watcher.EnableRaisingEvents = triggle;
             if (monitor_on is true)
             {
                 output.AppendText(Environment.NewLine + DateTime.Now + $" start to monitor folder {foldertxt.Text} for {file_extension.Text} ");
@@ -535,48 +408,18 @@ namespace Raw_File_Uploader
             else
             {                
                 t.Abort();
-
                 output.AppendText(Environment.NewLine + DateTime.Now + $" Stop to monitor folder {foldertxt.Text} ");
                 log.Debug($" Stop to monitor folder {foldertxt.Text} ");
-
             }
-
         }
-        private bool IsFileunLocked(FileInfo file)
-        {
-            try
-            {
-                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    stream.Close();
-                }
-            }
-            catch (IOException)
-            {
-
-                return false;
-            }
-
-            //file is not locked
-            return true;
-        }
-
-
         private bool IsLocatedbyAcqprogam(FileInfo file)
         {
-
             var process_list = FileUtil.WhoIsLocking(file.FullName);
-
             foreach (Process lockprocess in process_list)
             {
                 if (lockprocess.ProcessName == acq_prog.Text) { return true; }
-
-
             }
-
-
             return false;
-
         }
 
         private void single_upload_Click(object sender, EventArgs e)
@@ -585,34 +428,20 @@ namespace Raw_File_Uploader
                 {
                     if (foldertxt.Text.Split('.').ToList().LastOrDefault() == file_extension.Text.Split('.').ToList().LastOrDefault())
                     {
-
                         uploadfolder(foldertxt.Text);
-
-
-
-
                     }
                     else
                     {
                         MessageBox.Show("selected folder doesn't match the uploading setting: " + file_extension.Text + " Folder.");
-
                     }
-
                 }
                 else
                 {
-
                     uploadmultiplefiles(filepath.Text);
                 }
-            
-
-  
-
-
         }
 
-
-        private void OnMyComboBoxChanged(object sender, EventArgs e)
+        private void OnMyComboBoxChanged(object sender, EventArgs e) //settings for different vendors
         {
             if (filetype_combo.SelectedIndex == 0) //Thermo raw file
             {
@@ -635,32 +464,23 @@ namespace Raw_File_Uploader
                 acq_prog.Enabled = true;
                 file_extension.Enabled = false;
                 folder_uploading.Enabled = false;
-
-
-
             }
             else if (filetype_combo.SelectedIndex == 2) //Bruker TDF
             {
                 acq_prog.Text = "Don't know yet";
-
                 file_extension.Text = "*.d";
                 folder_uploading.Checked = true;
 
                 file_extension.Enabled = false;
                 folder_uploading.Enabled = false;
-
             }
             else if (filetype_combo.SelectedIndex == 3) //Others
             {
-
                 file_extension.Enabled = true;
                 acq_prog.Enabled = true;
                 folder_uploading.Enabled = true;
                 final_file.Enabled = true;
-
             }
-
-
         }
 
         private void folderupload_checkboxchanged(object sender, EventArgs e)
@@ -668,43 +488,26 @@ namespace Raw_File_Uploader
             if (folder_uploading.Checked)
             {
                 final_file.Enabled = true;
-
-
             }
             else
             {
                 final_file.Enabled = false;
                 final_file.Text = "";
-
-
-
             }
-
-
-
         }
-
-
-        //filetype_combo
-
 
         private void AlertCheck()
         {        
-              DateTime lastchangetime = DateTime.Now;
-              DateTime lastemailtime = DateTime.Today.AddDays(-1);
-
-
+            DateTime lastchangetime = DateTime.Now;
+            DateTime lastemailtime = DateTime.Today.AddDays(-1);
             while (monitor_on && !String.IsNullOrEmpty(recipient_email.Text)) { 
             TimeSpan difference = DateTime.Now - lastchangetime ;
             TimeSpan email_difference = DateTime.Now - lastemailtime;
-
-                if (difference.Minutes > int.Parse(alert_threshold.Text) && email_difference.Hours > int.Parse(frequency_threshold.Text))
+            if (difference.Minutes > int.Parse(alert_threshold.Text) && email_difference.Hours > int.Parse(frequency_threshold.Text))
             {
                 lastemailtime = DateTime.Now;
                 send_notification();
-
             }
-
                 Thread.Sleep(60000);
             }
         }
@@ -724,71 +527,49 @@ namespace Raw_File_Uploader
                     SmtpServer.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.sender, Properties.Settings.Default.password);
                     SmtpServer.EnableSsl = Properties.Settings.Default.enable_ssl;
                     SmtpServer.Send(mail);
-
-
                 }
-                else {
-
-
-
+                else // backup option, may stop working anytime!!!
+                {  
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
                     mail.From = new MailAddress("proteindatanotifcation@gmail.com");
                     mail.To.Add(recipient_email.Text);
                     mail.Subject = "Acquisition Finished or Stopped";
                     mail.Body = "This is a notification from Raw file uploader to notify you the Acquisition has finished or stopped ";
-
                     SmtpServer.Port = 587;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential("proteindatanotifcation@gmail.com", "rnijfyaiumacgfqi");
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("proteindatanotifcation@gmail.com", "rnijfyaiumacgfqi"); 
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
-
                 }
                 log.Debug("Email notification sent");
-
             }
             catch (Exception ex)
             {
             log.Warn($"Notification failed due to {ex.Message}");
-
             }
-
         }
         private void folder_uploader_Click(object sender, EventArgs e)
         {
             if (!isDirectoryValid(foldertxt.Text))
             {
                 MessageBox.Show("invalid folder");
-
                 return;
             }
-
-    //upload multiple files
             string[] files = Directory.GetFiles(foldertxt.Text, file_extension.Text);
-            if (folder_uploading.Checked)
+            if (folder_uploading.Checked) //upload multiple folders
             {
-                    //upload multiple folders
                     string[] sub_directories = Directory.GetDirectories(foldertxt.Text, file_extension.Text);
                     DialogResult dialogResult2 = MessageBox.Show($"There are {sub_directories.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
                 if (dialogResult2 == DialogResult.Yes)
                 {
                     foreach (string upload_folder in sub_directories)
                     {
-
-                     output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + upload_folder);
-                     uploadfolder(upload_folder); 
-                     
-
+                        output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + upload_folder);
+                        uploadfolder(upload_folder); 
                     }
-
                 }
-
-
-
-
             }
-            else 
+            else //upload multiple files
             {
                 DialogResult dialogResult = MessageBox.Show($"There are {files.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -798,23 +579,17 @@ namespace Raw_File_Uploader
                             if (new FileInfo(file).Length > Int32.Parse(minisize.Text) * 1000000)
                             {
                                 output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + file);
-                                multipleuploadfile(file);
+                                uploadfile(file);
                             }
                             else
                             {
                                 output.AppendText(Environment.NewLine + DateTime.Now + " file:" + file + $"less than setting {Int32.Parse(minisize.Text) * 1000000}, will NOT be uploaded ");
-
                             }
                         }
-
                     }
-             }
+            }
 
         }
-
-
-
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("This will close down the whole application. Confirm?", "Close Application", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -829,47 +604,33 @@ namespace Raw_File_Uploader
 
         private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Uploader Configure File|*.xml";
             saveFileDialog1.Title = "Save a Configure File";
-            
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 SettingsProvider.setfilename(saveFileDialog1.FileName);
-                
-                
                 TabControl.TabPageCollection pages = tabControl.TabPages;
-
                 foreach (TabPage page in pages) {
-
                     foreach (Control control in page.Controls)
                     {
-
                         if (control is TextBox)
                         {
                             if (control.Name != "txtpassword" && control.Name != "lastchangtimefield")
                             SettingsProvider.SetValue(page.Name, control.Name, control.Text);
-
                         }
                         else if (control is CheckBox)
                         {
                             SettingsProvider.SetValue(page.Name, control.Name, ((CheckBox)control).Checked.ToString());
-                            
                         }
                         else if (control is RichTextBox)
                         {
                             SettingsProvider.SetValue(page.Name, control.Name, control.Text);
-
                         }
-
                         else if (control is ComboBox) {
                             SettingsProvider.SetValue(page.Name, control.Name, ((ComboBox)control).Text);
                         }
-
-
                     }
-
                 }
             }
         }
@@ -879,56 +640,45 @@ namespace Raw_File_Uploader
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
                 Title = "Browse xml Files",
-
                 CheckFileExists = true,
                 CheckPathExists = true,
                 DefaultExt = "xml",
                 Filter = "Uploader Configure files (*.xml)|*.xml|All files (*.*)|*.*",
                 RestoreDirectory = true,
-
             };
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 SettingsProvider.setfilename(openFileDialog1.FileName);
-
-
                 TabControl.TabPageCollection pages = tabControl.TabPages;
-
                     foreach (TabPage page in pages)
                     {
-
                         foreach (Control control in page.Controls)
+                        {
+
+                            if (control is TextBox)
+                            {
+                                if (control.Name != "txtpassword" && control.Name != "lastchangtimefield")
                                 {
 
-                        if (control is TextBox)
-                        {
-                            if (control.Name != "txtpassword" && control.Name != "lastchangtimefield")
+                                    control.Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                                    ((TextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                                }
+                            }
+                            else if (control is RichTextBox)
                             {
-
-                                control.Text = SettingsProvider.GetValue(page.Name, control.Name, null);
-                                ((TextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                                ((RichTextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
+                            }
+                            else if (control is CheckBox)
+                            {
+                                ((CheckBox)control).Checked = Convert.ToBoolean(SettingsProvider.GetValue(page.Name, control.Name, null));
+                            }
+                            else if (control is ComboBox)
+                            {
+                                ((ComboBox)control).Text =SettingsProvider.GetValue(page.Name, control.Name, null);
                             }
                         }
-
-                        else if (control is RichTextBox)
-                        {
-                            ((RichTextBox)control).Text = SettingsProvider.GetValue(page.Name, control.Name, null);
-
-                        }
-                        else if (control is CheckBox)
-                        {
-                            ((CheckBox)control).Checked = Convert.ToBoolean(SettingsProvider.GetValue(page.Name, control.Name, null));
-                        }
-                        else if (control is ComboBox)
-                        {
-                            ((ComboBox)control).Text =SettingsProvider.GetValue(page.Name, control.Name, null);
-                        }
                     }
-
-                }
-                
-
             }
         }
 
@@ -939,41 +689,31 @@ namespace Raw_File_Uploader
 
         private Boolean check_connection(Boolean backgroundtask)
         {
-
             var request = new RestRequest();
             var client = new RestClient(txtserver.Text + "auth/");
-
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
             request.Method = Method.Post;
-
             var response = client.Execute(request);
-
             if (response.Content is "")
             {
                 MessageBox.Show("Can't connect to server");
                 return false;
-
             }
             else if (response.Content is "{\"detail\":\"Invalid username/password.\"}")
             {
-
                 MessageBox.Show("Wrong user or password");
                 return false;
             }
             else if (response.Content.Contains("AssertionError at /files/api/auth/"))
             {
-
                 if (backgroundtask is false)
                     MessageBox.Show("Success");
                 return true;
-
             }
             else
             {
                 MessageBox.Show("Something else is wrong");
                 return false;
-
-
             }
         }
 
@@ -988,20 +728,9 @@ namespace Raw_File_Uploader
             System.Diagnostics.Process.Start("https://github.com/xiaofengxie128/Raw_File_Uploader");
         }
 
-        private void qctool_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("notepad.exe", "RawfileUploader.log");
-        }
-
         private void log_view_Click(object sender, EventArgs e)
         {
             Process.Start("notepad.exe", "RawfileUploader.log");
-
         }
 
         private void whoislockmeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1013,14 +742,13 @@ namespace Raw_File_Uploader
     }
 
 
+    //Helper classes
     //https://stackoverflow.com/questions/36820196/visual-c-sharp-storing-and-reading-custom-options-to-and-from-a-custom-xml-in-ap
 
     public static class SettingsProvider
     {
         private static string settingsFileName;
-
         private static XDocument settings;
-
         static SettingsProvider()
         {
             try
@@ -1036,21 +764,17 @@ namespace Raw_File_Uploader
         public static string GetValue(string section, string key, string defaultValue)
         {
             XElement settingElement = GetSettingElement(section, key);
-
             return settingElement == null ? defaultValue : settingElement.Value;
         }
 
-        
         public static void SetValue(string section, string key, string value)
         {
             XElement settingElement = GetSettingElement(section, key, true);
-
             settingElement.Value = value;
             settings.Save(settingsFileName);
         }
         public static void setfilename(string value)
         {
-
             settingsFileName = value;
             try
             {
@@ -1068,7 +792,6 @@ namespace Raw_File_Uploader
                     .Root
                     .Elements(section)
                     .FirstOrDefault();
-
             if (sectionElement == null)
             {
                 if (createIfNotExist)
@@ -1098,7 +821,6 @@ namespace Raw_File_Uploader
 
             return settingElement;
         }
-
         public static void RemoveSetting(string section, string key)
         {
             XElement settingElement = GetSettingElement(section, key);
@@ -1120,13 +842,6 @@ namespace Raw_File_Uploader
             settings.Save(settingsFileName);
         }
     }
-
-
-
-
-
-
-
 
 
     public static  class FileUtil

@@ -33,18 +33,13 @@ namespace Raw_File_Uploader
         private void checklock()
         {
             string path = @"result.txt";
-
             using (StreamWriter sw = File.CreateText(path))
             {
                 sw.WriteLine((Environment.NewLine + DateTime.Now + $"file lock check started"));
             }
 
-
-
             while (true)
             {
-
-
                 while (start_loop)
                 {
                     List<Process> processes = FileUtil.WhoIsLocking(filepath.Text);
@@ -66,13 +61,8 @@ namespace Raw_File_Uploader
                         delay = 1;
 
                     Thread.Sleep(delay * 1000);
-
-
                 }
-
                 Thread.Sleep(3000);
-
-
             }
         }
         private void button1_Click(object sender, EventArgs e)

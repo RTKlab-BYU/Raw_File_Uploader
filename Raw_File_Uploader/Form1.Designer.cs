@@ -52,9 +52,9 @@ namespace Raw_File_Uploader
             this.recipient_email = new System.Windows.Forms.TextBox();
             this.bypasskword = new System.Windows.Forms.TextBox();
             this.is_extract = new System.Windows.Forms.CheckBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.Run_info = new System.Windows.Forms.TabPage();
-            this.label39 = new System.Windows.Forms.Label();
             this.final_file = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.folder_uploading = new System.Windows.Forms.CheckBox();
@@ -357,6 +357,17 @@ namespace Raw_File_Uploader
         "the detail page)");
             this.is_extract.UseVisualStyleBackColor = true;
             // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.Location = new System.Drawing.Point(787, 249);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(125, 17);
+            this.label39.TabIndex = 32;
+            this.label39.Text = "Upload Delay(sec)";
+            this.Explaination.SetToolTip(this.label39, "delay between trigger happended and file lock check and upload(secs)");
+            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.Run_info);
@@ -404,17 +415,6 @@ namespace Raw_File_Uploader
             this.Run_info.Size = new System.Drawing.Size(1004, 307);
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Run_info";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.Location = new System.Drawing.Point(787, 249);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(125, 17);
-            this.label39.TabIndex = 32;
-            this.label39.Text = "Upload Delay(sec)";
-            this.Explaination.SetToolTip(this.label39, "delay between trigger happended and file uploading (secs)");
             // 
             // final_file
             // 
@@ -604,7 +604,7 @@ namespace Raw_File_Uploader
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(7, 67);
+            this.label18.Location = new System.Drawing.Point(35, 67);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(93, 17);
             this.label18.TabIndex = 14;
@@ -1209,8 +1209,8 @@ namespace Raw_File_Uploader
             // whoislockmeToolStripMenuItem
             // 
             this.whoislockmeToolStripMenuItem.Name = "whoislockmeToolStripMenuItem";
-            this.whoislockmeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.whoislockmeToolStripMenuItem.Text = "Whoislockme";
+            this.whoislockmeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.whoislockmeToolStripMenuItem.Text = "File_Lock_Checker";
             this.whoislockmeToolStripMenuItem.Click += new System.EventHandler(this.whoislockmeToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -1242,7 +1242,7 @@ namespace Raw_File_Uploader
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
             this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log file";
-            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
+            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.log_view_Click);
             // 
             // log_view
             // 
