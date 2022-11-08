@@ -51,6 +51,7 @@ namespace Raw_File_Uploader
             this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.log_view = new System.Windows.Forms.Button();
+
             this.settings = new System.Windows.Forms.TabPage();
             this.minisize = new System.Windows.Forms.TextBox();
             this.recipient_email = new System.Windows.Forms.TextBox();
@@ -140,6 +141,7 @@ namespace Raw_File_Uploader
             this.final_file = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
+
             this.menuStrip1.SuspendLayout();
             this.settings.SuspendLayout();
             this.Server.SuspendLayout();
@@ -395,6 +397,7 @@ namespace Raw_File_Uploader
             this.alert_threshold.TabIndex = 21;
             this.Explaination.SetToolTip(this.alert_threshold, "The amount of time in minutes after which an alert will be sent if you haven\'t up" +
         "loaded a file");
+
             // 
             // frequency_threshold
             // 
@@ -414,6 +417,7 @@ namespace Raw_File_Uploader
             this.label31.Size = new System.Drawing.Size(138, 17);
             this.label31.TabIndex = 19;
             this.label31.Text = "Alert Recipient Email";
+
             // 
             // label33
             // 
@@ -1029,6 +1033,7 @@ namespace Raw_File_Uploader
             this.filepath.Size = new System.Drawing.Size(526, 23);
             this.filepath.TabIndex = 12;
             this.Explaination.SetToolTip(this.filepath, "Folder to be uploaded");
+
             // 
             // label18
             // 
@@ -1052,6 +1057,7 @@ namespace Raw_File_Uploader
             this.folderbutton.Click += new System.EventHandler(this.folderbutton_Click_1);
             // 
             // filebutton
+
             // 
             this.filebutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.filebutton.Location = new System.Drawing.Point(733, 57);
@@ -1264,6 +1270,14 @@ namespace Raw_File_Uploader
             this.tabControl.Size = new System.Drawing.Size(1012, 345);
             this.tabControl.TabIndex = 26;
             // 
+            // qc_enablekeyword
+            // 
+            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
+            this.qc_enablekeyword.Name = "qc_enablekeyword";
+            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
+            this.qc_enablekeyword.TabIndex = 31;
+            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1409,6 +1423,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TabControl tabControl;
+
     }
 }
 
