@@ -121,6 +121,7 @@ namespace Raw_File_Uploader
             this.settings = new System.Windows.Forms.TabPage();
             this.label34 = new System.Windows.Forms.Label();
             this.max_size = new System.Windows.Forms.TextBox();
+            this.Retry = new System.Windows.Forms.CheckBox();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -140,6 +141,7 @@ namespace Raw_File_Uploader
             this.emailServerSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.log_view = new System.Windows.Forms.Button();
+            this.qc_enablekeyword = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.Run_info.SuspendLayout();
             this.Other_info.SuspendLayout();
@@ -254,6 +256,7 @@ namespace Raw_File_Uploader
             this.foldertxt.TabIndex = 10;
             this.Explaination.SetToolTip(this.foldertxt, "The instrument data acquisition folder");
             // 
+
             // TempData
             // 
             this.TempData.AutoSize = true;
@@ -367,6 +370,7 @@ namespace Raw_File_Uploader
             this.label39.TabIndex = 32;
             this.label39.Text = "Upload Delay(sec)";
             this.Explaination.SetToolTip(this.label39, "delay between trigger happended and file lock check and upload(secs)");
+
             // 
             // tabControl
             // 
@@ -395,6 +399,7 @@ namespace Raw_File_Uploader
             this.Run_info.Controls.Add(this.label37);
             this.Run_info.Controls.Add(this.label36);
             this.Run_info.Controls.Add(this.label23);
+
             this.Run_info.Controls.Add(this.TempData);
             this.Run_info.Controls.Add(this.txtdescription);
             this.Run_info.Controls.Add(this.label24);
@@ -504,6 +509,7 @@ namespace Raw_File_Uploader
             this.label36.Size = new System.Drawing.Size(94, 17);
             this.label36.TabIndex = 17;
             this.label36.Text = "File extension";
+
             // 
             // label23
             // 
@@ -1052,6 +1058,7 @@ namespace Raw_File_Uploader
             this.settings.BackColor = System.Drawing.SystemColors.Control;
             this.settings.Controls.Add(this.label34);
             this.settings.Controls.Add(this.max_size);
+            this.settings.Controls.Add(this.Retry);
             this.settings.Controls.Add(this.nocopy);
             this.settings.Controls.Add(this.label29);
             this.settings.Controls.Add(this.label30);
@@ -1087,6 +1094,17 @@ namespace Raw_File_Uploader
             this.max_size.Name = "max_size";
             this.max_size.Size = new System.Drawing.Size(150, 23);
             this.max_size.TabIndex = 25;
+            // 
+            // Retry
+            // 
+            this.Retry.AutoSize = true;
+            this.Retry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Retry.Location = new System.Drawing.Point(168, 83);
+            this.Retry.Name = "Retry";
+            this.Retry.Size = new System.Drawing.Size(198, 21);
+            this.Retry.TabIndex = 23;
+            this.Retry.Text = "Retry after failed uploading";
+            this.Retry.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -1255,6 +1273,14 @@ namespace Raw_File_Uploader
             this.log_view.UseVisualStyleBackColor = true;
             this.log_view.Click += new System.EventHandler(this.log_view_Click);
             // 
+            // qc_enablekeyword
+            // 
+            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
+            this.qc_enablekeyword.Name = "qc_enablekeyword";
+            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
+            this.qc_enablekeyword.TabIndex = 31;
+            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1401,6 +1427,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.TextBox upload_delay;
+
     }
 }
 

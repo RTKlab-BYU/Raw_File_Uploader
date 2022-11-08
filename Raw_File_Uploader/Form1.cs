@@ -59,6 +59,7 @@ namespace Raw_File_Uploader
                             if (!file_obj.Name.Contains(bypasskword.Text))
                             {
                                 if (lastupload != folder_name | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
+
                                 {
                                     context.Post(val => output.AppendText(Environment.NewLine + $"File /{folder_name}/  will be uploaded"), s);
                                     log.Debug(Environment.NewLine + $"File /{folder_name}/  will be uploaded");
@@ -730,13 +731,14 @@ namespace Raw_File_Uploader
 
         private void log_view_Click(object sender, EventArgs e)
         {
-            Process.Start("notepad.exe", "RawfileUploader.log");
+            Process.Start("notepad.exe", @"C:\ProgramData\RawfileUploader\RawfileUploader.log");
         }
 
         private void whoislockmeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             file_lock Filelockform = new file_lock();
             Filelockform.Show();
+
         }
 
     }
