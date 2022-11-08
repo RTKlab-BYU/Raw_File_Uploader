@@ -1270,7 +1270,7 @@ namespace Raw_File_Uploader
             this.tabControl.Size = new System.Drawing.Size(1012, 345);
             this.tabControl.TabIndex = 26;
             // 
- 
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
