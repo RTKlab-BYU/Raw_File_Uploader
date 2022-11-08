@@ -1270,14 +1270,7 @@ namespace Raw_File_Uploader
             this.tabControl.Size = new System.Drawing.Size(1012, 345);
             this.tabControl.TabIndex = 26;
             // 
-            // qc_enablekeyword
-            // 
-            this.qc_enablekeyword.Location = new System.Drawing.Point(762, 209);
-            this.qc_enablekeyword.Name = "qc_enablekeyword";
-            this.qc_enablekeyword.Size = new System.Drawing.Size(214, 20);
-            this.qc_enablekeyword.TabIndex = 31;
-            this.Explaination.SetToolTip(this.qc_enablekeyword, "If not empty, only perform QC while file contain the keyword");
-            // 
+ 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
