@@ -308,7 +308,7 @@ namespace Raw_File_Uploader
             }
 
             var client = new RestClient(txtserver.Text + "SampleRecord/");
-            client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
+            //client.Timeout = 10 * 60 * 1000;// 1000 ms = 1s, 30 min = 30*60*1000
 
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
 
@@ -320,14 +320,14 @@ namespace Raw_File_Uploader
 
             var request = new RestRequest();
 
-            request.Method = Method.POST;
+            request.Method = Method.Post;
             request.AddHeader("Accept", "application/json");
-            request.Parameters.Clear();
+            //request.Parameters.clear();
             request.AddHeader("Content-Type", "multipart/form-data");
 
             string uploadfilename;
             if (String.IsNullOrEmpty(txtsamplename.Text))
-                {
+            {
                 uploadfilename = Path.GetFileNameWithoutExtension(newfilelocation);
             }
             else
@@ -345,7 +345,7 @@ namespace Raw_File_Uploader
 
             request.AddParameter("is_temp", TempData.Checked);
             request.AddFile("temp_rawfile", newfilelocation);
-            request.ReadWriteTimeout = 2147483647;
+            //request.ReadWriteTimeout = 2147483647;
             request.Timeout = 2147483647;
             var response = client.Execute(request);
 
@@ -354,12 +354,12 @@ namespace Raw_File_Uploader
 
             if (!nocopy.Checked)
                 File.Delete(newfilelocation);
-            
+
             if (folder_uploading.Checked) //delete the zipfile if upload folder
                 File.Delete(filelocation);
 
             if (response.StatusCode == HttpStatusCode.Created)
-                    {
+            {
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Green;
                 output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} was sucessfully uploaded");
@@ -385,7 +385,6 @@ namespace Raw_File_Uploader
 
                 return false;
             }
-
 
 
         }
@@ -941,13 +940,11 @@ namespace Raw_File_Uploader
         private Boolean check_connection(Boolean backgroundtask)
         {
 
-            //The method used here is a workaround, not really validate password, only check if not timeout or wrong username/password, assume it's good.
             var request = new RestRequest();
             var client = new RestClient(txtserver.Text + "auth/");
 
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
-            request.Method = Method.POST;
-            client.Timeout = 2 * 1000;// 1000 ms = 1s
+            request.Method = Method.Post;
 
             var response = client.Execute(request);
 
