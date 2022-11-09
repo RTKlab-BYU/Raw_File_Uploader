@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
+using System.Net.Http;
 
 namespace Raw_File_Uploader
 {
@@ -262,36 +263,63 @@ namespace Raw_File_Uploader
             request.AddParameter("is_temp", TempData.Checked);
             request.AddFile("temp_rawfile", newfilelocation);
             request.Timeout = 2147483647;
-            var response = client.Execute(request);
-            if (!nocopy.Checked)
-                File.Delete(newfilelocation);
-            if (folder_uploading.Checked) //delete the zipfile if upload folder
-                File.Delete(filelocation);
-            if (response.StatusCode == HttpStatusCode.Created)
-            {
-                output.Select(output.TextLength, 0);
-                output.SelectionColor = Color.Green;
-                output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} was sucessfully uploaded");
-                log.Debug(response.Content);
-                log.Info($" {filelocation} was sucessfully uploaded");
+            
+            try { 
+                var response = client.Execute(request);
 
-                output.Select(output.TextLength, 0);
-                output.SelectionColor = Color.Black;
-                output.AppendText(Environment.NewLine);
-                return true;
+                if (response.StatusCode == HttpStatusCode.Created)
+                {
+                    output.Select(output.TextLength, 0);
+                    output.SelectionColor = Color.Green;
+                    output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} was sucessfully uploaded");
+                    log.Debug(response.Content);
+                    log.Info($" {filelocation} was sucessfully uploaded");
+
+                    output.Select(output.TextLength, 0);
+                    output.SelectionColor = Color.Black;
+                    output.AppendText(Environment.NewLine);
+                    return true;
+                }
+                else
+                {
+                    output.AppendText(Environment.NewLine + response.Content);
+                    output.Select(output.TextLength, 0);
+                    output.SelectionColor = Color.Orange;
+                    output.AppendText($" {filelocation} upload might failed, please try manually if needed");
+                    output.Select(output.TextLength, 0);
+                    output.SelectionColor = Color.Black;
+                    output.AppendText(Environment.NewLine);
+                    log.Warn($" {filelocation}  upload might failed, please try again manual late");
+                    return false;
+                }
+
+
+
             }
-            else
+            catch (HttpRequestException e)
             {
-                output.AppendText(Environment.NewLine + response.Content);
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Orange;
-                output.AppendText($" {filelocation} upload failed,please try again manual late");
+                output.AppendText($" {filelocation} upload might failed, please try manually if needed");
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
-                log.Warn($" {filelocation}  upload failed,please try again manual late");
+                log.Warn($" {filelocation}  upload might failed, please try again manual late");
+                log.Error(e);
+
                 return false;
+
             }
+            finally
+            {
+                if (!nocopy.Checked)
+                    File.Delete(newfilelocation);
+                if (folder_uploading.Checked) //delete the zipfile if upload folder
+                    File.Delete(filelocation);
+            }
+            
+
+           
         }
 
         private RestRequest add_info(RestRequest request,String file_name)
