@@ -31,7 +31,6 @@ First, confirm that the login information matches that of the person who owns th
 
 Select, the file Type in the Files tab
 ![image](https://user-images.githubusercontent.com/26573132/200891671-0036e3d5-f034-4ea0-8214-adc9244de8d5.png)
-![image](https://user-images.githubusercontent.com/26573132/200892155-3616b3d7-d6fe-45ea-bd1f-ebb5d1814909.png)
 
 Then you need to choose the files to upload, by using one of the following three methods (see appendix 1 for anything other than Thermo Raw files)
 
