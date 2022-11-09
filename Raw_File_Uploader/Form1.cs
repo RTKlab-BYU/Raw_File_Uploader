@@ -232,7 +232,7 @@ namespace Raw_File_Uploader
             var options = new RestClientOptions(txtserver.Text + "SampleRecord/")
             {
                 ThrowOnAnyError = true,
-                MaxTimeout = 1000*60*20  //20 min
+                MaxTimeout = 1000*60*60  //60 min
             };
             var client = new RestClient(options);
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
@@ -285,7 +285,7 @@ namespace Raw_File_Uploader
                     output.AppendText(Environment.NewLine + response.Content);
                     output.Select(output.TextLength, 0);
                     output.SelectionColor = Color.Orange;
-                    output.AppendText($" {filelocation} upload might failed, please check the server if file is uploaded.");
+                    output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} upload might failed, please check the server if file is uploaded.");
                     output.Select(output.TextLength, 0);
                     output.SelectionColor = Color.Black;
                     output.AppendText(Environment.NewLine);
@@ -301,7 +301,7 @@ namespace Raw_File_Uploader
             {
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Orange;
-                output.AppendText($" {filelocation} {e} or it took longer than expected to process the file. {e} or it took longer than expected to process the file");
+                output.AppendText(Environment.NewLine + DateTime.Now + $" {filelocation} upload might failed, please check the server if file is uploaded. {e} or it took longer than expected to process the file");
                 output.Select(output.TextLength, 0);
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
