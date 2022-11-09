@@ -290,6 +290,7 @@ namespace Raw_File_Uploader
                     output.SelectionColor = Color.Black;
                     output.AppendText(Environment.NewLine);
                     log.Warn($" {filelocation}   upload might failed, please check the server if file is uploaded.");
+
                     return false;
                 }
 
@@ -305,6 +306,7 @@ namespace Raw_File_Uploader
                 output.SelectionColor = Color.Black;
                 output.AppendText(Environment.NewLine);
                 log.Warn($" {filelocation}  upload might failed, please check the server if file is uploaded. {e} or it took longer than expected to process the file");
+
                 log.Error(e);
 
                 return false;
