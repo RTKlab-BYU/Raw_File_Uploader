@@ -3,14 +3,14 @@ Raw file uploader is a upload tool to be used with Proteomics Data Manager (http
 
 
 # Initial Configuration
-First, put in your server location to the box provided on the Server tab.
-![image](https://user-images.githubusercontent.com/26573132/200887576-8a94b7f7-84db-4e7b-9850-b7467a79edc7.png)
+First, put in your server location and '/files/api' to the box provided on the Server tab.
+![image](https://user-images.githubusercontent.com/26573132/201096390-b2834c4d-b469-4911-b151-2c30739f541f.png)
 
 Next, input the login information from your Proteomics Data Manager that you would like to use for this set of uploads.
-![image](https://user-images.githubusercontent.com/26573132/200887702-8a7b120b-05d2-44f6-b431-979684e2efd0.png)
+![image](https://user-images.githubusercontent.com/26573132/201096474-a2e6f6e7-4e32-4636-b8b8-2f8017256668.png)
 
 Next, verify your login and server information by clicking the 'Verify Account' button.
-![image](https://user-images.githubusercontent.com/26573132/200887810-57c12e76-c753-4167-beea-6ab0adeb22f2.png)
+![image](https://user-images.githubusercontent.com/26573132/201096545-6af1f6fc-067f-4ea0-beb5-4014ccb6aede.png)
 ![image](https://user-images.githubusercontent.com/26573132/200888383-dcbb64a4-a1e7-46a2-975f-780f408fd26f.png)
 
 Next, you can send alert emails when the MS has stopped acquiring (for example, due to an error) by putting your email into the 'Alert Recipient Email' and setting the max alert interval to the length of your acquisition method. Additionally, you can set a limit on the number of emails you recieve in a given time. Finally, you can configure the sending email using the 'Config SMTP Server' button and the dialog box.
@@ -27,45 +27,49 @@ To save your settings or load old settings click on the 'File' menu in the top l
 # Uploading & Monitoring
 
 First, confirm that the login information matches that of the person who owns the acquisition files (don't forget to verify your information).
-![image](https://user-images.githubusercontent.com/26573132/200889836-c2cccf59-3989-4a53-8b63-fd5419019422.png)
+![image](https://user-images.githubusercontent.com/26573132/201096900-4c527dc5-2c8e-4b37-91c0-10ca65674137.png)
+![image](https://user-images.githubusercontent.com/26573132/200888383-dcbb64a4-a1e7-46a2-975f-780f408fd26f.png)
 
 Select, the file Type in the Files tab
-![image](https://user-images.githubusercontent.com/26573132/200891671-0036e3d5-f034-4ea0-8214-adc9244de8d5.png)
+![image](https://user-images.githubusercontent.com/26573132/201093941-c8216686-47d7-43b0-b7b7-ba4f02ecdf35.png)
 
 Then you need to choose the files to upload, by using one of the following three methods (see appendix 1 for anything other than Thermo Raw files)
 
 ## 1.A upload a file
 First, browse or type a filename (or files separated by '.'), then click 'manual upload files/folder'
-![image](https://user-images.githubusercontent.com/26573132/200890974-330123ea-6b47-44cc-99f9-fed62c797d5a.png)
+![image](https://user-images.githubusercontent.com/26573132/201094212-13ffc6b9-5af3-4c19-98ba-586b950cd67c.png)
 
 ## 1.B upload folder based data
 First, browse or type a folder location (or add folders separated by '.'), then click 'manual upload files/folder'
-![image](https://user-images.githubusercontent.com/26573132/200892660-25affbb9-a508-4321-aa26-2bfbcab98dec.png)
-
+![image](https://user-images.githubusercontent.com/26573132/201094511-4285c49b-877b-49c0-be1a-6a74b157f177.png)
 
 ## 2. upload all files (or subfolders if MS data is stored in folders)
-First, browse or type a folder location (or files separated by '.'), then click 'manual upload files/folder'
-![image](https://user-images.githubusercontent.com/26573132/200893339-259a2ae6-e4d4-4482-9f6d-64813ab6f5cd.png)
+First, browse or type a folder location (or files separated by '.'), then click 'manual upload files/folder'.
+![image](https://user-images.githubusercontent.com/26573132/201094698-36bc802b-68e2-4b56-a4e5-e1a19822c9b5.png)
 
 ## 3. monitor a folder for any new data, and automatically upload data
 First, maximum and minimum file sizes can be determined on the Settings tab, as well as a pattern in the filename that you don't want uploaded (such as 'blank').
 ![image](https://user-images.githubusercontent.com/26573132/200889552-4eba4ac6-cc42-4e8f-b5e3-d9baddc51f93.png)
 
-As files are uploaded, they will be reported in the log
-![image](https://user-images.githubusercontent.com/26573132/200893439-c126edb5-d2e5-4847-8551-71a23fe26600.png)
+Next, select the folder, enter project name (folder name in backup drive), record name (both optional) and hit the monitor button.
+![image](https://user-images.githubusercontent.com/26573132/201095150-f88a3676-5d99-43b7-9410-058c066d96e9.png)
+
+As files are uploaded, they will be reported in the log.
+![image](https://user-images.githubusercontent.com/26573132/201095254-8a405179-79f6-4116-a653-d6fa7a3d790d.png)
 
 
 # Appendix 1: Using other file formats
-![image](https://user-images.githubusercontent.com/26573132/200893928-30645240-413c-4724-8cf4-37530673e63f.png)
 To use other file formats than Thermo Raw, you will not to do some configuration:
 First select the file type configure in the dropdown.
 Next the file extension (i.e. raw for thermo raw files and .d for Agilent folders)
 Next is the Acquisition programs name. This is the program used to make the raw files, raw file uploader waits until this program is done with the file before uploading the file, so that partial files aren't uploaded. 
+![image](https://user-images.githubusercontent.com/26573132/201095453-359470a1-93a3-41ed-bd11-ab6c99326c1d.png)
+
 This can be found by using the 'File_Lock_Checker' in the tools menu.
-![image](https://user-images.githubusercontent.com/26573132/200896911-5fed90b5-0aaf-4ade-88e3-2837b835aef8.png)
+![image](https://user-images.githubusercontent.com/26573132/201095588-ecbc67f9-91f3-4754-86de-82a42641cf0b.png)
 
 Next, you select if it is folder based data, and then how long to delay before upload. Because some acquisition files may not be busy for the whole time after the creation, you may want to set this to the length of the run for some systems. For folder based data, the Final file is the last file created or the file the aquisition program keeps busy or creates to trigger your upload (or wait). 
-![image](https://user-images.githubusercontent.com/26573132/200897278-5c99ad2b-6c39-4398-b151-5ce530bc78f0.png)
+![image](https://user-images.githubusercontent.com/26573132/201095794-fcc414d3-8b9c-4d3c-9385-60eac45ba421.png)
 
 
 # Appendix 2: Adding metadata
