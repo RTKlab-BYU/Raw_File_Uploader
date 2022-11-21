@@ -34,6 +34,7 @@ namespace Raw_File_Uploader
             upload_delay.Text = "10";
             alert_threshold.Text = "30";
             frequency_threshold.Text = "8";
+            upload_delay.Text = "10";
             bypasskword.Text = "ignore";
             max_size.Text = "5000";
             filetype_combo.SelectedIndex = 0;
@@ -757,7 +758,7 @@ namespace Raw_File_Uploader
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/xiaofengxie128/Raw_File_Uploader");
+            Process.Start("https://github.com/xiaofengxie128/Raw_File_Uploader");
         }
 
         private void log_view_Click(object sender, EventArgs e)
@@ -773,7 +774,7 @@ namespace Raw_File_Uploader
         }
 
 
-    }
+        }
 
 
     //Helper classes
