@@ -727,7 +727,8 @@ namespace Raw_File_Uploader
             client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
             request.Method = Method.Post;
             var response = client.Execute(request);
-            if (response.Content is "")
+
+            if (response.Content is "" || response.Content is null)
             {
                 MessageBox.Show("Can't connect to server");
                 return false;

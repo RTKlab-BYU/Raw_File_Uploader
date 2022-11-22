@@ -154,7 +154,7 @@ namespace Raw_File_Uploader
             this.monitor.Location = new System.Drawing.Point(43, 621);
             this.monitor.Name = "monitor";
             this.monitor.Size = new System.Drawing.Size(191, 36);
-            this.monitor.TabIndex = 19;
+            this.monitor.TabIndex = 25;
             this.monitor.Text = "Monitor folder";
             this.Explaination.SetToolTip(this.monitor, "start/stop the monitor");
             this.monitor.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@ namespace Raw_File_Uploader
             this.single_upload.Location = new System.Drawing.Point(398, 620);
             this.single_upload.Name = "single_upload";
             this.single_upload.Size = new System.Drawing.Size(214, 38);
-            this.single_upload.TabIndex = 20;
+            this.single_upload.TabIndex = 26;
             this.single_upload.Text = "Manual upload files/folder";
             this.single_upload.UseVisualStyleBackColor = true;
             this.single_upload.Click += new System.EventHandler(this.single_upload_Click);
@@ -197,7 +197,7 @@ namespace Raw_File_Uploader
             this.folder_uploader.Location = new System.Drawing.Point(750, 621);
             this.folder_uploader.Name = "folder_uploader";
             this.folder_uploader.Size = new System.Drawing.Size(217, 37);
-            this.folder_uploader.TabIndex = 21;
+            this.folder_uploader.TabIndex = 27;
             this.folder_uploader.Text = "Upload all records in folder";
             this.folder_uploader.UseVisualStyleBackColor = true;
             this.folder_uploader.Click += new System.EventHandler(this.folder_uploader_Click);
@@ -232,7 +232,7 @@ namespace Raw_File_Uploader
             this.recipient_email.Location = new System.Drawing.Point(150, 30);
             this.recipient_email.Name = "recipient_email";
             this.recipient_email.Size = new System.Drawing.Size(150, 23);
-            this.recipient_email.TabIndex = 20;
+            this.recipient_email.TabIndex = 70;
             this.Explaination.SetToolTip(this.recipient_email, "Will send email to this address for the alert, leave it blank will disable it");
             // 
             // bypasskword
@@ -241,7 +241,7 @@ namespace Raw_File_Uploader
             this.bypasskword.Location = new System.Drawing.Point(797, 145);
             this.bypasskword.Name = "bypasskword";
             this.bypasskword.Size = new System.Drawing.Size(150, 23);
-            this.bypasskword.TabIndex = 20;
+            this.bypasskword.TabIndex = 77;
             this.Explaination.SetToolTip(this.bypasskword, "Keyword in the filename to ignroe");
             // 
             // alert_threshold
@@ -250,7 +250,7 @@ namespace Raw_File_Uploader
             this.alert_threshold.Location = new System.Drawing.Point(472, 30);
             this.alert_threshold.Name = "alert_threshold";
             this.alert_threshold.Size = new System.Drawing.Size(150, 23);
-            this.alert_threshold.TabIndex = 21;
+            this.alert_threshold.TabIndex = 71;
             this.Explaination.SetToolTip(this.alert_threshold, "The amount of time in minutes after which an alert will be sent if you haven\'t up" +
         "loaded a file");
             // 
@@ -260,7 +260,7 @@ namespace Raw_File_Uploader
             this.frequency_threshold.Location = new System.Drawing.Point(808, 30);
             this.frequency_threshold.Name = "frequency_threshold";
             this.frequency_threshold.Size = new System.Drawing.Size(166, 23);
-            this.frequency_threshold.TabIndex = 22;
+            this.frequency_threshold.TabIndex = 72;
             this.Explaination.SetToolTip(this.frequency_threshold, "The amount of time that the program will wait before sending another alert.");
             // 
             // nocopy
@@ -270,7 +270,7 @@ namespace Raw_File_Uploader
             this.nocopy.Location = new System.Drawing.Point(8, 83);
             this.nocopy.Name = "nocopy";
             this.nocopy.Size = new System.Drawing.Size(120, 21);
-            this.nocopy.TabIndex = 23;
+            this.nocopy.TabIndex = 74;
             this.nocopy.Text = "No Copy mode";
             this.Explaination.SetToolTip(this.nocopy, "If unchecked a copy of the file will be made so the file can be uploaded even if " +
         "it is busy in a file such as Thermo Freestyle");
@@ -282,7 +282,7 @@ namespace Raw_File_Uploader
             this.txtserver.Location = new System.Drawing.Point(147, 31);
             this.txtserver.Name = "txtserver";
             this.txtserver.Size = new System.Drawing.Size(526, 23);
-            this.txtserver.TabIndex = 9;
+            this.txtserver.TabIndex = 61;
             this.Explaination.SetToolTip(this.txtserver, "Data server address, e.g., http://192.168.102.188/files/api/");
             // 
             // txtusername
@@ -291,7 +291,7 @@ namespace Raw_File_Uploader
             this.txtusername.Location = new System.Drawing.Point(147, 76);
             this.txtusername.Name = "txtusername";
             this.txtusername.Size = new System.Drawing.Size(150, 23);
-            this.txtusername.TabIndex = 10;
+            this.txtusername.TabIndex = 62;
             this.Explaination.SetToolTip(this.txtusername, "User name of the data system");
             // 
             // txtpassword
@@ -300,7 +300,7 @@ namespace Raw_File_Uploader
             this.txtpassword.Location = new System.Drawing.Point(401, 76);
             this.txtpassword.Name = "txtpassword";
             this.txtpassword.Size = new System.Drawing.Size(272, 23);
-            this.txtpassword.TabIndex = 11;
+            this.txtpassword.TabIndex = 63;
             this.Explaination.SetToolTip(this.txtpassword, "password of that user");
             this.txtpassword.UseSystemPasswordChar = true;
             // 
@@ -311,7 +311,7 @@ namespace Raw_File_Uploader
             this.is_extract.Location = new System.Drawing.Point(32, 28);
             this.is_extract.Name = "is_extract";
             this.is_extract.Size = new System.Drawing.Size(197, 21);
-            this.is_extract.TabIndex = 35;
+            this.is_extract.TabIndex = 30;
             this.is_extract.Text = "extract them from file name";
             this.Explaination.SetToolTip(this.is_extract, "Temporary data, like wash or clean, will delete after 3 month (can be changed in " +
         "the detail page)");
@@ -356,7 +356,7 @@ namespace Raw_File_Uploader
             this.TempData.Location = new System.Drawing.Point(733, 109);
             this.TempData.Name = "TempData";
             this.TempData.Size = new System.Drawing.Size(134, 21);
-            this.TempData.TabIndex = 28;
+            this.TempData.TabIndex = 16;
             this.TempData.Text = "Temporary Data ";
             this.Explaination.SetToolTip(this.TempData, "Temporary data, like wash or clean, will delete after 3 month (can be changed in " +
         "the detail page)");
@@ -368,7 +368,7 @@ namespace Raw_File_Uploader
             this.upload_delay.Location = new System.Drawing.Point(918, 246);
             this.upload_delay.Name = "upload_delay";
             this.upload_delay.Size = new System.Drawing.Size(66, 23);
-            this.upload_delay.TabIndex = 18;
+            this.upload_delay.TabIndex = 22;
             this.Explaination.SetToolTip(this.upload_delay, "delay before upload after a file change has been observed without a lock from the" +
         " acq program");
             // 
@@ -378,7 +378,7 @@ namespace Raw_File_Uploader
             this.file_extension.Location = new System.Drawing.Point(794, 182);
             this.file_extension.Name = "file_extension";
             this.file_extension.Size = new System.Drawing.Size(190, 23);
-            this.file_extension.TabIndex = 18;
+            this.file_extension.TabIndex = 19;
             this.Explaination.SetToolTip(this.file_extension, "Using windows Convention(* matches anything)");
             // 
             // final_file
@@ -387,7 +387,7 @@ namespace Raw_File_Uploader
             this.final_file.Location = new System.Drawing.Point(794, 275);
             this.final_file.Name = "final_file";
             this.final_file.Size = new System.Drawing.Size(190, 23);
-            this.final_file.TabIndex = 31;
+            this.final_file.TabIndex = 23;
             this.Explaination.SetToolTip(this.final_file, "Last file made in acquisation for folder based");
             // 
             // menuStrip1
@@ -415,21 +415,21 @@ namespace Raw_File_Uploader
             // loadSettingToolStripMenuItem
             // 
             this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
-            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadSettingToolStripMenuItem.Text = "Load Settings From";
             this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveSettingsToolStripMenuItem.Text = "Save Settings As";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -485,7 +485,7 @@ namespace Raw_File_Uploader
             this.log_view.Location = new System.Drawing.Point(101, 369);
             this.log_view.Name = "log_view";
             this.log_view.Size = new System.Drawing.Size(117, 20);
-            this.log_view.TabIndex = 32;
+            this.log_view.TabIndex = 24;
             this.log_view.Text = "Open full log";
             this.log_view.UseVisualStyleBackColor = true;
             this.log_view.Click += new System.EventHandler(this.log_view_Click);
@@ -519,7 +519,7 @@ namespace Raw_File_Uploader
             this.button1.Location = new System.Drawing.Point(631, 64);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 23);
-            this.button1.TabIndex = 26;
+            this.button1.TabIndex = 73;
             this.button1.Text = "Config SMTP Server";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
@@ -540,7 +540,7 @@ namespace Raw_File_Uploader
             this.max_size.Location = new System.Drawing.Point(475, 145);
             this.max_size.Name = "max_size";
             this.max_size.Size = new System.Drawing.Size(150, 23);
-            this.max_size.TabIndex = 25;
+            this.max_size.TabIndex = 76;
             // 
             // minisize
             // 
@@ -548,7 +548,7 @@ namespace Raw_File_Uploader
             this.minisize.Location = new System.Drawing.Point(150, 145);
             this.minisize.Name = "minisize";
             this.minisize.Size = new System.Drawing.Size(150, 23);
-            this.minisize.TabIndex = 11;
+            this.minisize.TabIndex = 75;
             // 
             // label29
             // 
@@ -623,7 +623,7 @@ namespace Raw_File_Uploader
             this.verify_account.Location = new System.Drawing.Point(147, 123);
             this.verify_account.Name = "verify_account";
             this.verify_account.Size = new System.Drawing.Size(526, 37);
-            this.verify_account.TabIndex = 14;
+            this.verify_account.TabIndex = 64;
             this.verify_account.Text = "Verify Account";
             this.verify_account.UseVisualStyleBackColor = true;
             this.verify_account.Click += new System.EventHandler(this.verify_account_Click);
@@ -722,7 +722,7 @@ namespace Raw_File_Uploader
             this.delimiter.Location = new System.Drawing.Point(411, 27);
             this.delimiter.Name = "delimiter";
             this.delimiter.Size = new System.Drawing.Size(30, 23);
-            this.delimiter.TabIndex = 36;
+            this.delimiter.TabIndex = 31;
             // 
             // sample_type
             // 
@@ -730,7 +730,7 @@ namespace Raw_File_Uploader
             this.sample_type.Location = new System.Drawing.Point(683, 74);
             this.sample_type.Name = "sample_type";
             this.sample_type.Size = new System.Drawing.Size(150, 23);
-            this.sample_type.TabIndex = 33;
+            this.sample_type.TabIndex = 34;
             // 
             // factor_8_value
             // 
@@ -738,7 +738,7 @@ namespace Raw_File_Uploader
             this.factor_8_value.Location = new System.Drawing.Point(737, 273);
             this.factor_8_value.Name = "factor_8_value";
             this.factor_8_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_8_value.TabIndex = 22;
+            this.factor_8_value.TabIndex = 50;
             // 
             // factor_4_value
             // 
@@ -746,7 +746,7 @@ namespace Raw_File_Uploader
             this.factor_4_value.Location = new System.Drawing.Point(268, 273);
             this.factor_4_value.Name = "factor_4_value";
             this.factor_4_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_4_value.TabIndex = 22;
+            this.factor_4_value.TabIndex = 42;
             // 
             // factor_7_value
             // 
@@ -754,7 +754,7 @@ namespace Raw_File_Uploader
             this.factor_7_value.Location = new System.Drawing.Point(737, 234);
             this.factor_7_value.Name = "factor_7_value";
             this.factor_7_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_7_value.TabIndex = 22;
+            this.factor_7_value.TabIndex = 48;
             // 
             // factor_3_value
             // 
@@ -762,7 +762,7 @@ namespace Raw_File_Uploader
             this.factor_3_value.Location = new System.Drawing.Point(268, 234);
             this.factor_3_value.Name = "factor_3_value";
             this.factor_3_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_3_value.TabIndex = 22;
+            this.factor_3_value.TabIndex = 40;
             // 
             // factor_6_value
             // 
@@ -770,7 +770,7 @@ namespace Raw_File_Uploader
             this.factor_6_value.Location = new System.Drawing.Point(737, 195);
             this.factor_6_value.Name = "factor_6_value";
             this.factor_6_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_6_value.TabIndex = 22;
+            this.factor_6_value.TabIndex = 46;
             // 
             // factor_2_value
             // 
@@ -778,7 +778,7 @@ namespace Raw_File_Uploader
             this.factor_2_value.Location = new System.Drawing.Point(268, 195);
             this.factor_2_value.Name = "factor_2_value";
             this.factor_2_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_2_value.TabIndex = 22;
+            this.factor_2_value.TabIndex = 38;
             // 
             // factor_8_name
             // 
@@ -786,7 +786,7 @@ namespace Raw_File_Uploader
             this.factor_8_name.Location = new System.Drawing.Point(540, 273);
             this.factor_8_name.Name = "factor_8_name";
             this.factor_8_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_8_name.TabIndex = 22;
+            this.factor_8_name.TabIndex = 49;
             // 
             // factor_4_name
             // 
@@ -794,7 +794,7 @@ namespace Raw_File_Uploader
             this.factor_4_name.Location = new System.Drawing.Point(78, 273);
             this.factor_4_name.Name = "factor_4_name";
             this.factor_4_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_4_name.TabIndex = 22;
+            this.factor_4_name.TabIndex = 41;
             // 
             // factor_7_name
             // 
@@ -802,7 +802,7 @@ namespace Raw_File_Uploader
             this.factor_7_name.Location = new System.Drawing.Point(540, 234);
             this.factor_7_name.Name = "factor_7_name";
             this.factor_7_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_7_name.TabIndex = 22;
+            this.factor_7_name.TabIndex = 47;
             // 
             // factor_3_name
             // 
@@ -810,7 +810,7 @@ namespace Raw_File_Uploader
             this.factor_3_name.Location = new System.Drawing.Point(78, 234);
             this.factor_3_name.Name = "factor_3_name";
             this.factor_3_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_3_name.TabIndex = 22;
+            this.factor_3_name.TabIndex = 39;
             // 
             // factor_6_name
             // 
@@ -818,7 +818,7 @@ namespace Raw_File_Uploader
             this.factor_6_name.Location = new System.Drawing.Point(540, 195);
             this.factor_6_name.Name = "factor_6_name";
             this.factor_6_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_6_name.TabIndex = 22;
+            this.factor_6_name.TabIndex = 45;
             // 
             // factor_2_name
             // 
@@ -826,7 +826,7 @@ namespace Raw_File_Uploader
             this.factor_2_name.Location = new System.Drawing.Point(78, 195);
             this.factor_2_name.Name = "factor_2_name";
             this.factor_2_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_2_name.TabIndex = 22;
+            this.factor_2_name.TabIndex = 37;
             // 
             // factor_5_value
             // 
@@ -834,7 +834,7 @@ namespace Raw_File_Uploader
             this.factor_5_value.Location = new System.Drawing.Point(737, 157);
             this.factor_5_value.Name = "factor_5_value";
             this.factor_5_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_5_value.TabIndex = 22;
+            this.factor_5_value.TabIndex = 44;
             // 
             // factor_1_value
             // 
@@ -842,7 +842,7 @@ namespace Raw_File_Uploader
             this.factor_1_value.Location = new System.Drawing.Point(268, 157);
             this.factor_1_value.Name = "factor_1_value";
             this.factor_1_value.Size = new System.Drawing.Size(150, 23);
-            this.factor_1_value.TabIndex = 22;
+            this.factor_1_value.TabIndex = 36;
             // 
             // factor_5_name
             // 
@@ -850,7 +850,7 @@ namespace Raw_File_Uploader
             this.factor_5_name.Location = new System.Drawing.Point(540, 157);
             this.factor_5_name.Name = "factor_5_name";
             this.factor_5_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_5_name.TabIndex = 22;
+            this.factor_5_name.TabIndex = 43;
             // 
             // factor_1_name
             // 
@@ -858,7 +858,7 @@ namespace Raw_File_Uploader
             this.factor_1_name.Location = new System.Drawing.Point(78, 157);
             this.factor_1_name.Name = "factor_1_name";
             this.factor_1_name.Size = new System.Drawing.Size(150, 23);
-            this.factor_1_name.TabIndex = 22;
+            this.factor_1_name.TabIndex = 35;
             // 
             // spe_sn
             // 
@@ -866,7 +866,7 @@ namespace Raw_File_Uploader
             this.spe_sn.Location = new System.Drawing.Point(361, 74);
             this.spe_sn.Name = "spe_sn";
             this.spe_sn.Size = new System.Drawing.Size(150, 23);
-            this.spe_sn.TabIndex = 22;
+            this.spe_sn.TabIndex = 33;
             // 
             // column_sn
             // 
@@ -874,7 +874,7 @@ namespace Raw_File_Uploader
             this.column_sn.Location = new System.Drawing.Point(111, 74);
             this.column_sn.Name = "column_sn";
             this.column_sn.Size = new System.Drawing.Size(150, 23);
-            this.column_sn.TabIndex = 22;
+            this.column_sn.TabIndex = 32;
             // 
             // label32
             // 
@@ -1077,14 +1077,14 @@ namespace Raw_File_Uploader
             this.acq_prog.Location = new System.Drawing.Point(794, 214);
             this.acq_prog.Name = "acq_prog";
             this.acq_prog.Size = new System.Drawing.Size(190, 23);
-            this.acq_prog.TabIndex = 18;
+            this.acq_prog.TabIndex = 20;
             // 
             // txtdescription
             // 
             this.txtdescription.Location = new System.Drawing.Point(110, 161);
             this.txtdescription.Name = "txtdescription";
             this.txtdescription.Size = new System.Drawing.Size(478, 137);
-            this.txtdescription.TabIndex = 23;
+            this.txtdescription.TabIndex = 17;
             this.txtdescription.Text = "";
             // 
             // txtprojectname
@@ -1093,7 +1093,7 @@ namespace Raw_File_Uploader
             this.txtprojectname.Location = new System.Drawing.Point(496, 108);
             this.txtprojectname.Name = "txtprojectname";
             this.txtprojectname.Size = new System.Drawing.Size(218, 23);
-            this.txtprojectname.TabIndex = 21;
+            this.txtprojectname.TabIndex = 15;
             // 
             // txtsamplename
             // 
@@ -1101,7 +1101,7 @@ namespace Raw_File_Uploader
             this.txtsamplename.Location = new System.Drawing.Point(188, 108);
             this.txtsamplename.Name = "txtsamplename";
             this.txtsamplename.Size = new System.Drawing.Size(150, 23);
-            this.txtsamplename.TabIndex = 20;
+            this.txtsamplename.TabIndex = 14;
             // 
             // label38
             // 
@@ -1120,7 +1120,7 @@ namespace Raw_File_Uploader
             this.folder_uploading.Location = new System.Drawing.Point(635, 247);
             this.folder_uploading.Name = "folder_uploading";
             this.folder_uploading.Size = new System.Drawing.Size(146, 21);
-            this.folder_uploading.TabIndex = 28;
+            this.folder_uploading.TabIndex = 21;
             this.folder_uploading.Text = "folder_based_data";
             this.folder_uploading.UseVisualStyleBackColor = true;
             this.folder_uploading.CheckStateChanged += new System.EventHandler(this.folderupload_checkboxchanged);
@@ -1137,7 +1137,7 @@ namespace Raw_File_Uploader
             this.filetype_combo.Location = new System.Drawing.Point(790, 156);
             this.filetype_combo.Name = "filetype_combo";
             this.filetype_combo.Size = new System.Drawing.Size(194, 21);
-            this.filetype_combo.TabIndex = 29;
+            this.filetype_combo.TabIndex = 18;
             this.filetype_combo.SelectedIndexChanged += new System.EventHandler(this.OnMyComboBoxChanged);
             // 
             // label37
