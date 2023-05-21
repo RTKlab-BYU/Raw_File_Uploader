@@ -29,7 +29,7 @@ namespace Raw_File_Uploader
         public Form1()
         {
             InitializeComponent();
-            txtserver.Text = "http://127.0.0.1:8000//files/api/"; 
+            txtserver.Text = "http://127.0.0.1/files/api/"; 
             minisize.Text = "100";
             upload_delay.Text = "10";
             alert_threshold.Text = "30";
