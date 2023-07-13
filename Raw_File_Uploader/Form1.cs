@@ -29,7 +29,7 @@ namespace Raw_File_Uploader
         public Form1()
         {
             InitializeComponent();
-            txtserver.Text = "http://127.0.0.1:8000//files/api/"; 
+            txtserver.Text = "http://127.0.0.1/files/api/"; 
             minisize.Text = "100";
             upload_delay.Text = "10";
             alert_threshold.Text = "30";
@@ -58,8 +58,6 @@ namespace Raw_File_Uploader
                     {
                         try
                         {
-                            if (!file_obj.Name.Contains(bypasskword.Text))
-                            {
                                 if (lastupload != folder_name | (DateTime.Now - lastuploadtime > new TimeSpan(0, 10, 0))) // if same file name is triggerred in less than 10 min, to prevent double uploading
 
                                 {
@@ -70,12 +68,7 @@ namespace Raw_File_Uploader
                                     lastupload = folder_name;
                                     lastuploadtime = DateTime.Now;
                                 }
-                            }
-                            else
-                            {
-                                context.Post(val => output.AppendText(Environment.NewLine + $"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded"), s);
-                                log.Debug($"File /{e.Name}/ contains bypass keyword {bypasskword.Text}, will not be uploaded");
-                            }
+ 
                         }
                         catch (Exception e1)
                         {
@@ -152,8 +145,30 @@ namespace Raw_File_Uploader
                 File.Delete(zipPath);
             }
             ZipFile.CreateFromDirectory(folderlocation, zipPath);
-            uploadfile(zipPath);
-            return true;
+            FileInfo zip_file_obj = new FileInfo(zipPath);
+
+            if (zip_file_obj.Length > Int32.Parse(minisize.Text) * 1000000 && zip_file_obj.Length < long.Parse(max_size.Text) * 1000000)
+            {
+                if (!zip_file_obj.Name.Contains(bypasskword.Text))
+                {
+
+                    uploadfile(zipPath);
+                    return true;
+                }
+
+                else
+                    log.Debug(" folder name contain bypass keyword, will NOT be uploaded");
+
+
+
+            }
+            else
+                log.Debug(" File size is not within setting range , will NOT be uploaded");
+
+
+            return false;
+
+
         }
 
         private Boolean uploadmultiplefiles(string filelocations) //upload multiple files

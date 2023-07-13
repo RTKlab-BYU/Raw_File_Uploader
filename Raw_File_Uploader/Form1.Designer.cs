@@ -415,21 +415,21 @@ namespace Raw_File_Uploader
             // loadSettingToolStripMenuItem
             // 
             this.loadSettingToolStripMenuItem.Name = "loadSettingToolStripMenuItem";
-            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.loadSettingToolStripMenuItem.Text = "Load Settings From";
             this.loadSettingToolStripMenuItem.Click += new System.EventHandler(this.loadSettingToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveSettingsToolStripMenuItem.Text = "Save Settings As";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -461,21 +461,21 @@ namespace Raw_File_Uploader
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(176, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // emailServerSettingToolStripMenuItem
             // 
             this.emailServerSettingToolStripMenuItem.Name = "emailServerSettingToolStripMenuItem";
-            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.emailServerSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.emailServerSettingToolStripMenuItem.Text = "Email server setting";
             this.emailServerSettingToolStripMenuItem.Click += new System.EventHandler(this.emailServerSettingToolStripMenuItem_Click);
             // 
             // openLogFileToolStripMenuItem
             // 
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log file";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.log_view_Click);
             // 
@@ -1130,8 +1130,8 @@ namespace Raw_File_Uploader
             this.filetype_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.filetype_combo.FormattingEnabled = true;
             this.filetype_combo.Items.AddRange(new object[] {
-            "Thermo_Raw file(.raw)",
-            "Agilent MIDAC (IMS) (.D)",
+            "Thermo_Raw (.raw)",
+            "Agilent MIDAC (.D)",
             "Bruker TDF (.D)",
             "Others"});
             this.filetype_combo.Location = new System.Drawing.Point(790, 156);
