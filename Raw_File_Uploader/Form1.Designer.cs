@@ -1146,9 +1146,9 @@ namespace Raw_File_Uploader
             this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label37.Location = new System.Drawing.Point(658, 217);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(123, 17);
+            this.label37.Size = new System.Drawing.Size(128, 17);
             this.label37.TabIndex = 17;
-            this.label37.Text = "Acq progam name";
+            this.label37.Text = "Acq program name";
             // 
             // label36
             // 

@@ -488,9 +488,9 @@ namespace Raw_File_Uploader
             else if (filetype_combo.SelectedIndex == 1) //Agilent MIDAC (IMS)
             {
                 file_extension.Text = "*.d";
-                acq_prog.Text = "Don't know yet";
+                acq_prog.Text = "AgtVoyAcgEng";
                 folder_uploading.Checked = true;
-                final_file.Text = "Contents.xml";
+                final_file.Text = "MSProfile.bin";
 
                 acq_prog.Enabled = true;
                 file_extension.Enabled = false;
