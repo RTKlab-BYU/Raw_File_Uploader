@@ -15,6 +15,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Raw_File_Uploader
 {
@@ -132,6 +134,7 @@ namespace Raw_File_Uploader
         }
 
         private Boolean uploadfolder(string folderlocation) //upload invidual folder (for folder based data)
+
         {
             //zip file will be placed inside temp/, check if a temp patch exits, create one if not.
             string temppath = Directory.GetParent(folderlocation).FullName + @"\temp\";
@@ -157,14 +160,19 @@ namespace Raw_File_Uploader
                 }
 
                 else
-                    log.Debug(" folder name contain bypass keyword, will NOT be uploaded");
+                {
+                    output.AppendText(Environment.NewLine + DateTime.Now + " folder name contain bypass keyword, will NOT be uploaded.");
+
+                    log.Debug(" folder name contain bypass keyword, will NOT be uploaded.");
 
 
-
+                }
             }
             else
-                log.Debug(" File size is not within setting range , will NOT be uploaded");
-
+            {
+                log.Debug(" File size is not within setting range , will NOT be uploaded.");
+                output.AppendText(Environment.NewLine + DateTime.Now + "File size is not within setting range , will NOT be uploaded.");
+            }
 
             return false;
 
@@ -263,16 +271,10 @@ namespace Raw_File_Uploader
             //request.Parameters.clear();
             request.AddHeader("Content-Type", "multipart/form-data");
             string uploadfilename;
-            if (String.IsNullOrEmpty(txtsamplename.Text))
-            {
-                uploadfilename = Path.GetFileNameWithoutExtension(newfilelocation);
-            }
-            else
-            {
-                uploadfilename = txtsamplename.Text;
-            }
+            uploadfilename = Path.GetFileNameWithoutExtension(newfilelocation);
             request.AddParameter("record_name", uploadfilename);
-            request.AddParameter("project_name", txtprojectname.Text);
+            request.AddParameter("project_name", String.Join(",", txtprojectname.Text, enablebatch.Checked, txtbatchname.Text, userslist.Text));
+            // the project name field is used for multiple purpose, comma is used for separate them
             request.AddParameter("record_description", txtdescription.Text);
             request.AddParameter("file_vendor", filetype_combo.Text);
             add_info(request, uploadfilename);
@@ -376,6 +378,7 @@ namespace Raw_File_Uploader
             if (result == DialogResult.OK)
             {
                 foldertxt.Text = folderDlg.SelectedPath;
+                txtbatchname.Text = Path.GetFileName(foldertxt.Text);
             }
         }
 
@@ -400,18 +403,23 @@ namespace Raw_File_Uploader
 
         private void monitor_Click(object sender, EventArgs e)
         {
-            if (!isDirectoryValid(foldertxt.Text))
-            {
-                MessageBox.Show("invalid folder");
-                return;
+            if (validate_required()){
+
+                if (!isDirectoryValid(foldertxt.Text))
+                {
+                    MessageBox.Show("invalid folder");
+                    return;
+                }
+                if (monitor_on is true)
+                    watchtriggle(false, Color.Red);
+                else
+                {
+                    if (check_connection(true))
+                        watchtriggle(true, Color.Green);
+                }
+
             }
-            if (monitor_on is true)
-                watchtriggle(false, Color.Red);
-            else
-            {
-                if (check_connection(true))
-                    watchtriggle(true, Color.Green); 
-            }
+
         }
 
         private bool isDirectoryValid(string path)
@@ -469,7 +477,11 @@ namespace Raw_File_Uploader
         }
 
         private void single_upload_Click(object sender, EventArgs e)
+
+
         {
+            if (validate_required())
+            {
                 if (folder_uploading.Checked)
                 {
                     if (foldertxt.Text.Split('.').ToList().LastOrDefault() == file_extension.Text.Split('.').ToList().LastOrDefault())
@@ -485,10 +497,16 @@ namespace Raw_File_Uploader
                 {
                     uploadmultiplefiles(filepath.Text);
                 }
+            }
         }
 
         private void OnMyComboBoxChanged(object sender, EventArgs e) //settings for different vendors
         {
+
+
+
+
+
             if (filetype_combo.SelectedIndex == 0) //Thermo raw file
             {
                 file_extension.Text = "*.raw";
@@ -598,29 +616,33 @@ namespace Raw_File_Uploader
         }
         private void folder_uploader_Click(object sender, EventArgs e)
         {
-            if (!isDirectoryValid(foldertxt.Text))
+
+            if (validate_required())
             {
-                MessageBox.Show("invalid folder");
-                return;
-            }
-            string[] files = Directory.GetFiles(foldertxt.Text, file_extension.Text);
-            if (folder_uploading.Checked) //upload multiple folders
-            {
+
+                if (!isDirectoryValid(foldertxt.Text))
+                {
+                    MessageBox.Show("invalid folder");
+                    return;
+                }
+                string[] files = Directory.GetFiles(foldertxt.Text, file_extension.Text);
+                if (folder_uploading.Checked) //upload multiple folders
+                {
                     string[] sub_directories = Directory.GetDirectories(foldertxt.Text, file_extension.Text);
                     DialogResult dialogResult2 = MessageBox.Show($"There are {sub_directories.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
-                if (dialogResult2 == DialogResult.Yes)
-                {
-                    foreach (string upload_folder in sub_directories)
+                    if (dialogResult2 == DialogResult.Yes)
                     {
-                        output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + upload_folder);
-                        uploadfolder(upload_folder); 
+                        foreach (string upload_folder in sub_directories)
+                        {
+                            output.AppendText(Environment.NewLine + DateTime.Now + " Uploading" + upload_folder);
+                            uploadfolder(upload_folder);
+                        }
                     }
                 }
-            }
-            else //upload multiple files
-            {
-                DialogResult dialogResult = MessageBox.Show($"There are {files.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
+                else //upload multiple files
+                {
+                    DialogResult dialogResult = MessageBox.Show($"There are {files.Count()} {file_extension.Text} files, You are sure to upload them all?", "Confirm", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
                     {
                         foreach (string file in files)
                         {
@@ -635,8 +657,8 @@ namespace Raw_File_Uploader
                             }
                         }
                     }
+                }
             }
-
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -782,6 +804,22 @@ namespace Raw_File_Uploader
             Process.Start("notepad.exe", @"C:\ProgramData\RawfileUploader\RawfileUploader.log");
         }
 
+        private Boolean validate_required()
+        {
+            if (string.IsNullOrWhiteSpace(txtprojectname.Text))
+            {
+                MessageBox.Show("Project name can't be empty");
+                return false;
+            }
+        
+            return true;
+
+
+        }
+
+
+
+
         private void whoislockmeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             file_lock Filelockform = new file_lock();
@@ -789,8 +827,35 @@ namespace Raw_File_Uploader
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var client = new RestClient(txtserver.Text);
+                client.Authenticator = new HttpBasicAuthenticator(txtusername.Text, txtpassword.Text);
+                var request = new RestRequest("/Users/", Method.Get);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddHeader("Accept", "application/json");
+                var response = client.Execute(request);
 
+
+                UserResponseDictionary all_users_response = JsonConvert.DeserializeObject<UserResponseDictionary>(response.Content);
+                userslist.Items.Clear();
+
+                foreach (AppUsers eachuser in all_users_response.AppUsers)
+                {
+                    userslist.Items.Add($"{eachuser.pk}_{eachuser.username}");
+                }
+                if (userslist.Items.Count != 0)
+                    userslist.SelectedIndex = 0;
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show("Can not obtain List from server, check server condition/address/username/password in the server tab or put in manully. " + err.Message);
+
+            }
         }
+    }
 
 
     //Helper classes
@@ -1041,6 +1106,33 @@ namespace Raw_File_Uploader
     }
 
 
+
+    // user_response class
+
+
+    public class UserResponseDictionary
+    {
+        [JsonProperty("count")]
+        public int count { get; set; }
+        [JsonProperty("next")]
+
+        public string next { get; set; }
+        [JsonProperty("previous")]
+
+        public string previous { get; set; }
+        [JsonProperty("results")]
+        public List<AppUsers> AppUsers { get; set; }
+    }
+
+    public class AppUsers
+    {
+        [JsonProperty("id")]
+        public int pk { get; set; }
+        [JsonProperty("username")]
+        public string username { get; set; }
+        [JsonProperty("email")]
+        public string email { get; set; }
+    }
 
 
 
