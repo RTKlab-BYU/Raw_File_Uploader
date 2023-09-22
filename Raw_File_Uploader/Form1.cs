@@ -17,6 +17,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Raw_File_Uploader
 {
@@ -47,6 +48,7 @@ namespace Raw_File_Uploader
             version_number.Text = GetPublishedVersion();
 
             watcher.Changed += (s, e) =>
+
             {
                 FileInfo file_obj = new FileInfo(e.FullPath);
                 if (upload_delay.Text != null)
@@ -273,7 +275,10 @@ namespace Raw_File_Uploader
             string uploadfilename;
             uploadfilename = Path.GetFileNameWithoutExtension(newfilelocation);
             request.AddParameter("record_name", uploadfilename);
-            request.AddParameter("project_name", String.Join(",", txtprojectname.Text, enablebatch.Checked, txtbatchname.Text, userslist.Text));
+            //Get user id
+            string[] parts = userslist.Text.Split('_');
+
+            request.AddParameter("project_name", String.Join(",", txtprojectname.Text, enablebatch.Checked, txtbatchname.Text, parts[0]),false);
             // the project name field is used for multiple purpose, comma is used for separate them
             request.AddParameter("record_description", txtdescription.Text);
             request.AddParameter("file_vendor", filetype_combo.Text);
@@ -370,6 +375,8 @@ namespace Raw_File_Uploader
             return request;
         }
 
+
+
         private void folderbutton_Click_1(object sender, EventArgs e)
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
@@ -378,7 +385,7 @@ namespace Raw_File_Uploader
             if (result == DialogResult.OK)
             {
                 foldertxt.Text = folderDlg.SelectedPath;
-                txtbatchname.Text = Path.GetFileName(foldertxt.Text);
+                String folder_name = Path.GetFileName(foldertxt.Text);
             }
         }
 
@@ -525,20 +532,43 @@ namespace Raw_File_Uploader
                 folder_uploading.Checked = true;
                 final_file.Text = "MSProfile.bin";
 
-                acq_prog.Enabled = true;
+                final_file.Enabled = false;
+                acq_prog.Enabled = false;
                 file_extension.Enabled = false;
                 folder_uploading.Enabled = false;
             }
-            else if (filetype_combo.SelectedIndex == 2) //Bruker TDF
+            else if (filetype_combo.SelectedIndex == 2) //Bruker Tims LC finish
             {
-                acq_prog.Text = "Don't know yet";
+                acq_prog.Text = "HyStarNT";
                 file_extension.Text = "*.d";
                 folder_uploading.Checked = true;
+                final_file.Text = "chromatography-data.sqlite";
+                upload_delay.Text = "10";
+                acq_prog.Enabled = false;
 
+                final_file.Enabled = false;
                 file_extension.Enabled = false;
                 folder_uploading.Enabled = false;
+
             }
-            else if (filetype_combo.SelectedIndex == 3) //Others
+
+            else if (filetype_combo.SelectedIndex == 3) //Bruker Tims MS finish
+            {
+                acq_prog.Text = "timsEngine";
+                file_extension.Text = "*.d";
+                folder_uploading.Checked = true;
+                final_file.Text = "analysis.tdf_bin";
+                upload_delay.Text = "10";
+
+                final_file.Enabled = false;
+                acq_prog.Enabled = false;
+                file_extension.Enabled = false;
+                folder_uploading.Enabled = false;
+
+
+
+            }
+            else if (filetype_combo.SelectedIndex == 4) //Others
             {
                 file_extension.Enabled = true;
                 acq_prog.Enabled = true;
@@ -810,6 +840,13 @@ namespace Raw_File_Uploader
             {
                 MessageBox.Show("Project name can't be empty");
                 return false;
+            }
+
+            if ((txtprojectname.Text.Length + txtbatchname.Text.Length) > 40)
+            {
+                MessageBox.Show("The combined length of project name and batch name can't be longer than 40, please reduce their length and try again.");
+                return false;
+
             }
         
             return true;

@@ -36,7 +36,6 @@ namespace Raw_File_Uploader
             this.label11 = new System.Windows.Forms.Label();
             this.single_upload = new System.Windows.Forms.Button();
             this.folder_uploader = new System.Windows.Forms.Button();
-            this.version_number = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.Explaination = new System.Windows.Forms.ToolTip(this.components);
             this.recipient_email = new System.Windows.Forms.TextBox();
@@ -56,6 +55,8 @@ namespace Raw_File_Uploader
             this.file_extension = new System.Windows.Forms.TextBox();
             this.final_file = new System.Windows.Forms.TextBox();
             this.enablebatch = new System.Windows.Forms.CheckBox();
+            this.txtprojectname = new System.Windows.Forms.TextBox();
+            this.txtbatchname = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,6 +122,7 @@ namespace Raw_File_Uploader
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Run_info = new System.Windows.Forms.TabPage();
+            this.label43 = new System.Windows.Forms.Label();
             this.userslist = new System.Windows.Forms.ComboBox();
             this.Pullusers = new System.Windows.Forms.Button();
             this.label42 = new System.Windows.Forms.Label();
@@ -129,8 +131,6 @@ namespace Raw_File_Uploader
             this.label39 = new System.Windows.Forms.Label();
             this.acq_prog = new System.Windows.Forms.TextBox();
             this.txtdescription = new System.Windows.Forms.RichTextBox();
-            this.txtprojectname = new System.Windows.Forms.TextBox();
-            this.txtbatchname = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.folder_uploading = new System.Windows.Forms.CheckBox();
             this.filetype_combo = new System.Windows.Forms.ComboBox();
@@ -146,7 +146,7 @@ namespace Raw_File_Uploader
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.label43 = new System.Windows.Forms.Label();
+            this.version_number = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.settings.SuspendLayout();
             this.Server.SuspendLayout();
@@ -208,14 +208,6 @@ namespace Raw_File_Uploader
             this.folder_uploader.Text = "Upload all records in folder";
             this.folder_uploader.UseVisualStyleBackColor = true;
             this.folder_uploader.Click += new System.EventHandler(this.folder_uploader_Click);
-            // 
-            // version_number
-            // 
-            this.version_number.AutoSize = true;
-            this.version_number.Location = new System.Drawing.Point(770, 374);
-            this.version_number.Name = "version_number";
-            this.version_number.Size = new System.Drawing.Size(0, 13);
-            this.version_number.TabIndex = 17;
             // 
             // label12
             // 
@@ -409,6 +401,26 @@ namespace Raw_File_Uploader
             this.Explaination.SetToolTip(this.enablebatch, "Temporary data, like wash or clean, will delete after 3 month (can be changed in " +
         "the detail page)");
             this.enablebatch.UseVisualStyleBackColor = true;
+            // 
+            // txtprojectname
+            // 
+            this.txtprojectname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtprojectname.Location = new System.Drawing.Point(190, 103);
+            this.txtprojectname.MaxLength = 20;
+            this.txtprojectname.Name = "txtprojectname";
+            this.txtprojectname.Size = new System.Drawing.Size(218, 23);
+            this.txtprojectname.TabIndex = 15;
+            this.Explaination.SetToolTip(this.txtprojectname, "Project name");
+            // 
+            // txtbatchname
+            // 
+            this.txtbatchname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtbatchname.Location = new System.Drawing.Point(514, 103);
+            this.txtbatchname.MaxLength = 50;
+            this.txtbatchname.Name = "txtbatchname";
+            this.txtbatchname.Size = new System.Drawing.Size(171, 23);
+            this.txtbatchname.TabIndex = 14;
+            this.Explaination.SetToolTip(this.txtbatchname, "Batch name");
             // 
             // menuStrip1
             // 
@@ -1088,6 +1100,15 @@ namespace Raw_File_Uploader
             this.Run_info.TabIndex = 0;
             this.Run_info.Text = "Files";
             // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(694, 219);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(59, 13);
+            this.label43.TabIndex = 36;
+            this.label43.Text = " (Required)";
+            // 
             // userslist
             // 
             this.userslist.FormattingEnabled = true;
@@ -1160,22 +1181,6 @@ namespace Raw_File_Uploader
             this.txtdescription.TabIndex = 17;
             this.txtdescription.Text = "";
             // 
-            // txtprojectname
-            // 
-            this.txtprojectname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtprojectname.Location = new System.Drawing.Point(190, 103);
-            this.txtprojectname.Name = "txtprojectname";
-            this.txtprojectname.Size = new System.Drawing.Size(218, 23);
-            this.txtprojectname.TabIndex = 15;
-            // 
-            // txtbatchname
-            // 
-            this.txtbatchname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbatchname.Location = new System.Drawing.Point(535, 103);
-            this.txtbatchname.Name = "txtbatchname";
-            this.txtbatchname.Size = new System.Drawing.Size(150, 23);
-            this.txtbatchname.TabIndex = 14;
-            // 
             // label38
             // 
             this.label38.AutoSize = true;
@@ -1205,7 +1210,8 @@ namespace Raw_File_Uploader
             this.filetype_combo.Items.AddRange(new object[] {
             "Thermo_Raw (.raw)",
             "Agilent MIDAC (.D)",
-            "Bruker TDF (.D)",
+            "Bruker TIMS-TOF (.D) LC finish",
+            "Bruker TIMS-TOF (.D) MS finish",
             "Others"});
             this.filetype_combo.Location = new System.Drawing.Point(803, 202);
             this.filetype_combo.Name = "filetype_combo";
@@ -1277,7 +1283,7 @@ namespace Raw_File_Uploader
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(436, 106);
+            this.label22.Location = new System.Drawing.Point(423, 106);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(85, 17);
             this.label22.TabIndex = 16;
@@ -1338,30 +1344,30 @@ namespace Raw_File_Uploader
             this.tabControl.Size = new System.Drawing.Size(1012, 385);
             this.tabControl.TabIndex = 26;
             // 
-            // label43
+            // version_number
             // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(694, 219);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(59, 13);
-            this.label43.TabIndex = 36;
-            this.label43.Text = " (Required)";
+            this.version_number.AutoSize = true;
+            this.version_number.Location = new System.Drawing.Point(775, 436);
+            this.version_number.Name = "version_number";
+            this.version_number.Size = new System.Drawing.Size(121, 13);
+            this.version_number.TabIndex = 28;
+            this.version_number.Text = "current_version_number";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1010, 729);
+            this.Controls.Add(this.version_number);
             this.Controls.Add(this.log_view);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.version_number);
             this.Controls.Add(this.folder_uploader);
             this.Controls.Add(this.single_upload);
             this.Controls.Add(this.monitor);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.output);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.output);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -1389,7 +1395,6 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button single_upload;
         private System.Windows.Forms.Button folder_uploader;
-        private System.Windows.Forms.Label version_number;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ToolTip Explaination;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -1500,6 +1505,7 @@ namespace Raw_File_Uploader
         private System.Windows.Forms.ComboBox userslist;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.TextBox txtbatchname;
+        private System.Windows.Forms.Label version_number;
     }
 }
 
