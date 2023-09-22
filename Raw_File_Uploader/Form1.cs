@@ -50,6 +50,7 @@ namespace Raw_File_Uploader
             watcher.Changed += (s, e) =>
 
             {
+                MessageBox.Show(s.ToString());
                 FileInfo file_obj = new FileInfo(e.FullPath);
                 if (upload_delay.Text != null)
                     Thread.Sleep(Int32.Parse(upload_delay.Text) * 1000);
