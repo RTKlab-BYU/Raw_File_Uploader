@@ -1319,7 +1319,7 @@ namespace Raw_File_Uploader
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(93, 17);
             this.label18.TabIndex = 14;
-            this.label18.Text = "File to upload";
+            this.label18.Text = "File Path";
             // 
             // label19
             // 
@@ -1329,7 +1329,7 @@ namespace Raw_File_Uploader
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(181, 17);
             this.label19.TabIndex = 9;
-            this.label19.Text = "Folder to Monitor or Upload";
+            this.label19.Text = "Folder Path";
             // 
             // tabControl
             // 

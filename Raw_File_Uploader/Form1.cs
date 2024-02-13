@@ -43,7 +43,7 @@ namespace Raw_File_Uploader
             filetype_combo.SelectedIndex = 0;
             var lastupload = "";
             DateTime lastuploadtime = DateTime.Now;
-            log.Debug("Uploader started");
+            log.Debug("Uploader started");      //FIXME check this gramar
             var context = SynchronizationContext.Current; // for cross thread update to UI
             version_number.Text = GetPublishedVersion();
 
